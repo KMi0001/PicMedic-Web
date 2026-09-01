@@ -7,11 +7,13 @@ const badgeEl = document.getElementById("result-badge");
 const filenameEl = document.getElementById("result-filename");
 const messageEl = document.getElementById("result-message");
 const detailsEl = document.getElementById("result-details");
+const privacyNoteEl = document.querySelector(".privacy-note");
 
 function showSection(section) {
   for (const el of [pickerSection, loadingSection, resultSection]) {
     el.classList.toggle("hidden", el !== section);
   }
+  privacyNoteEl.classList.toggle("privacy-note--emphasis", section === resultSection);
 }
 
 function formatBytes(bytes) {
@@ -64,6 +66,9 @@ function renderResult(diagnosis) {
   }
   if (diagnosis.is_low_resolution) {
     addDetailRow("저해상도", "예");
+  }
+  if (diagnosis.quality_issues && diagnosis.quality_issues.length > 0) {
+    addDetailRow("화질 확인", diagnosis.quality_issues.join(", "));
   }
   if (diagnosis.error_message && diagnosis.severity !== "안내") {
     addDetailRow("상세 오류", diagnosis.error_message);

@@ -80,6 +80,11 @@ body {
   text-align: left;
 }
 
+.privacy-note--emphasis {
+  color: var(--text);
+  font-weight: 700;
+}
+
 .privacy-note__icon {
   flex-shrink: 0;
   width: 14px;
@@ -166,11 +171,11 @@ body {
   margin-bottom: 12px;
 }
 
-.result__badge--심각 {
+.result__badge--손상 {
   background-color: var(--danger);
 }
 
-.result__badge--경미 {
+.result__badge--의심 {
   background-color: var(--warning);
 }
 
