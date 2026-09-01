@@ -53,6 +53,12 @@ function renderResult(diagnosis) {
     addDetailRow("해상도", `${diagnosis.width} x ${diagnosis.height}`);
   }
   addDetailRow("파일 크기", formatBytes(diagnosis.file_size));
+  if (diagnosis.camera) {
+    addDetailRow("촬영 기기", diagnosis.camera);
+  }
+  if (diagnosis.captured_at) {
+    addDetailRow("촬영 일시", diagnosis.captured_at);
+  }
   if (diagnosis.is_mismatched) {
     addDetailRow("확장자 불일치", "예");
   }

@@ -11,10 +11,19 @@ core/diagnosis.py
 from __future__ import annotations
 
 import re
+from datetime import datetime
 from pathlib import Path
 
 from core.analyzer import analyze_file
 from models.file_info import FileInfo, FileStatus
+
+# EXIF IFD0 태그 ID(analyzer.py가 img.getexif()로 뽑아 문자열 키로 저장한 것).
+# DateTimeOriginal(36867)은 Exif SubIFD에 있어 지금 추출 방식(플랫 IFD0)으로는
+# 안 잡히므로, IFD0의 "DateTime"(파일 변경일시) 태그로 대신한다 — 카메라가 찍은
+# 원본 파일은 보통 둘이 같아서 실용적으로는 충분하다.
+_EXIF_TAG_MAKE = "271"
+_EXIF_TAG_MODEL = "272"
+_EXIF_TAG_DATETIME = "306"
 
 # 사진이_이상해요_기획.md "저해상도" 기준: 총 픽셀수(가로x세로) 30만 px 미만.
 # 실제 폰 사진(보통 수백만~1천만 px)은 안 걸리고, 옛 안드로이드 썸네일 캐시
@@ -66,6 +75,27 @@ def is_probable_screenshot(info: FileInfo) -> bool:
     return any(pattern.search(info.filename) for pattern in _SCREENSHOT_FILENAME_PATTERNS)
 
 
+def camera_label(info: FileInfo) -> str | None:
+    """"촬영 기기" 한 줄 요약. 둘 다 없으면 None(스크린샷/다운로드 파일 등 흔함)."""
+    make = str(info.metadata.get(_EXIF_TAG_MAKE, "")).strip()
+    model = str(info.metadata.get(_EXIF_TAG_MODEL, "")).strip()
+    if make and model:
+        return model if model.lower().startswith(make.lower()) else f"{make} {model}"
+    return make or model or None
+
+
+def captured_at(info: FileInfo) -> str | None:
+    """"촬영 일시". EXIF DateTime 포맷(YYYY:MM:DD HH:MM:SS)을 사람이 읽기 쉽게 변환."""
+    raw = info.metadata.get(_EXIF_TAG_DATETIME)
+    if not raw:
+        return None
+    try:
+        parsed = datetime.strptime(str(raw), "%Y:%m:%d %H:%M:%S")
+    except ValueError:
+        return None
+    return parsed.strftime("%Y-%m-%d %H:%M")
+
+
 def classify_severity(info: FileInfo) -> str:
     if info.status == FileStatus.NOT_AN_IMAGE:
         return "안내"
@@ -98,6 +128,8 @@ def diagnose(path: str | Path) -> dict:
         "is_mismatched": info.is_mismatched,
         "is_low_resolution": low_res,
         "is_probable_screenshot": screenshot,
+        "camera": camera_label(info),
+        "captured_at": captured_at(info),
         "width": info.width,
         "height": info.height,
         "file_size": info.file_size,
