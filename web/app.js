@@ -55,7 +55,7 @@ function renderResult(diagnosis) {
   if (diagnosis.is_low_resolution) {
     addDetailRow("저해상도", "예");
   }
-  if (diagnosis.error_message) {
+  if (diagnosis.error_message && diagnosis.severity !== "안내") {
     addDetailRow("상세 오류", diagnosis.error_message);
   }
 

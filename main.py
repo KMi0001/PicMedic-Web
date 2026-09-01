@@ -18,9 +18,9 @@ from core.diagnosis import diagnose
 
 WEB_DIR = Path(__file__).resolve().parent / "web"
 
-IMAGE_FILE_TYPES = (
-    "이미지 파일 (*.jpg;*.jpeg;*.png;*.heic;*.heif;*.webp;*.gif;*.tiff;*.tif;*.bmp)",
+FILE_TYPES = (
     "모든 파일 (*.*)",
+    "이미지 파일 (*.jpg;*.jpeg;*.png;*.heic;*.heif;*.webp;*.gif;*.tiff;*.tif;*.bmp)",
 )
 
 
@@ -29,7 +29,7 @@ class Api:
 
     def pick_and_diagnose(self) -> dict | None:
         window = webview.windows[0]
-        selected = window.create_file_dialog(webview.OPEN_DIALOG, file_types=IMAGE_FILE_TYPES)
+        selected = window.create_file_dialog(webview.OPEN_DIALOG, file_types=FILE_TYPES)
         if not selected:
             return None
         return diagnose(selected[0])

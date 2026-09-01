@@ -128,6 +128,10 @@ body {
   background-color: var(--success);
 }
 
+.result__badge--안내 {
+  background-color: var(--muted);
+}
+
 .result__filename {
   margin: 0 0 8px;
   font-size: 17px;

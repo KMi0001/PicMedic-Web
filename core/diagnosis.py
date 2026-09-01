@@ -21,10 +21,11 @@ from models.file_info import FileInfo, FileStatus
 LOW_RESOLUTION_PIXEL_THRESHOLD = 300_000
 
 # 사진이_이상해요_기획.md "🔴 심각" 표에 속하는 상태들.
+# NOT_AN_IMAGE는 제외 — "사진에 문제가 있음"이 아니라 "애초에 사진을 고르지
+# 않음"이라 성격이 달라서 별도 severity("안내")로 뺀다.
 _SEVERE_STATUSES = {
     FileStatus.CORRUPTED,
     FileStatus.PARTIAL_CORRUPTION,
-    FileStatus.NOT_AN_IMAGE,
     FileStatus.UNSUPPORTED,
     FileStatus.UNKNOWN,
     FileStatus.MISMATCH,  # 열리긴 하지만 "확장자 때문에 안 열린다"는 오해를 부르는 케이스라 심각 쪽에 둠
@@ -36,7 +37,7 @@ _STATUS_MESSAGES = {
     FileStatus.PARTIAL_CORRUPTION: "파일 일부가 손상되어 이미지의 일부만 보입니다.",
     FileStatus.CORRUPTED: "파일이 손상되어 열 수 없습니다.",
     FileStatus.UNSUPPORTED: "PicMedic이 아직 지원하지 않는 형식입니다.",
-    FileStatus.NOT_AN_IMAGE: "이미지 파일로 보이지 않습니다.",
+    FileStatus.NOT_AN_IMAGE: "사진이 아닙니다.",
     FileStatus.UNKNOWN: "파일을 확인할 수 없습니다.",
     FileStatus.RECOVERED: "복구가 완료된 파일입니다.",
 }
@@ -49,6 +50,8 @@ def is_low_resolution(info: FileInfo) -> bool:
 
 
 def classify_severity(info: FileInfo) -> str:
+    if info.status == FileStatus.NOT_AN_IMAGE:
+        return "안내"
     if info.status in _SEVERE_STATUSES:
         return "심각"
     if is_low_resolution(info):
