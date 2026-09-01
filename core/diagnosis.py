@@ -135,10 +135,15 @@ def assess_quality_issues(path: Path) -> list[str]:
     return issues
 
 
-# 파일명 패턴 기반 "추정"일 뿐, 정확한 판별이 아니다 — PHASE2_사진정리_기획.md
-# "스크린샷 따로 묶기"와 같은 한계: 아이폰은 카메라 사진도 스크린샷도 똑같이
-# IMG_XXXX라 파일명만으로는 구분 신호가 없음. 안드로이드/윈도우/맥의 기본
-# 캡처 파일명 규칙만 잡는다.
+# "추정"일 뿐, 정확한 판별이 아니다 — PHASE2_사진정리_기획.md "스크린샷 따로
+# 묶기"와 같은 한계. 두 가지 신호를 OR로 조합한다:
+# 1) 파일명 패턴 — 안드로이드/윈도우/맥의 기본 캡처 파일명 규칙.
+#    아이폰은 카메라 사진도 스크린샷도 똑같이 IMG_XXXX라 이 신호가 안 먹힘.
+# 2) PNG 형식 + 촬영기기(EXIF Make/Model) 없음 — 아이폰은 스크린샷이 항상 PNG고
+#    카메라로 찍은 게 아니라서 EXIF에 기기 정보가 없음(반면 카메라 사진은
+#    HEIC/JPEG + 기기 정보 있음). 다만 인터넷에서 받은 PNG(짤방 등)도 이
+#    조건에 걸려 오탐될 수 있고, 안드로이드는 스크린샷도 JPG인 경우가 많아
+#    이 신호가 덜 유효함.
 _SCREENSHOT_FILENAME_PATTERNS = [
     re.compile(r"screenshot", re.IGNORECASE),
     re.compile(r"screen[\s_-]?shot", re.IGNORECASE),
@@ -148,7 +153,9 @@ _SCREENSHOT_FILENAME_PATTERNS = [
 
 
 def is_probable_screenshot(info: FileInfo) -> bool:
-    return any(pattern.search(info.filename) for pattern in _SCREENSHOT_FILENAME_PATTERNS)
+    if any(pattern.search(info.filename) for pattern in _SCREENSHOT_FILENAME_PATTERNS):
+        return True
+    return info.detected_format == "PNG" and camera_label(info) is None
 
 
 def camera_label(info: FileInfo) -> str | None:
@@ -186,10 +193,12 @@ def diagnose(path: str | Path) -> dict:
     path = Path(path)
     info = analyze_file(path)
     low_res = is_low_resolution(info)
-    # 손상/미지원 등으로 애초에 안 열리는 파일은 품질 분석할 대상이 없음.
-    quality_issues = assess_quality_issues(path) if info.readable else []
     severity = classify_severity(info)
     screenshot = is_probable_screenshot(info) if info.status != FileStatus.UNKNOWN else False
+    # 손상/미지원 등으로 애초에 안 열리는 파일은 품질 분석할 대상이 없고,
+    # 스크린샷은 "사진 화질"이라는 개념 자체가 안 맞아 예외로 둔다(화면 캡처
+    # 특유의 안티앨리어싱/UI 배색이 블러·노출·대비 판정을 왜곡하기도 함).
+    quality_issues = assess_quality_issues(path) if info.readable and not screenshot else []
 
     message = _STATUS_MESSAGES.get(info.status, info.status.value)
 

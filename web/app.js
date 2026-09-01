@@ -52,7 +52,8 @@ function renderResult(diagnosis) {
   addDetailRow("확장자", diagnosis.extension || "-");
   addDetailRow("실제 형식", diagnosis.detected_format || "알 수 없음");
   if (diagnosis.width && diagnosis.height) {
-    addDetailRow("해상도", `${diagnosis.width} x ${diagnosis.height}`);
+    const resolutionNote = diagnosis.is_low_resolution ? " (낮음)" : "";
+    addDetailRow("해상도", `${diagnosis.width} x ${diagnosis.height}${resolutionNote}`);
   }
   addDetailRow("파일 크기", formatBytes(diagnosis.file_size));
   if (diagnosis.camera) {
@@ -63,9 +64,6 @@ function renderResult(diagnosis) {
   }
   if (diagnosis.is_mismatched) {
     addDetailRow("확장자 불일치", "예");
-  }
-  if (diagnosis.is_low_resolution) {
-    addDetailRow("저해상도", "예");
   }
   if (diagnosis.quality_issues && diagnosis.quality_issues.length > 0) {
     addDetailRow("화질 확인", diagnosis.quality_issues.join(", "));
