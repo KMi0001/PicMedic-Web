@@ -63,7 +63,7 @@ def diagnose(path: str | Path) -> dict:
 
     message = _STATUS_MESSAGES.get(info.status, info.status.value)
     if severity == "경미" and info.status == FileStatus.NORMAL:
-        message = "정상적으로 열리지만 해상도가 낮습니다 (썸네일급 이미지일 수 있음)."
+        message = "정상적으로 열리지만 해상도가 낮습니다."
 
     return {
         "filename": info.filename,

@@ -53,7 +53,7 @@ function renderResult(diagnosis) {
     addDetailRow("확장자 불일치", "예");
   }
   if (diagnosis.is_low_resolution) {
-    addDetailRow("저해상도", "예 (썸네일급)");
+    addDetailRow("저해상도", "예");
   }
   if (diagnosis.error_message) {
     addDetailRow("상세 오류", diagnosis.error_message);
