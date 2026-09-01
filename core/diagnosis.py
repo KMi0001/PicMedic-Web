@@ -10,6 +10,7 @@ core/diagnosis.py
 
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 from core.analyzer import analyze_file
@@ -49,6 +50,22 @@ def is_low_resolution(info: FileInfo) -> bool:
     return info.width * info.height < LOW_RESOLUTION_PIXEL_THRESHOLD
 
 
+# 파일명 패턴 기반 "추정"일 뿐, 정확한 판별이 아니다 — PHASE2_사진정리_기획.md
+# "스크린샷 따로 묶기"와 같은 한계: 아이폰은 카메라 사진도 스크린샷도 똑같이
+# IMG_XXXX라 파일명만으로는 구분 신호가 없음. 안드로이드/윈도우/맥의 기본
+# 캡처 파일명 규칙만 잡는다.
+_SCREENSHOT_FILENAME_PATTERNS = [
+    re.compile(r"screenshot", re.IGNORECASE),
+    re.compile(r"screen[\s_-]?shot", re.IGNORECASE),
+    re.compile(r"스크린샷"),
+    re.compile(r"캡[처쳐]"),
+]
+
+
+def is_probable_screenshot(info: FileInfo) -> bool:
+    return any(pattern.search(info.filename) for pattern in _SCREENSHOT_FILENAME_PATTERNS)
+
+
 def classify_severity(info: FileInfo) -> str:
     if info.status == FileStatus.NOT_AN_IMAGE:
         return "안내"
@@ -63,6 +80,7 @@ def diagnose(path: str | Path) -> dict:
     info = analyze_file(path)
     severity = classify_severity(info)
     low_res = is_low_resolution(info)
+    screenshot = is_probable_screenshot(info) if info.status != FileStatus.UNKNOWN else False
 
     message = _STATUS_MESSAGES.get(info.status, info.status.value)
     if severity == "경미" and info.status == FileStatus.NORMAL:
@@ -79,6 +97,7 @@ def diagnose(path: str | Path) -> dict:
         "readable": info.readable,
         "is_mismatched": info.is_mismatched,
         "is_low_resolution": low_res,
+        "is_probable_screenshot": screenshot,
         "width": info.width,
         "height": info.height,
         "file_size": info.file_size,

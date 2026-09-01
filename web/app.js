@@ -39,6 +39,10 @@ function addDetailRow(label, value) {
 function renderResult(diagnosis) {
   badgeEl.textContent = diagnosis.severity;
   badgeEl.className = `result__badge result__badge--${diagnosis.severity}`;
+
+  const screenshotTag = document.getElementById("result-screenshot-tag");
+  screenshotTag.classList.toggle("hidden", !diagnosis.is_probable_screenshot);
+
   filenameEl.textContent = diagnosis.filename;
   messageEl.textContent = diagnosis.message;
 

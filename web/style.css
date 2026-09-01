@@ -132,6 +132,18 @@ body {
   background-color: var(--muted);
 }
 
+.result__tag {
+  display: inline-block;
+  margin: 0 0 12px 8px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background-color: var(--bg);
+  border: 1px solid var(--border);
+}
+
 .result__filename {
   margin: 0 0 8px;
   font-size: 17px;
