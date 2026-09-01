@@ -8,14 +8,23 @@
 <body>
   <main class="app">
     <header class="app__header">
-      <h1>사진이 이상해요</h1>
-      <p class="app__subtitle">사진 파일 하나를 골라주시면 무엇이 문제인지 진단해드려요.</p>
+      <h1>PicMedic</h1>
+      <p class="app__tagline">사진이 이상해요. 제 사진에 대해 알려주세요.</p>
+      <p class="app__description">형식·손상·해상도까지 한 번에 진단해드려요.</p>
     </header>
 
     <section id="picker" class="picker">
-      <button id="pick-btn" class="button button--primary">파일 선택</button>
-      <p class="picker__hint">JPG · PNG · HEIC · WEBP · GIF · TIFF · BMP</p>
+      <button id="pick-btn" class="button button--primary">사진 선택</button>
+      <p class="picker__hint">카메라 사진부터 캡처본까지, 사진이라면 뭐든요.</p>
     </section>
+
+    <p class="privacy-note">
+      <svg class="privacy-note__icon" viewBox="0 0 16 16" aria-hidden="true">
+        <circle class="privacy-note__icon-bg" cx="8" cy="8" r="8" />
+        <path class="privacy-note__icon-check" d="M4.5 8.3l2.3 2.3L11.5 5.8" />
+      </svg>
+      <span>사진은 인터넷이나 서버로 전송되지 않고, 이 기기 안에서만 분석됩니다.</span>
+    </p>
 
     <section id="loading" class="loading hidden">
       <p>진단 중...</p>
