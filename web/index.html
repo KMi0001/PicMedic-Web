@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>PicMedic Web</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="app__header">
+      <h1>사진이 이상해요</h1>
+      <p class="app__subtitle">사진 파일 하나를 골라주시면 무엇이 문제인지 진단해드려요.</p>
+    </header>
+
+    <section id="picker" class="picker">
+      <button id="pick-btn" class="button button--primary">파일 선택</button>
+      <p class="picker__hint">JPG · PNG · HEIC · WEBP · GIF · TIFF · BMP</p>
+    </section>
+
+    <section id="loading" class="loading hidden">
+      <p>진단 중...</p>
+    </section>
+
+    <section id="result" class="result hidden">
+      <div class="result__badge" id="result-badge"></div>
+      <h2 id="result-filename" class="result__filename"></h2>
+      <p id="result-message" class="result__message"></p>
+
+      <dl class="result__details" id="result-details"></dl>
+
+      <button id="retry-btn" class="button button--secondary">다른 사진 진단하기</button>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

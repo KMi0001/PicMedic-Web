@@ -1,0 +1,165 @@
+/* gui/theme.py의 COLORS("민트 케어" 팔레트)와 동일한 값을 사용해
+   데스크톱 앱과 시각적 일관성을 맞춘다. */
+:root {
+  --bg: #F1F8F5;
+  --surface: #FFFFFF;
+  --border: #DCEAE3;
+  --dashed: #B6DED4;
+  --text: #17332A;
+  --text-secondary: #5E8677;
+  --primary: #12B5A6;
+  --primary-hover: #0E9689;
+  --success: #2FAF66;
+  --warning: #D9A441;
+  --danger: #DA5A5A;
+  --muted: #8FAFA0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+}
+
+.app {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.app__header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.app__header h1 {
+  margin: 0 0 8px;
+  font-size: 22px;
+  color: var(--text);
+}
+
+.app__subtitle {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.picker {
+  background-color: var(--surface);
+  border: 2px dashed var(--dashed);
+  border-radius: 16px;
+  padding: 48px 24px;
+  text-align: center;
+}
+
+.picker__hint {
+  margin: 12px 0 0;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.button {
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.button--primary {
+  background-color: var(--primary);
+  color: #FFFFFF;
+}
+
+.button--primary:hover {
+  background-color: var(--primary-hover);
+}
+
+.button--secondary {
+  background-color: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  width: 100%;
+  margin-top: 20px;
+}
+
+.loading {
+  text-align: center;
+  color: var(--text-secondary);
+  padding: 48px 0;
+}
+
+.result {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.result__badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 12px;
+}
+
+.result__badge--심각 {
+  background-color: var(--danger);
+}
+
+.result__badge--경미 {
+  background-color: var(--warning);
+}
+
+.result__badge--정상 {
+  background-color: var(--success);
+}
+
+.result__filename {
+  margin: 0 0 8px;
+  font-size: 17px;
+  word-break: break-all;
+}
+
+.result__message {
+  margin: 0 0 20px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.result__details {
+  margin: 0;
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+
+.result__details div {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  font-size: 13px;
+}
+
+.result__details dt {
+  color: var(--text-secondary);
+}
+
+.result__details dd {
+  margin: 0;
+  color: var(--text);
+  font-weight: 600;
+}
