@@ -11,6 +11,8 @@ const privacyNoteEl = document.querySelector(".privacy-note");
 const printSuitabilityEl = document.getElementById("print-suitability");
 const printSuitabilityGridEl = document.getElementById("print-suitability-grid");
 const printSuitabilityNoteEl = document.getElementById("print-suitability-note");
+const previewWrapEl = document.getElementById("result-preview-wrap");
+const previewEl = document.getElementById("result-preview");
 
 function showSection(section) {
   for (const el of [pickerSection, loadingSection, resultSection]) {
@@ -69,6 +71,14 @@ function renderPrintSuitability(diagnosis) {
 }
 
 function renderResult(diagnosis) {
+  if (diagnosis.preview) {
+    previewEl.src = diagnosis.preview;
+    previewWrapEl.classList.remove("hidden");
+  } else {
+    previewEl.src = "";
+    previewWrapEl.classList.add("hidden");
+  }
+
   badgeEl.textContent = diagnosis.severity;
   badgeEl.className = `result__badge result__badge--${diagnosis.severity}`;
 

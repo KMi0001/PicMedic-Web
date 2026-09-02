@@ -10,11 +10,13 @@ core/diagnosis.py
 
 from __future__ import annotations
 
+import base64
+import io
 import re
 from datetime import datetime
 from pathlib import Path
 
-from PIL import Image, ImageChops, ImageFilter, ImageStat
+from PIL import Image, ImageChops, ImageFile, ImageFilter, ImageStat
 
 from core.analyzer import analyze_file
 from models.file_info import FileInfo, FileStatus
@@ -280,6 +282,52 @@ def captured_at(info: FileInfo) -> str | None:
     return parsed.strftime("%Y-%m-%d %H:%M")
 
 
+# 결과 화면 미리보기 — 축소한 뒤 JPEG로 다시 인코딩해 data URI로 돌려준다.
+# file:// 경로를 그대로 <img src>에 못 쓰는 이유: 이 앱의 대표 형식인 HEIC를
+# 브라우저(WebView2)가 직접 디코딩하지 못하기 때문. Pillow로 미리 디코딩해서
+# 넘기면 형식에 상관없이 항상 보여줄 수 있다.
+PREVIEW_MAX_SIDE = 640
+PREVIEW_JPEG_QUALITY = 78
+
+
+def _load_for_preview(path: Path) -> Image.Image | None:
+    """analyzer.py의 2단계 디코딩(정상 → 손상 허용 모드)과 동일한 순서로 시도한다.
+    부분 손상 파일도 깨진 부분이 보이는 채로 미리보기를 만들 수 있게 하기 위함."""
+    try:
+        img = Image.open(path)
+        img.load()
+        return img
+    except Exception:
+        pass
+
+    ImageFile.LOAD_TRUNCATED_IMAGES = True
+    try:
+        img = Image.open(path)
+        img.load()
+        return img
+    except Exception:
+        return None
+    finally:
+        ImageFile.LOAD_TRUNCATED_IMAGES = False
+
+
+def build_preview(path: Path) -> str | None:
+    img = _load_for_preview(path)
+    if img is None:
+        return None
+    try:
+        rgb = img.convert("RGB")
+        rgb.thumbnail((PREVIEW_MAX_SIDE, PREVIEW_MAX_SIDE))
+        buffer = io.BytesIO()
+        rgb.save(buffer, format="JPEG", quality=PREVIEW_JPEG_QUALITY)
+        encoded = base64.b64encode(buffer.getvalue()).decode("ascii")
+        return f"data:image/jpeg;base64,{encoded}"
+    except Exception:
+        return None
+    finally:
+        img.close()
+
+
 # "의심" 판정 근거 ②: 압축폭탄 안전장치(Pillow MAX_IMAGE_PIXELS)에 걸린 경우.
 # analyzer.py는 이걸 일반 디코딩 실패와 구분하지 않고 "손상"으로 뭉뚱그리는데,
 # 실제로는 파일 자체가 멀쩡할 수 있어(그냥 픽셀 수가 너무 많음) 재확인이 필요한
@@ -367,8 +415,10 @@ def diagnose(path: str | Path) -> dict:
         message = _append_notes(message, _extra_notes(low_res, quality_issues, screenshot))
 
     print_sizes = print_suitability(info) if info.readable else None
+    preview = build_preview(path) if info.readable else None
 
     return {
+        "preview": preview,
         "filename": info.filename,
         "path": info.path,
         "extension": info.extension,

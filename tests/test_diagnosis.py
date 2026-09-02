@@ -207,6 +207,19 @@ def run():
         r_not_image = diagnosis.diagnose(not_image_path)
         check("이미지 아닌 파일은 print_sizes가 None", r_not_image["print_sizes"] is None)
 
+        # 11) 미리보기 — 정상/부분손상 파일은 data URI, 읽을 수 없는 파일은 None
+        check(
+            "정상 파일은 미리보기 data URI가 있음",
+            r["preview"] is not None and r["preview"].startswith("data:image/jpeg;base64,"),
+            f"실제 접두={r['preview'][:30] if r['preview'] else None}",
+        )
+        r_corrupted_preview = diagnosis.diagnose(corrupted_path)
+        check(
+            "부분손상 파일도 깨진 부분 그대로 미리보기가 있음",
+            r_corrupted_preview["preview"] is not None,
+        )
+        check("이미지 아닌 파일은 미리보기가 없음(None)", r_not_image["preview"] is None)
+
     print(f"\n총 {passed + failed}개 중 {passed}개 통과, {failed}개 실패")
     return failed == 0
 
