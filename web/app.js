@@ -8,6 +8,9 @@ const filenameEl = document.getElementById("result-filename");
 const messageEl = document.getElementById("result-message");
 const detailsEl = document.getElementById("result-details");
 const privacyNoteEl = document.querySelector(".privacy-note");
+const printSuitabilityEl = document.getElementById("print-suitability");
+const printSuitabilityGridEl = document.getElementById("print-suitability-grid");
+const printSuitabilityNoteEl = document.getElementById("print-suitability-note");
 
 function showSection(section) {
   for (const el of [pickerSection, loadingSection, resultSection]) {
@@ -38,6 +41,33 @@ function addDetailRow(label, value) {
   detailsEl.appendChild(row);
 }
 
+function renderPrintSuitability(diagnosis) {
+  if (!diagnosis.print_sizes) {
+    printSuitabilityEl.classList.add("hidden");
+    return;
+  }
+
+  printSuitabilityGridEl.innerHTML = "";
+  for (const { size, level } of diagnosis.print_sizes) {
+    const cell = document.createElement("div");
+    cell.className = "print-size";
+
+    const sizeLabel = document.createElement("span");
+    sizeLabel.className = "print-size__label";
+    sizeLabel.textContent = `${size}"`;
+
+    const levelBadge = document.createElement("span");
+    levelBadge.className = `print-size__level print-size__level--${level}`;
+    levelBadge.textContent = level;
+
+    cell.append(sizeLabel, levelBadge);
+    printSuitabilityGridEl.appendChild(cell);
+  }
+
+  printSuitabilityNoteEl.classList.toggle("hidden", !diagnosis.print_quality_warning);
+  printSuitabilityEl.classList.remove("hidden");
+}
+
 function renderResult(diagnosis) {
   badgeEl.textContent = diagnosis.severity;
   badgeEl.className = `result__badge result__badge--${diagnosis.severity}`;
@@ -65,12 +95,17 @@ function renderResult(diagnosis) {
   if (diagnosis.is_mismatched) {
     addDetailRow("확장자 불일치", "예");
   }
+  if (diagnosis.color_space_warning) {
+    addDetailRow("색공간", diagnosis.color_space_warning);
+  }
   if (diagnosis.quality_issues && diagnosis.quality_issues.length > 0) {
     addDetailRow("화질 확인", diagnosis.quality_issues.join(", "));
   }
   if (diagnosis.error_message && diagnosis.severity !== "안내") {
     addDetailRow("상세 오류", diagnosis.error_message);
   }
+
+  renderPrintSuitability(diagnosis);
 
   showSection(resultSection);
 }

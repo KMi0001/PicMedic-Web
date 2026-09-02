@@ -44,7 +44,10 @@ _DAMAGE_STATUSES = {
     FileStatus.UNKNOWN,
 }
 
-# "의심" — 열리긴 하지만 확장자가 실제 형식과 달라 "이 파일이 맞는지 의심되는" 상태.
+# "의심" 판정 근거 ① — 열리긴 하지만 확장자가 실제 형식과 달라 "이 파일이
+# 맞는지 의심되는" 상태. 근거 ②(압축폭탄 오탐)·③(색공간)은 아래
+# is_decompression_bomb/color_space_warning으로 diagnose()에서 별도 처리한다
+# (analyzer.py의 FileStatus만으로는 구분이 안 되는 케이스라서).
 _SUSPECT_STATUSES = {
     FileStatus.MISMATCH,
 }
@@ -60,11 +63,109 @@ _STATUS_MESSAGES = {
     FileStatus.RECOVERED: "복구가 완료된 파일입니다.",
 }
 
+# analyzer.py는 손상/부분손상 파일의 error_message에 Pillow 예외 문구를 원문
+# 그대로 넣어둔다(영문). Pillow 자체 디코더(JPEG/PNG/GIF/TIFF/BMP)가 흔히
+# 내는 메시지만 번역하고, 목록에 없는 것(특히 HEIC/WEBP처럼 외부 C 라이브러리
+# libheif/libwebp가 메시지를 만드는 경우 — 종류가 사실상 무한해서 목록화가
+# 불가능함)은 원문 그대로 둔다. NOT_AN_IMAGE 등 analyzer.py가 직접 한글로
+# 채운 메시지는 아래 패턴과 매치되지 않으므로 그대로 통과한다(이중 번역 없음).
+_ERROR_MESSAGE_TRANSLATIONS: list[tuple[re.Pattern[str], object]] = [
+    (
+        re.compile(r"image file is truncated \((\d+) bytes not processed\)"),
+        lambda m: f"파일이 잘렸습니다 ({m.group(1)}바이트가 부족함).",
+    ),
+    (
+        re.compile(r"cannot identify image file"),
+        lambda m: "이미지 파일 형식을 인식할 수 없습니다.",
+    ),
+    (
+        re.compile(r"broken data stream when reading image file"),
+        lambda m: "이미지 데이터가 중간에 깨져 있습니다.",
+    ),
+    (
+        re.compile(r"^Not a JPEG file"),
+        lambda m: "올바른 JPEG 파일이 아닙니다.",
+    ),
+    (
+        # GIF/TIFF의 LZW 압축 해제 도중 파일이 끊긴 경우 — "잘렸습니다"와 같은
+        # 현상이지만 코드 경로가 달라 별도 메시지로 나옴.
+        re.compile(r"^unexpected end of data$"),
+        lambda m: "파일이 잘렸습니다 (압축 해제 도중 데이터가 끊김).",
+    ),
+    (
+        # 헤더에 적힌 이미지 크기와 실제 압축 해제된 데이터량이 안 맞는 경우.
+        re.compile(r"buffer overrun when reading image file"),
+        lambda m: "파일에 적힌 크기 정보와 실제 데이터가 서로 맞지 않습니다.",
+    ),
+    (
+        re.compile(r"^Truncated File Read$"),
+        lambda m: "파일이 잘렸습니다.",
+    ),
+    (
+        re.compile(r"broken PNG file \(chunk ([^)]+)\)"),
+        lambda m: f"PNG 파일의 일부 조각({m.group(1)})이 손상되었습니다.",
+    ),
+    (
+        re.compile(r"Decompressed Data Too Large"),
+        lambda m: "압축을 해제하면 예상보다 훨씬 큰 데이터가 나와 중단했습니다.",
+    ),
+    (
+        re.compile(r"not a TIFF file"),
+        lambda m: "올바른 TIFF 파일이 아닙니다.",
+    ),
+    (
+        re.compile(r"not a BMP file"),
+        lambda m: "올바른 BMP 파일이 아닙니다.",
+    ),
+]
+
+
+def translate_error_message(message: str | None) -> str | None:
+    if not message:
+        return message
+    for pattern, translator in _ERROR_MESSAGE_TRANSLATIONS:
+        match = pattern.search(message)
+        if match:
+            return translator(match)
+    return message
+
 
 def is_low_resolution(info: FileInfo) -> bool:
     if not info.width or not info.height:
         return False
     return info.width * info.height < LOW_RESOLUTION_PIXEL_THRESHOLD
+
+
+# 인화 적합성 — 흔히 쓰는 인화 사이즈(인치)에서, 사진 인화 업계 기준 DPI 대비
+# 실제 픽셀수가 충분한지 계산한다. 방향(가로/세로)은 안 가리고 긴 변끼리,
+# 짧은 변끼리 비교한다. 300DPI=인화소에서 흔히 말하는 "고품질" 기준,
+# 150DPI=조금 떨어져 보면 무난한 "허용 가능" 최소 기준.
+_PRINT_SIZES_INCHES = [
+    ("3x5", 3, 5),
+    ("4x6", 4, 6),
+    ("5x7", 5, 7),
+    ("8x10", 8, 10),
+]
+PRINT_DPI_HIGH = 300
+PRINT_DPI_MIN = 150
+
+
+def print_suitability(info: FileInfo) -> list[dict] | None:
+    if not info.width or not info.height:
+        return None
+    img_long, img_short = max(info.width, info.height), min(info.width, info.height)
+
+    results = []
+    for label, side_a, side_b in _PRINT_SIZES_INCHES:
+        size_long, size_short = max(side_a, side_b), min(side_a, side_b)
+        if img_long >= size_long * PRINT_DPI_HIGH and img_short >= size_short * PRINT_DPI_HIGH:
+            level = "고품질"
+        elif img_long >= size_long * PRINT_DPI_MIN and img_short >= size_short * PRINT_DPI_MIN:
+            level = "허용가능"
+        else:
+            level = "권장안함"
+        results.append({"size": label, "level": level})
+    return results
 
 
 # 아래 세 기준(블러/노출/저대비)은 전부 임계값 기반 휴리스틱 — 오탐(의도적
@@ -179,6 +280,36 @@ def captured_at(info: FileInfo) -> str | None:
     return parsed.strftime("%Y-%m-%d %H:%M")
 
 
+# "의심" 판정 근거 ②: 압축폭탄 안전장치(Pillow MAX_IMAGE_PIXELS)에 걸린 경우.
+# analyzer.py는 이걸 일반 디코딩 실패와 구분하지 않고 "손상"으로 뭉뚱그리는데,
+# 실제로는 파일 자체가 멀쩡할 수 있어(그냥 픽셀 수가 너무 많음) 재확인이 필요한
+# "의심" 쪽이 더 정확하다. analyze_file이 이미 CORRUPTED로 판정한 뒤에만 원인을
+# 다시 확인하므로 정상 파일에서는 추가 비용이 없다.
+def is_decompression_bomb(path: Path) -> bool:
+    try:
+        with Image.open(path) as img:
+            img.load()
+        return False
+    except Image.DecompressionBombError:
+        return True
+    except Exception:
+        return False
+
+
+# "의심" 판정 근거 ③: CMYK 등 비RGB 색공간. 이 앱(Pillow)은 정상적으로 열지만,
+# 일부 사진 뷰어·브라우저는 색이 다르게 보이거나 아예 못 여는 경우가 있어
+# "손상은 아니지만 다른 곳에서 문제가 될 수 있다"는 의미로 의심에 둔다.
+_COLOR_SPACE_WARNING_MODES = {"CMYK", "LAB"}
+
+
+def color_space_warning(path: Path) -> str | None:
+    try:
+        with Image.open(path) as img:
+            return img.mode if img.mode in _COLOR_SPACE_WARNING_MODES else None
+    except Exception:
+        return None
+
+
 def classify_severity(info: FileInfo) -> str:
     if info.status == FileStatus.NOT_AN_IMAGE:
         return "안내"
@@ -187,6 +318,26 @@ def classify_severity(info: FileInfo) -> str:
     if info.status in _SUSPECT_STATUSES:
         return "의심"
     return "정상"
+
+
+# "총평" — 심각도별 핵심 문장 뒤에, 실제로 읽을 수 있었던 파일에 한해 저해상도/
+# 화질/스크린샷 여부를 한 문장 더 붙여 보여준다. readable=False인 파일
+# (손상/미지원/확인불가/사진아님, 압축폭탄으로 재분류된 경우 포함)은 애초에
+# 픽셀을 못 읽었으니 붙일 내용이 없어 제외한다.
+def _extra_notes(low_res: bool, quality_issues: list[str], screenshot: bool) -> list[str]:
+    notes = []
+    if screenshot:
+        notes.append("스크린샷")
+    if low_res:
+        notes.append("저해상도")
+    notes.extend(quality_issues)
+    return notes
+
+
+def _append_notes(base_message: str, notes: list[str]) -> str:
+    if not notes:
+        return base_message
+    return f"{base_message} {', '.join(notes)} 특징도 함께 보여요."
 
 
 def diagnose(path: str | Path) -> dict:
@@ -202,6 +353,21 @@ def diagnose(path: str | Path) -> dict:
 
     message = _STATUS_MESSAGES.get(info.status, info.status.value)
 
+    color_space = None
+    if info.status == FileStatus.CORRUPTED and is_decompression_bomb(path):
+        severity = "의심"
+        message = "이미지 크기가 너무 커서 안전을 위해 열기를 중단했습니다. 파일 자체는 손상되지 않았을 수 있습니다."
+    elif info.status == FileStatus.NORMAL:
+        color_space = color_space_warning(path)
+        if color_space:
+            severity = "의심"
+            message = f"{color_space} 색공간으로 저장되어 있어 일부 사진 뷰어에서 색이 다르게 보이거나 열리지 않을 수 있습니다."
+
+    if info.readable:
+        message = _append_notes(message, _extra_notes(low_res, quality_issues, screenshot))
+
+    print_sizes = print_suitability(info) if info.readable else None
+
     return {
         "filename": info.filename,
         "path": info.path,
@@ -215,10 +381,13 @@ def diagnose(path: str | Path) -> dict:
         "is_low_resolution": low_res,
         "is_probable_screenshot": screenshot,
         "quality_issues": quality_issues,
+        "color_space_warning": color_space,
         "camera": camera_label(info),
         "captured_at": captured_at(info),
         "width": info.width,
         "height": info.height,
         "file_size": info.file_size,
-        "error_message": info.error_message,
+        "error_message": translate_error_message(info.error_message),
+        "print_sizes": print_sizes,
+        "print_quality_warning": bool(quality_issues),
     }
