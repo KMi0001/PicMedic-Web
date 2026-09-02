@@ -17,6 +17,22 @@ WebView2 / macOS WebKit)를 파이썬이 띄우고, 화면은 HTML/CSS/JS로 새
 수동으로 반영해야 한다. 웹버전이 자리 잡으면 git submodule 또는 별도
 pip 패키지로 전환 검토.
 
+## 실행
+
+```
+pip install -r requirements.txt
+python main.py
+```
+
+## 테스트
+
+```
+python tests/test_diagnosis.py
+```
+모두 [PASS]로 통과해야 합니다. pytest 없이 원본 저장소와 동일한 방식(직접
+실행 + PASS/FAIL 출력)으로 작성돼 있음.
+
 ## 상태
 
-아직 화면 없음 — pywebview 최소 프로토타입 착수 전.
+1차 기능 "사진이 이상해요"(단일 파일 진단) 구현 중. 상세 판정 기준은
+[사진이_이상해요_기획.md](사진이_이상해요_기획.md) 참고.
