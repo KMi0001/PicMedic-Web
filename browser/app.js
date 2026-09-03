@@ -1,6 +1,7 @@
 const pickBtn = document.getElementById("pick-btn");
 const retryBtn = document.getElementById("retry-btn");
 const fileInput = document.getElementById("file-input");
+const scenariosSection = document.getElementById("scenarios");
 const pickerSection = document.getElementById("picker");
 const loadingSection = document.getElementById("loading");
 const resultSection = document.getElementById("result");
@@ -22,6 +23,7 @@ function showSection(section) {
   for (const el of [pickerSection, loadingSection, resultSection]) {
     el.classList.toggle("hidden", el !== section);
   }
+  scenariosSection.classList.toggle("hidden", section !== pickerSection);
   privacyNoteEl.classList.toggle("privacy-note--emphasis", section === resultSection);
 }
 
