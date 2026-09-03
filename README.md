@@ -42,7 +42,10 @@ HEIC는 [`libheif-js`](https://github.com/catdad-experiments/libheif-js)
 그대로 씀.
 
 **실행**: 빌드 과정 없음. `browser/index.html`을 정적 파일로 아무 데나
-올리면 끝(GitHub Pages, Netlify, 일반 웹호스팅 등). 로컬에서 확인하려면:
+올리면 끝. `main`에 `browser/` 변경사항이 푸시되면
+[`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml)이
+자동으로 GitHub Pages에 배포한다(저장소 Settings → Pages → Source를
+"GitHub Actions"로 설정해둬야 함). 로컬에서 확인하려면:
 ```
 cd browser
 python -m http.server 8000
@@ -64,5 +67,7 @@ python -m http.server 8000
 ## 상태
 
 1차 기능 "사진이 이상해요"(단일 파일 진단) — 두 갈래 모두 구현. 상세 판정
-기준은 [사진이_이상해요_기획.md](사진이_이상해요_기획.md) 참고(주로 ①
-기준으로 작성됨, ②는 위 차이점 참고).
+기준은 원본 저장소의
+[사진이_이상해요_기획_web.md](../PicMedic/사진이_이상해요_기획_web.md) 참고
+(주로 ① 기준으로 작성됨, ②는 위 차이점 참고). 기획 문서는 2026-09-03에
+`PicMedic` 저장소 쪽으로 옮겨 다른 PRD 문서들과 함께 모아뒀다.
