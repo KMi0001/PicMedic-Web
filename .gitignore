@@ -11,3 +11,4 @@ Thumbs.db
 # 수동 테스트용 샘플 사진 (바이너리라 저장소에 안 넣음)
 sample_photos/
 run.log
+server.log

@@ -1,5 +1,6 @@
 const pickBtn = document.getElementById("pick-btn");
 const retryBtn = document.getElementById("retry-btn");
+const fileInput = document.getElementById("file-input");
 const pickerSection = document.getElementById("picker");
 const loadingSection = document.getElementById("loading");
 const resultSection = document.getElementById("result");
@@ -43,14 +44,14 @@ function addDetailRow(label, value) {
   detailsEl.appendChild(row);
 }
 
-function renderPrintSuitability(diagnosis) {
-  if (!diagnosis.print_sizes) {
+function renderPrintSuitability(result) {
+  if (!result.printSizes) {
     printSuitabilityEl.classList.add("hidden");
     return;
   }
 
   printSuitabilityGridEl.innerHTML = "";
-  for (const { size, level } of diagnosis.print_sizes) {
+  for (const { size, level } of result.printSizes) {
     const cell = document.createElement("div");
     cell.className = "print-size";
 
@@ -66,74 +67,82 @@ function renderPrintSuitability(diagnosis) {
     printSuitabilityGridEl.appendChild(cell);
   }
 
-  printSuitabilityNoteEl.classList.toggle("hidden", !diagnosis.print_quality_warning);
+  printSuitabilityNoteEl.classList.toggle("hidden", result.qualityIssues.length === 0);
   printSuitabilityEl.classList.remove("hidden");
 }
 
-function renderResult(diagnosis) {
-  if (diagnosis.preview) {
-    previewEl.src = diagnosis.preview;
+function renderResult(result) {
+  if (result.preview) {
+    previewEl.src = result.preview;
     previewWrapEl.classList.remove("hidden");
   } else {
     previewEl.src = "";
     previewWrapEl.classList.add("hidden");
   }
 
-  badgeEl.textContent = diagnosis.severity;
-  badgeEl.className = `result__badge result__badge--${diagnosis.severity}`;
+  badgeEl.textContent = result.severity;
+  badgeEl.className = `result__badge result__badge--${result.severity}`;
 
   const screenshotTag = document.getElementById("result-screenshot-tag");
-  screenshotTag.classList.toggle("hidden", !diagnosis.is_probable_screenshot);
+  screenshotTag.classList.toggle("hidden", !result.isProbableScreenshot);
 
-  filenameEl.textContent = diagnosis.filename;
-  messageEl.textContent = diagnosis.message;
+  filenameEl.textContent = result.filename;
+  messageEl.textContent = result.message;
 
   detailsEl.innerHTML = "";
-  addDetailRow("확장자", diagnosis.extension || "-");
-  addDetailRow("실제 형식", diagnosis.detected_format || "알 수 없음");
-  if (diagnosis.width && diagnosis.height) {
-    const resolutionNote = diagnosis.is_low_resolution ? " (낮음)" : "";
-    addDetailRow("해상도", `${diagnosis.width} x ${diagnosis.height}${resolutionNote}`);
+  addDetailRow("확장자", result.extension || "-");
+  addDetailRow("실제 형식", result.detectedFormat || "알 수 없음");
+  if (result.width && result.height) {
+    const resolutionNote = result.isLowResolution ? " (낮음)" : "";
+    addDetailRow("해상도", `${result.width} x ${result.height}${resolutionNote}`);
   }
-  addDetailRow("파일 크기", formatBytes(diagnosis.file_size));
-  if (diagnosis.camera) {
-    addDetailRow("촬영 기기", diagnosis.camera);
-  }
-  if (diagnosis.captured_at) {
-    addDetailRow("촬영 일시", diagnosis.captured_at);
-  }
-  if (diagnosis.is_mismatched) {
+  addDetailRow("파일 크기", formatBytes(result.fileSize));
+  if (result.isMismatched) {
     addDetailRow("확장자 불일치", "불일치");
   }
-  if (diagnosis.color_space_warning) {
-    addDetailRow("색공간", diagnosis.color_space_warning);
+  if (result.qualityIssues && result.qualityIssues.length > 0) {
+    addDetailRow("화질 확인", result.qualityIssues.join(", "));
   }
-  if (diagnosis.quality_issues && diagnosis.quality_issues.length > 0) {
-    addDetailRow("화질 확인", diagnosis.quality_issues.join(", "));
-  }
-  if (diagnosis.error_message && diagnosis.severity !== "안내") {
-    addDetailRow("상세 오류", diagnosis.error_message);
+  if (result.errorMessage && result.severity !== "안내") {
+    addDetailRow("상세 오류", result.errorMessage);
   }
 
-  renderPrintSuitability(diagnosis);
+  renderPrintSuitability(result);
 
   showSection(resultSection);
 }
 
-async function pickAndDiagnose() {
+async function diagnoseFile(file) {
+  if (!file) return;
   showSection(loadingSection);
   try {
-    const diagnosis = await window.pywebview.api.pick_and_diagnose();
-    if (!diagnosis) {
-      showSection(pickerSection);
-      return;
-    }
-    renderResult(diagnosis);
+    const result = await diagnose(file);
+    renderResult(result);
   } catch (err) {
     showSection(pickerSection);
     console.error("진단 실패", err);
+  } finally {
+    fileInput.value = "";
   }
 }
 
-pickBtn.addEventListener("click", pickAndDiagnose);
-retryBtn.addEventListener("click", pickAndDiagnose);
+pickBtn.addEventListener("click", () => fileInput.click());
+retryBtn.addEventListener("click", () => fileInput.click());
+fileInput.addEventListener("change", () => diagnoseFile(fileInput.files[0]));
+
+for (const eventName of ["dragenter", "dragover"]) {
+  pickerSection.addEventListener(eventName, (e) => {
+    e.preventDefault();
+    pickerSection.classList.add("picker--dragover");
+  });
+}
+for (const eventName of ["dragleave", "drop"]) {
+  pickerSection.addEventListener(eventName, (e) => {
+    e.preventDefault();
+    pickerSection.classList.remove("picker--dragover");
+  });
+}
+pickerSection.addEventListener("drop", (e) => {
+  const file = e.dataTransfer.files && e.dataTransfer.files[0];
+  diagnoseFile(file);
+});
