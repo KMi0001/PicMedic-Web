@@ -62,6 +62,52 @@ body {
   line-height: 1.6;
 }
 
+.scenarios {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 0 0 24px;
+}
+
+.scenario {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 8px;
+  text-align: center;
+}
+
+.scenario__icon {
+  display: block;
+  font-size: 22px;
+  margin-bottom: 6px;
+}
+
+.scenario__text {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  line-height: 1.35;
+}
+
+.app__footer {
+  margin-top: 24px;
+  padding-top: 40px;
+  text-align: center;
+}
+
+.app__footer p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.app__footer strong {
+  color: var(--text);
+}
+
 .privacy-note {
   position: fixed;
   left: 50%;
@@ -234,6 +280,50 @@ body {
   color: var(--text-secondary);
   font-size: 14px;
   line-height: 1.5;
+}
+
+.cert {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 20px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background-color: var(--bg);
+}
+
+.cert__icon {
+  font-size: 26px;
+  line-height: 1;
+}
+
+.cert__label {
+  margin: 0;
+  font-weight: 800;
+  font-size: 15px;
+  color: var(--text);
+}
+
+.cert__hint {
+  margin: 2px 0 0;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.cert--우수 {
+  border-color: var(--primary);
+  background-color: #E3F7F4;
+}
+
+.cert--양호 {
+  border-color: var(--success);
+  background-color: #EAF7EE;
+}
+
+.cert--주의 {
+  border-color: var(--warning);
+  background-color: #FBF2E1;
 }
 
 .result__details {

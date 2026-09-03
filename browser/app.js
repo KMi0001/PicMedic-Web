@@ -14,6 +14,9 @@ const printSuitabilityGridEl = document.getElementById("print-suitability-grid")
 const printSuitabilityNoteEl = document.getElementById("print-suitability-note");
 const previewWrapEl = document.getElementById("result-preview-wrap");
 const previewEl = document.getElementById("result-preview");
+const certEl = document.getElementById("cert");
+const certIconEl = document.getElementById("cert-icon");
+const certLabelEl = document.getElementById("cert-label");
 
 function showSection(section) {
   for (const el of [pickerSection, loadingSection, resultSection]) {
@@ -71,6 +74,17 @@ function renderPrintSuitability(result) {
   printSuitabilityEl.classList.remove("hidden");
 }
 
+function renderCertification(result) {
+  if (!result.certification) {
+    certEl.classList.add("hidden");
+    return;
+  }
+  const { tier, label, icon } = result.certification;
+  certEl.className = `cert cert--${tier}`;
+  certIconEl.textContent = icon;
+  certLabelEl.textContent = label;
+}
+
 function renderResult(result) {
   if (result.preview) {
     previewEl.src = result.preview;
@@ -88,6 +102,8 @@ function renderResult(result) {
 
   filenameEl.textContent = result.filename;
   messageEl.textContent = result.message;
+
+  renderCertification(result);
 
   detailsEl.innerHTML = "";
   addDetailRow("확장자", result.extension || "-");

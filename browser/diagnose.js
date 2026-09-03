@@ -377,6 +377,34 @@ function printSuitability(width, height) {
 }
 
 // ---------------------------------------------------------------------------
+// 5-1. 화질 인증 배지 (core/diagnosis.py::certify_quality 이식)
+// ---------------------------------------------------------------------------
+
+const CERT_TIERS = {
+  우수: { label: "인화 적합", icon: "🏅" },
+  양호: { label: "양호", icon: "✅" },
+  주의: { label: "주의 필요", icon: "⚠️" },
+};
+
+function certifyQuality(readable, screenshot, qualityIssues, lowRes, printSizes) {
+  if (!readable || screenshot || !printSizes) return null;
+
+  const standard = printSizes.find((s) => s.size === "4x6") || null;
+  const hasIssues = qualityIssues.length > 0;
+
+  let tier;
+  if (hasIssues || lowRes || !standard || standard.level === "권장안함") {
+    tier = "주의";
+  } else if (standard.level === "고품질") {
+    tier = "우수";
+  } else {
+    tier = "양호";
+  }
+
+  return { tier, ...CERT_TIERS[tier] };
+}
+
+// ---------------------------------------------------------------------------
 // 6. 총평 문구 조립 (core/diagnosis.py::_extra_notes / _append_notes 이식)
 // ---------------------------------------------------------------------------
 
@@ -420,6 +448,7 @@ async function diagnose(file) {
         isProbableScreenshot: false,
         qualityIssues: [],
         printSizes: null,
+        certification: null,
         preview: null,
         width: null,
         height: null,
@@ -445,6 +474,7 @@ async function diagnose(file) {
       isProbableScreenshot: false,
       qualityIssues: [],
       printSizes: null,
+      certification: null,
       preview: null,
       width: null,
       height: null,
@@ -469,6 +499,7 @@ async function diagnose(file) {
       isProbableScreenshot: false,
       qualityIssues: [],
       printSizes: null,
+      certification: null,
       preview: null,
       width: null,
       height: null,
@@ -489,6 +520,8 @@ async function diagnose(file) {
   message = appendNotes(message, extraNotes(lowRes, qualityIssues, screenshot));
 
   const previewCanvas = drawScaled(canvas, 640);
+  const printSizes = printSuitability(width, height);
+  const certification = certifyQuality(true, screenshot, qualityIssues, lowRes, printSizes);
 
   return {
     filename,
@@ -501,7 +534,8 @@ async function diagnose(file) {
     isLowResolution: lowRes,
     isProbableScreenshot: screenshot,
     qualityIssues,
-    printSizes: printSuitability(width, height),
+    printSizes,
+    certification,
     preview: previewCanvas.toDataURL("image/jpeg", 0.82),
     width,
     height,

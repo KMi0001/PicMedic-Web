@@ -358,6 +358,47 @@ def color_space_warning(path: Path) -> str | None:
         return None
 
 
+# 화질 인증 배지 — 블러/노출/대비/노이즈 4종 + 표준 인화 사이즈(4x6") 기준을
+# 3단계로 요약한 것. severity(손상/의심/정상/안내)는 "파일이 열리는지"만 보고
+# 이건 "인화해도 괜찮은 화질인지"만 보는 별개 축이라 서로 안 섞는다.
+# 4x6"을 기준 사이즈로 고른 이유: 사진관에서 가장 흔히 쓰는 표준 인화 사이즈라
+# "인화 적합" 배지가 구체적인 근거를 갖게 하기 위함(임의로 아무 사이즈나
+# 고르지 않음).
+_CERT_TIERS = {
+    "우수": {"label": "인화 적합", "icon": "🏅"},
+    "양호": {"label": "양호", "icon": "✅"},
+    "주의": {"label": "주의 필요", "icon": "⚠️"},
+}
+
+
+def certify_quality(
+    severity: str,
+    screenshot: bool,
+    quality_issues: list[str],
+    low_res: bool,
+    print_sizes: list[dict] | None,
+) -> dict | None:
+    """읽을 수 없는 파일이나 스크린샷은 애초에 화질 검사 대상이 아니므로
+    None(배지 자체를 안 보여줌)을 돌려준다. readable이 아니라 severity로
+    거르는 이유: 부분손상(PARTIAL_CORRUPTION) 파일은 일부 픽셀이 디코딩돼
+    readable=True이지만, 이미 "손상" 배지가 붙은 파일에 "인화 적합" 인증까지
+    같이 뜨면 모순돼 보인다 — severity가 "손상"이면 무조건 제외한다."""
+    if severity == "손상" or screenshot or not print_sizes:
+        return None
+
+    standard = next((s for s in print_sizes if s["size"] == "4x6"), None)
+    has_issues = bool(quality_issues)
+
+    if has_issues or low_res or standard is None or standard["level"] == "권장안함":
+        tier = "주의"
+    elif standard["level"] == "고품질":
+        tier = "우수"
+    else:
+        tier = "양호"
+
+    return {"tier": tier, **_CERT_TIERS[tier]}
+
+
 def classify_severity(info: FileInfo) -> str:
     if info.status == FileStatus.NOT_AN_IMAGE:
         return "안내"
@@ -416,6 +457,7 @@ def diagnose(path: str | Path) -> dict:
 
     print_sizes = print_suitability(info) if info.readable else None
     preview = build_preview(path) if info.readable else None
+    certification = certify_quality(severity, screenshot, quality_issues, low_res, print_sizes)
 
     return {
         "preview": preview,
@@ -440,4 +482,5 @@ def diagnose(path: str | Path) -> dict:
         "error_message": translate_error_message(info.error_message),
         "print_sizes": print_sizes,
         "print_quality_warning": bool(quality_issues),
+        "certification": certification,
     }

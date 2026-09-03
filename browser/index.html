@@ -14,6 +14,21 @@
       <p class="app__description">형식·손상·해상도까지 한 번에 진단해드려요.</p>
     </header>
 
+    <section class="scenarios">
+      <div class="scenario">
+        <span class="scenario__icon" aria-hidden="true">🩺</span>
+        <p class="scenario__text">사진이 안 열려요</p>
+      </div>
+      <div class="scenario">
+        <span class="scenario__icon" aria-hidden="true">🔍</span>
+        <p class="scenario__text">흐릿하거나 이상하게 나왔어요</p>
+      </div>
+      <div class="scenario">
+        <span class="scenario__icon" aria-hidden="true">🖼️</span>
+        <p class="scenario__text">인화 맡기기 전에 확인하고 싶어요</p>
+      </div>
+    </section>
+
     <section id="picker" class="picker">
       <button id="pick-btn" class="button button--primary">사진 선택</button>
       <p class="picker__hint">카메라 사진부터 캡처본까지, 사진이라면 뭐든요. 여기로 끌어다 놓아도 돼요.</p>
@@ -42,6 +57,14 @@
       <h2 id="result-filename" class="result__filename"></h2>
       <p id="result-message" class="result__message"></p>
 
+      <div class="cert hidden" id="cert">
+        <span class="cert__icon" id="cert-icon"></span>
+        <div class="cert__text">
+          <p class="cert__label" id="cert-label"></p>
+          <p class="cert__hint">화질 · 표준 인화 사이즈(4x6") 기준 추정이에요</p>
+        </div>
+      </div>
+
       <dl class="result__details" id="result-details"></dl>
 
       <div class="print-suitability hidden" id="print-suitability">
@@ -54,6 +77,10 @@
 
       <button id="retry-btn" class="button button--secondary">다른 사진 진단하기</button>
     </section>
+
+    <footer class="app__footer">
+      <p>진단은 여기까지 무료예요. 손상된 사진을 직접 복구하는 <strong>PicMedic 데스크톱 버전</strong>도 준비하고 있어요.</p>
+    </footer>
   </main>
 
   <script src="diagnose.js"></script>

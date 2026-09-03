@@ -207,6 +207,37 @@ def run():
         r_not_image = diagnosis.diagnose(not_image_path)
         check("이미지 아닌 파일은 print_sizes가 None", r_not_image["print_sizes"] is None)
 
+        # 10-1) 품질 인증 배지 — 실제 이미지로는 화질 추정 자체(블러/노이즈 등)가
+        # 합성 이미지에서 오탐되기 쉬워(예: 단색 이미지는 edge_variance가 0이라
+        # 오히려 "블러"로 잡힘), 등급 매핑 로직만 입력을 직접 통제해 독립적으로
+        # 검증한다. 화질 추정 정확도 자체는 위 7~7-2번에서 이미 검증됨.
+        _sizes = lambda level: [{"size": s, "level": level} for s in ("3x5", "4x6", "5x7", "8x10")]
+
+        cert = diagnosis.certify_quality("정상", False, [], False, _sizes("고품질"))
+        check("화질 이슈 없음+4x6 고품질 → 인증 '우수'(인화 적합)", cert is not None and cert["tier"] == "우수", f"실제={cert}")
+
+        cert = diagnosis.certify_quality("정상", False, [], False, _sizes("허용가능"))
+        check("화질 이슈 없음+4x6 허용가능 → 인증 '양호'", cert is not None and cert["tier"] == "양호", f"실제={cert}")
+
+        cert = diagnosis.certify_quality("정상", False, ["블러 추정"], False, _sizes("고품질"))
+        check("화질 이슈 있으면 해상도 좋아도 인증 '주의'", cert is not None and cert["tier"] == "주의", f"실제={cert}")
+
+        cert = diagnosis.certify_quality("정상", False, [], True, _sizes("고품질"))
+        check("저해상도 플래그면 인증 '주의'", cert is not None and cert["tier"] == "주의", f"실제={cert}")
+
+        cert = diagnosis.certify_quality("정상", False, [], False, _sizes("권장안함"))
+        check("4x6 권장안함이면 인증 '주의'", cert is not None and cert["tier"] == "주의", f"실제={cert}")
+
+        check("의심(확장자 불일치 등)이어도 화질 이슈 없으면 인증됨", diagnosis.certify_quality("의심", False, [], False, _sizes("고품질")) is not None)
+        check("손상(부분손상 포함)이면 readable이어도 인증 없음(None)", diagnosis.certify_quality("손상", False, [], False, _sizes("고품질")) is None)
+        check("스크린샷은 인증 없음(None)", diagnosis.certify_quality("정상", True, [], False, _sizes("고품질")) is None)
+        check("print_sizes 없으면 인증 없음(None)", diagnosis.certify_quality("정상", False, [], False, None) is None)
+
+        # 실제 diagnose() 파이프라인 결과에서도 손상/읽기불가/스크린샷은 인증이 안 붙는지 확인
+        check("읽을 수 없는 파일은 인증 자체가 없음(None)", r_not_image["certification"] is None)
+        r_screenshot = diagnosis.diagnose(iphone_shot_path)
+        check("스크린샷은 인증 대상이 아님(None)", r_screenshot["certification"] is None)
+
         # 11) 미리보기 — 정상/부분손상 파일은 data URI, 읽을 수 없는 파일은 None
         check(
             "정상 파일은 미리보기 data URI가 있음",
@@ -217,6 +248,11 @@ def run():
         check(
             "부분손상 파일도 깨진 부분 그대로 미리보기가 있음",
             r_corrupted_preview["preview"] is not None,
+        )
+        check(
+            "부분손상 파일은 미리보기가 있어도(readable) 인증은 없음(severity=손상)",
+            r_corrupted_preview["certification"] is None,
+            f"severity={r_corrupted_preview['severity']}",
         )
         check("이미지 아닌 파일은 미리보기가 없음(None)", r_not_image["preview"] is None)
 
