@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>PicMedic</title>
+<link rel="stylesheet" href="style.css" />
+<script src="https://cdn.jsdelivr.net/npm/libheif-js@1.19.8/libheif-wasm/libheif-bundle.js"></script>
+</head>
+<body>
+  <main class="app">
+    <header class="app__header">
+      <h1>PicMedic</h1>
+      <p class="app__tagline">안 열리거나, 흐릿하거나, 이상하게 찍힌 사진<br />이유를 알려드려요.</p>
+      <p class="app__description">형식·손상·해상도까지 한 번에 진단해드려요.</p>
+    </header>
+
+    <section id="scenarios" class="scenarios">
+      <div class="scenario">
+        <span class="scenario__icon" aria-hidden="true">🩺</span>
+        <p class="scenario__text">사진이 안 열려요</p>
+      </div>
+      <div class="scenario">
+        <span class="scenario__icon" aria-hidden="true">🔍</span>
+        <p class="scenario__text">흐릿하거나 이상하게 나왔어요</p>
+      </div>
+      <div class="scenario">
+        <span class="scenario__icon" aria-hidden="true">🖼️</span>
+        <p class="scenario__text">인화 맡기기 전에 확인하고 싶어요</p>
+      </div>
+    </section>
+
+    <section id="picker" class="picker">
+      <button id="pick-btn" class="button button--primary">사진 선택</button>
+      <p class="picker__hint">카메라 사진부터 캡처본까지, 사진이라면 뭐든요. 여기로 끌어다 놓아도 돼요.</p>
+      <input type="file" id="file-input" accept="image/*,.heic,.heif" hidden />
+    </section>
+
+    <p class="privacy-note">
+      <svg class="privacy-note__icon" viewBox="0 0 16 16" aria-hidden="true">
+        <circle class="privacy-note__icon-bg" cx="8" cy="8" r="8" />
+        <path class="privacy-note__icon-check" d="M4.5 8.3l2.3 2.3L11.5 5.8" />
+      </svg>
+      <span>사진은 서버로 전송되지 않고, 이 브라우저 탭 안에서만 분석됩니다.</span>
+    </p>
+
+    <section id="loading" class="loading hidden">
+      <p>진단 중...</p>
+    </section>
+
+    <section id="result" class="result hidden">
+      <div class="result__preview-wrap hidden" id="result-preview-wrap">
+        <img class="result__preview" id="result-preview" alt="선택한 사진 미리보기" />
+      </div>
+
+      <div class="result__badge" id="result-badge"></div>
+      <span id="result-screenshot-tag" class="result__tag hidden">스크린샷</span>
+      <h2 id="result-filename" class="result__filename"></h2>
+      <p id="result-message" class="result__message"></p>
+
+      <div class="cert hidden" id="cert">
+        <span class="cert__icon" id="cert-icon"></span>
+        <div class="cert__text">
+          <p class="cert__label" id="cert-label"></p>
+          <p class="cert__hint">화질 · 표준 인화 사이즈(4x6") 기준 추정이에요</p>
+        </div>
+      </div>
+
+      <dl class="result__details" id="result-details"></dl>
+
+      <div class="print-suitability hidden" id="print-suitability">
+        <h3 class="print-suitability__title">인화 적합성</h3>
+        <div class="print-suitability__grid" id="print-suitability-grid"></div>
+        <p class="print-suitability__note hidden" id="print-suitability-note">
+          화질 이슈가 있어 인화하면 더 도드라져 보일 수 있어요.
+        </p>
+      </div>
+
+      <button id="retry-btn" class="button button--secondary">다른 사진 진단하기</button>
+    </section>
+
+    <footer class="app__footer">
+      <p>진단은 여기까지 무료예요. 손상된 사진을 직접 복구하는 <strong>PicMedic 데스크톱 버전</strong>도 준비하고 있어요.</p>
+    </footer>
+  </main>
+
+  <script src="diagnose.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

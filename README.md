@@ -41,8 +41,13 @@ HEIC는 [`libheif-js`](https://github.com/catdad-experiments/libheif-js)
 형식(JPEG/PNG/GIF/BMP/WEBP)은 브라우저 `<img>` 태그가 원래 지원하는 걸
 그대로 씀.
 
-**실행**: 빌드 과정 없음. `browser/index.html`을 정적 파일로 아무 데나
-올리면 끝. `main`에 `browser/` 변경사항이 푸시되면
+**페이지 구성**: `browser/index.html`(랜딩 페이지, 미니멀 화이트 톤 —
+라이트/다크 토글 + 한국어/English 토글 포함)과 `browser/diagnose.html`(실제
+진단 도구, 기존 `index.html` 내용 그대로 옮김). 랜딩의 "무료로 진단하기"
+CTA가 `diagnose.html`로 연결된다.
+
+**실행**: 빌드 과정 없음. `browser/` 전체를 정적 파일로 아무 데나
+올리면 끝(`index.html`이 진입점). `main`에 `browser/` 변경사항이 푸시되면
 [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml)이
 자동으로 GitHub Pages에 배포한다(저장소 Settings → Pages → Source를
 "GitHub Actions"로 설정해둬야 함). 로컬에서 확인하려면:
