@@ -13,6 +13,10 @@
   --accent:#1F9E8C;
   --accent-soft:#EAF6F3;
   --hairline:#E7E9EC;
+  --success:#2FAF66;
+  --warning:#D9A441;
+  --danger:#DA5A5A;
+  --neutral-badge:#8FAFA0;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
@@ -22,6 +26,10 @@
     --accent:#39C9AE;
     --accent-soft:#123029;
     --hairline:#232826;
+    --success:#3FCB7B;
+    --warning:#E6B458;
+    --danger:#E37373;
+    --neutral-badge:#6B7A75;
   }
 }
 :root[data-theme="dark"]{
@@ -31,6 +39,10 @@
   --accent:#39C9AE;
   --accent-soft:#123029;
   --hairline:#232826;
+  --success:#3FCB7B;
+  --warning:#E6B458;
+  --danger:#E37373;
+  --neutral-badge:#6B7A75;
 }
 
 *{box-sizing:border-box;}
@@ -115,10 +127,21 @@ h1{
 
 /* scenarios / badge legend (reuse the qa row pattern) */
 .scenarios{border-top:1px solid var(--hairline);padding:44px 0;}
-.scenarios h2{font-size:13px;letter-spacing:.06em;color:var(--muted);margin:0 0 24px;}
 .badges{border-top:1px solid var(--hairline);padding:44px 0;}
-.badges h2{font-size:13px;letter-spacing:.06em;color:var(--muted);margin:0 0 24px;}
+.scenarios h2, .badges h2, .faq h2{
+  font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--text);margin:0 0 24px;
+}
 .qa .q .tag{margin-right:8px;vertical-align:1px;}
+.status-badge{
+  display:inline-block;margin-right:10px;padding:3px 11px;border-radius:20px;
+  font-size:12px;font-weight:700;color:#fff;vertical-align:1px;
+}
+.status-badge--정상{background:var(--success);}
+.status-badge--의심{background:var(--warning);}
+.status-badge--손상{background:var(--danger);}
+.status-badge--안내{background:var(--neutral-badge);}
+.badge-icon{margin-right:8px;font-size:15px;vertical-align:-1px;}
+.badges .q{font-weight:700;}
 
 /* statement band */
 .statement{background:var(--accent-soft);}
@@ -136,7 +159,6 @@ h1{
 
 /* faq */
 .faq{border-top:1px solid var(--hairline);padding:44px 0;}
-.faq h2{font-size:13px;letter-spacing:.06em;color:var(--muted);margin:0 0 24px;}
 .qa{border-top:1px solid var(--hairline);padding:20px 0;}
 .qa:first-of-type{border-top:none;}
 .qa .q{font-size:15.5px;font-weight:600;margin:0 0 8px;}
@@ -262,27 +284,27 @@ footer h2{font-size:clamp(22px,3.4vw,28px);font-weight:700;margin:0 0 18px;text-
   <div class="shell">
     <h2 class="mono" data-en="WHAT THE BADGES MEAN">배지가 뭘 뜻하나요</h2>
     <div class="qa">
-      <p class="q"><span class="tag" data-en="STATUS">상태</span><span data-en="Normal">정상</span></p>
+      <p class="q"><span class="status-badge status-badge--정상" data-en="Normal">정상</span></p>
       <p class="a" data-en="Opens without any issues.">문제없이 열리는 사진이에요.</p>
     </div>
     <div class="qa">
-      <p class="q"><span class="tag" data-en="STATUS">상태</span><span data-en="Suspect">의심</span></p>
+      <p class="q"><span class="status-badge status-badge--의심" data-en="Suspect">의심</span></p>
       <p class="a" data-en="It opens, but something needs a second look — like a mismatched extension.">열리긴 하지만 확장자 불일치 등 확인이 필요한 상태예요.</p>
     </div>
     <div class="qa">
-      <p class="q"><span class="tag" data-en="STATUS">상태</span><span data-en="Damaged">손상</span></p>
+      <p class="q"><span class="status-badge status-badge--손상" data-en="Damaged">손상</span></p>
       <p class="a" data-en="The file is broken — it won't open, or only part of it shows.">파일이 깨져서 못 열거나 일부만 보여요.</p>
     </div>
     <div class="qa">
-      <p class="q"><span class="tag" data-en="PRINT QUALITY">인화 품질</span><span data-en="Print-ready">인화 적합</span></p>
+      <p class="q"><span class="badge-icon" aria-hidden="true">🏅</span><span data-en="Print-ready">인화 적합</span></p>
       <p class="a" data-en="Quality and resolution both meet the standard print (4x6″) bar.">화질·해상도 모두 표준 인화(4x6") 기준을 충족해요.</p>
     </div>
     <div class="qa">
-      <p class="q"><span class="tag" data-en="PRINT QUALITY">인화 품질</span><span data-en="Good">양호</span></p>
+      <p class="q"><span class="badge-icon" aria-hidden="true">✅</span><span data-en="Good">양호</span></p>
       <p class="a" data-en="Quality is fine, but the print size options are a bit limited.">화질엔 문제없지만 인화 가능한 사이즈는 다소 제한적이에요.</p>
     </div>
     <div class="qa">
-      <p class="q"><span class="tag" data-en="PRINT QUALITY">인화 품질</span><span data-en="Needs attention">주의 필요</span></p>
+      <p class="q"><span class="badge-icon" aria-hidden="true">⚠️</span><span data-en="Needs attention">주의 필요</span></p>
       <p class="a" data-en="Blur, exposure, or low resolution was detected.">블러·노출·저해상도 등 화질 이슈가 감지됐어요.</p>
     </div>
   </div>
