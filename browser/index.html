@@ -64,7 +64,8 @@ nav.top .row{
   display:flex;align-items:center;justify-content:space-between;
   padding:20px 0;
 }
-.logo{font-weight:700;font-size:20px;letter-spacing:-.01em;text-decoration:none;color:var(--text);}
+.logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:20px;letter-spacing:-.01em;text-decoration:none;color:var(--text);}
+.logo__icon{width:26px;height:26px;border-radius:7px;display:block;}
 .navlinks{display:flex;gap:28px;align-items:center;}
 .navlinks a{font-size:13.5px;color:var(--muted);text-decoration:none;}
 .navlinks a:hover, .navlinks a:focus-visible{color:var(--text);}
@@ -200,7 +201,7 @@ h1{
 
 <nav class="top">
   <div class="shell row">
-    <a class="logo" href="index.html">PicMedic</a>
+    <a class="logo" href="index.html"><img src="favicon.png" alt="" class="logo__icon" />PicMedic</a>
     <div class="navlinks">
       <a href="index.html" data-en="Home">홈</a>
       <a href="faq.html">FAQ</a>

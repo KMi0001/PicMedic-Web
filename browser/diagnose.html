@@ -28,7 +28,8 @@
   }
   .site-nav{background:var(--nav-bg);border-bottom:1px solid var(--nav-hairline);}
   .site-nav .row{max-width:720px;margin:0 auto;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;}
-  .site-nav .logo{font-family:'IBM Plex Sans KR','Malgun Gothic',sans-serif;font-weight:700;font-size:20px;color:var(--nav-text);text-decoration:none;letter-spacing:-.01em;}
+  .site-nav .logo{display:flex;align-items:center;gap:8px;font-family:'IBM Plex Sans KR','Malgun Gothic',sans-serif;font-weight:700;font-size:20px;color:var(--nav-text);text-decoration:none;letter-spacing:-.01em;}
+  .site-nav .logo__icon{width:26px;height:26px;border-radius:7px;display:block;}
   .site-nav .navlinks{display:flex;gap:28px;align-items:center;}
   .site-nav a.navlink{font-family:'IBM Plex Sans KR','Malgun Gothic',sans-serif;font-size:13.5px;color:var(--nav-muted);text-decoration:none;}
   .site-nav a.navlink:hover{color:var(--nav-text);}
@@ -74,7 +75,7 @@
 <body>
   <nav class="site-nav">
     <div class="row">
-      <a class="logo" href="index.html">PicMedic</a>
+      <a class="logo" href="index.html"><img src="favicon.png" alt="" class="logo__icon" />PicMedic</a>
       <div class="navlinks">
         <a class="navlink" href="index.html">홈</a>
         <a class="navlink" href="faq.html">FAQ</a>
