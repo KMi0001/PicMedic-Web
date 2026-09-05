@@ -29,7 +29,7 @@ body {
 }
 
 .app {
-  max-width: 480px;
+  max-width: 640px;
   margin: 0 auto;
   padding: 32px 24px 64px;
 }
@@ -48,11 +48,13 @@ body {
 }
 
 .app__tagline {
-  margin: 0 0 10px;
+  margin: 0 auto 10px;
+  max-width: 30em;
   color: var(--text);
   font-size: 17px;
   font-weight: 600;
   line-height: 1.4;
+  text-wrap: balance;
 }
 
 .app__description {
