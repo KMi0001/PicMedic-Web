@@ -52,14 +52,15 @@ body{
   background:var(--bg);color:var(--text);
   font-family:'IBM Plex Sans KR','Malgun Gothic',sans-serif;
   -webkit-font-smoothing:antialiased;
+  padding-top:72px;
 }
 a{color:inherit;}
 .mono{font-family:'IBM Plex Mono',monospace;}
 .shell{max-width:720px;margin:0 auto;padding:0 24px;}
 .full{width:100%;}
 
-/* nav */
-nav.top{border-bottom:1px solid var(--hairline);}
+/* nav — 화면 상단에 항상 고정, 모든 페이지 동일 */
+nav.top{position:fixed;top:0;left:0;right:0;z-index:30;background:var(--bg);border-bottom:1px solid var(--hairline);}
 nav.top .row{
   display:flex;align-items:center;justify-content:space-between;
   padding:20px 0;
@@ -164,7 +165,7 @@ h1{
 .qa{border-top:1px solid var(--hairline);padding:20px 0;}
 .qa:first-of-type{border-top:none;}
 .qa .q{font-size:15.5px;font-weight:600;margin:0 0 8px;}
-.qa .a{font-size:14px;line-height:1.7;color:var(--muted);margin:0;max-width:52ch;}
+.qa .a{font-size:14px;line-height:1.7;color:var(--muted);margin:0;}
 
 /* closing CTA — 페이지 본문의 마지막 섹션(고정 푸터와는 별개) */
 .closing{border-top:1px solid var(--hairline);padding:48px 0;padding-bottom:calc(48px + 72px);}
