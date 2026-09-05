@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PicMedic FAQ</title>
+<meta name="description" content="PicMedic 사진 진단 서비스에 대해 자주 묻는 질문 — 서버 업로드 여부, 지원 형식, 데스크톱 버전과의 차이를 안내합니다." />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#FFFFFF;
+  --text:#14181C;
+  --muted:#6B7280;
+  --accent:#1F9E8C;
+  --accent-soft:#EAF6F3;
+  --hairline:#E7E9EC;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1113;
+    --text:#F1F3F2;
+    --muted:#8B9490;
+    --accent:#39C9AE;
+    --accent-soft:#123029;
+    --hairline:#232826;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1113;
+  --text:#F1F3F2;
+  --muted:#8B9490;
+  --accent:#39C9AE;
+  --accent-soft:#123029;
+  --hairline:#232826;
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:'IBM Plex Sans KR','Malgun Gothic',sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;}
+.mono{font-family:'IBM Plex Mono',monospace;}
+.shell{max-width:720px;margin:0 auto;padding:0 24px;}
+
+/* nav */
+nav.top{border-bottom:1px solid var(--hairline);}
+nav.top .row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 0;
+}
+.logo{font-weight:700;font-size:16px;letter-spacing:-.01em;}
+.navlinks{display:flex;gap:28px;align-items:center;}
+.navlinks a{font-size:13.5px;color:var(--muted);text-decoration:none;}
+.navlinks a:hover, .navlinks a:focus-visible{color:var(--text);}
+.navcta{font-size:13.5px;font-weight:600;color:var(--accent);text-decoration:none;}
+.navcta:hover, .navcta:focus-visible{text-decoration:underline;}
+
+.theme-toggle{
+  background:none;border:none;padding:0;margin:0;cursor:pointer;
+  display:flex;align-items:center;line-height:0;
+}
+.theme-toggle .track{
+  width:36px;height:20px;border-radius:10px;background:var(--hairline);
+  position:relative;transition:background .2s;
+}
+.theme-toggle .knob{
+  position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;
+  background:#FFFFFF;box-shadow:0 1px 2px rgba(0,0,0,.3);transition:transform .2s;
+}
+.theme-toggle[aria-pressed="true"] .track{background:var(--accent);}
+.theme-toggle[aria-pressed="true"] .knob{transform:translateX(16px);}
+@media (prefers-reduced-motion: reduce){
+  .theme-toggle .track, .theme-toggle .knob{transition:none;}
+}
+
+/* page header */
+.pagehead{padding:48px 0 8px;}
+.eyebrow{font-size:11.5px;letter-spacing:.1em;color:var(--muted);margin:0 0 16px;}
+.pagehead h1{
+  font-size:clamp(28px,4.4vw,38px);line-height:1.28;font-weight:700;margin:0;
+  text-wrap:balance;
+}
+
+/* faq */
+.faq{padding:32px 0 44px;}
+.qa{border-top:1px solid var(--hairline);padding:20px 0;}
+.qa:first-of-type{border-top:none;}
+.qa .q{font-size:15.5px;font-weight:600;margin:0 0 8px;}
+.qa .a{font-size:14px;line-height:1.7;color:var(--muted);margin:0;max-width:52ch;}
+
+.backlink{border-top:1px solid var(--hairline);padding:32px 0;}
+.backlink a{font-size:14px;font-weight:600;color:var(--accent);text-decoration:underline;text-underline-offset:4px;}
+
+/* footer */
+footer{border-top:1px solid var(--hairline);padding:32px 0;}
+.footmeta{
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
+  font-size:12.5px;color:var(--muted);
+}
+.footmeta a{color:var(--muted);text-decoration:none;}
+.footmeta a:hover, .footmeta a:focus-visible{color:var(--text);}
+.lang-toggle{
+  background:none;border:none;padding:0;font:inherit;font-size:12.5px;color:var(--muted);
+  text-decoration:underline;text-underline-offset:3px;cursor:pointer;
+}
+.lang-toggle:hover, .lang-toggle:focus-visible{color:var(--text);}
+</style>
+
+<script>
+(function(){
+  try{
+    var stored = localStorage.getItem('picmedic-theme');
+    if (stored === 'light' || stored === 'dark') {
+      document.documentElement.setAttribute('data-theme', stored);
+    }
+  }catch(e){}
+})();
+</script>
+
+<nav class="top">
+  <div class="shell row">
+    <a class="logo" href="index.html" data-en="PicMedic">PicMedic</a>
+    <div class="navlinks">
+      <a href="index.html#steps" data-en="How it works">기능</a>
+      <a href="faq.html">FAQ</a>
+      <a href="diagnose.html" class="navcta" data-en="Diagnose for free">무료로 진단하기</a>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="다크 모드 전환" aria-pressed="false">
+        <span class="track"><span class="knob"></span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<header class="pagehead">
+  <div class="shell">
+    <span class="eyebrow mono" data-en="PICMEDIC — FAQ">PICMEDIC — 자주 묻는 질문</span>
+    <h1 data-en="Frequently asked questions">자주 묻는 질문</h1>
+  </div>
+</header>
+
+<section class="faq">
+  <div class="shell">
+    <div class="qa">
+      <p class="q" data-en="Are my photos uploaded to a server?">제 사진이 서버에 업로드되나요?</p>
+      <p class="a" data-en="No. Diagnosis on this page runs entirely inside your browser and is never sent anywhere.">아니요. 이 페이지의 진단은 방문자의 브라우저 안에서만 처리되고, 어디로도 전송되지 않아요.</p>
+    </div>
+    <div class="qa">
+      <p class="q" data-en="Can I repair my photo here too?">복구도 여기서 할 수 있나요?</p>
+      <p class="a" data-en="Not yet — this page only offers free diagnosis for now. Repairing the file is being prepared for the PicMedic desktop version.">아니요, 지금은 진단까지만 무료로 제공돼요. 사진을 직접 복구하는 기능은 PicMedic 데스크톱 버전에서 준비 중이에요.</p>
+    </div>
+    <div class="qa">
+      <p class="q" data-en="Which file types are supported?">어떤 파일까지 지원하나요?</p>
+      <p class="a" data-en="HEIC is supported, along with JPEG, PNG, GIF, BMP and WEBP. TIFF isn't supported yet.">HEIC를 포함해 JPEG·PNG·GIF·BMP·WEBP 형식을 지원해요. TIFF는 아직 지원하지 않아요.</p>
+    </div>
+    <div class="qa">
+      <p class="q" data-en="Are my photos ever kept or looked at by anyone?">제 사진을 누가 보관하거나 볼 수 있나요?</p>
+      <p class="a" data-en="No. Nothing is uploaded, so there's nothing stored on our side to see.">아니요. 어디에도 업로드되지 않아서 저희 쪽에 남거나 볼 수 있는 사진 자체가 없어요.</p>
+    </div>
+  </div>
+</section>
+
+<div class="backlink">
+  <div class="shell">
+    <a href="index.html" data-en="← Back to home">← 홈으로 돌아가기</a>
+  </div>
+</div>
+
+<footer>
+  <div class="shell footmeta">
+    <span>PicMedic</span>
+    <span data-en='<a href="#">Privacy Policy</a> &middot; <a href="#">Contact</a>'><a href="#">개인정보처리방침</a> · <a href="#">문의하기</a></span>
+    <span>© 2026 PicMedic</span>
+    <button id="lang-toggle" class="lang-toggle" type="button" aria-label="View in English">English</button>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var toggle = document.getElementById('theme-toggle');
+  function isDark(){
+    var explicit = document.documentElement.getAttribute('data-theme');
+    if (explicit) return explicit === 'dark';
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+  function sync(){
+    toggle.setAttribute('aria-pressed', isDark() ? 'true' : 'false');
+  }
+  toggle.addEventListener('click', function(){
+    var next = isDark() ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try{ localStorage.setItem('picmedic-theme', next); }catch(e){}
+    sync();
+  });
+  sync();
+})();
+</script>
+
+<script>
+(function(){
+  var STORAGE_KEY = 'picmedic-lang';
+  var langToggle = document.getElementById('lang-toggle');
+  var nodes = document.querySelectorAll('[data-en]');
+  nodes.forEach(function(el){ el.setAttribute('data-ko', el.innerHTML); });
+
+  function applyLang(lang){
+    nodes.forEach(function(el){
+      var raw = lang === 'en' ? el.getAttribute('data-en') : el.getAttribute('data-ko');
+      el.innerHTML = raw.split('\\n').join('<br>');
+    });
+    document.documentElement.setAttribute('lang', lang);
+    langToggle.textContent = lang === 'en' ? '한국어' : 'English';
+    langToggle.setAttribute('aria-label', lang === 'en' ? '한국어로 보기' : 'View in English');
+  }
+
+  var stored;
+  try{ stored = localStorage.getItem(STORAGE_KEY); }catch(e){}
+  var currentLang = stored === 'en' ? 'en' : 'ko';
+  applyLang(currentLang);
+
+  langToggle.addEventListener('click', function(){
+    currentLang = currentLang === 'en' ? 'ko' : 'en';
+    applyLang(currentLang);
+    try{ localStorage.setItem(STORAGE_KEY, currentLang); }catch(e){}
+  });
+})();
+</script>
+</body>
+</html>

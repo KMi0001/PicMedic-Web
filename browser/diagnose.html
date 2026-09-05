@@ -5,8 +5,36 @@
 <title>PicMedic</title>
 <link rel="stylesheet" href="style.css" />
 <script src="https://cdn.jsdelivr.net/npm/libheif-js@1.19.8/libheif-wasm/libheif-bundle.js"></script>
+<style>
+  /* 사이트 공통 내비/푸터 전용 색상 — style.css의 :root 토큰(민트 톤, 진단 카드가 씀)과
+     이름이 겹치면 카드 색까지 덮어써버려서 --nav-* 로 이름공간을 분리했다.
+     이 페이지는 아직 다크모드/영어를 지원하지 않아 라이트 톤 고정. */
+  :root{
+    --nav-bg:#FFFFFF; --nav-text:#14181C; --nav-muted:#6B7280; --nav-hairline:#E7E9EC;
+  }
+  .site-nav{background:var(--nav-bg);border-bottom:1px solid var(--nav-hairline);}
+  .site-nav .row{max-width:720px;margin:0 auto;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;}
+  .site-nav .logo{font-family:'Segoe UI','Malgun Gothic',sans-serif;font-weight:700;font-size:16px;color:var(--nav-text);text-decoration:none;letter-spacing:-.01em;}
+  .site-nav a.navlink{font-family:'Segoe UI','Malgun Gothic',sans-serif;font-size:13.5px;color:var(--nav-muted);text-decoration:none;}
+  .site-nav a.navlink:hover{color:var(--nav-text);}
+  .site-footer{background:var(--nav-bg);border-top:1px solid var(--nav-hairline);margin-top:32px;}
+  .site-footer .row{
+    max-width:720px;margin:0 auto;padding:20px 24px;display:flex;justify-content:space-between;
+    align-items:center;flex-wrap:wrap;gap:12px;font-family:'Segoe UI','Malgun Gothic',sans-serif;
+    font-size:12.5px;color:var(--nav-muted);
+  }
+  .site-footer a{color:var(--nav-muted);text-decoration:none;}
+  .site-footer a:hover{color:var(--nav-text);}
+</style>
 </head>
 <body>
+  <nav class="site-nav">
+    <div class="row">
+      <a class="logo" href="index.html">PicMedic</a>
+      <a class="navlink" href="faq.html">FAQ</a>
+    </div>
+  </nav>
+
   <main class="app">
     <header class="app__header">
       <h1>PicMedic</h1>
@@ -82,6 +110,14 @@
       <p>진단은 여기까지 무료예요. 손상된 사진을 직접 복구하는 <strong>PicMedic 데스크톱 버전</strong>도 준비하고 있어요.</p>
     </footer>
   </main>
+
+  <footer class="site-footer">
+    <div class="row">
+      <span>PicMedic</span>
+      <span><a href="#">개인정보처리방침</a> · <a href="#">문의하기</a></span>
+      <span>© 2026 PicMedic</span>
+    </div>
+  </footer>
 
   <script src="diagnose.js"></script>
   <script src="app.js"></script>
