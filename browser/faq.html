@@ -91,14 +91,17 @@ nav.top .row{
 .qa .q{font-size:15.5px;font-weight:600;margin:0 0 8px;}
 .qa .a{font-size:14px;line-height:1.7;color:var(--muted);margin:0;max-width:52ch;}
 
-.backlink{border-top:1px solid var(--hairline);padding:32px 0;}
+.backlink{border-top:1px solid var(--hairline);padding:32px 0;padding-bottom:calc(32px + 72px);}
 .backlink a{font-size:14px;font-weight:600;color:var(--accent);text-decoration:underline;text-underline-offset:4px;}
 
-/* footer */
-footer{border-top:1px solid var(--hairline);padding:32px 0;}
+/* site footer — 화면 하단에 항상 고정, 모든 페이지 동일 */
+.site-footer{
+  position:fixed;left:0;right:0;bottom:0;z-index:20;
+  background:var(--bg);border-top:1px solid var(--hairline);
+}
 .footmeta{
   display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
-  font-size:12.5px;color:var(--muted);
+  padding:14px 24px;font-size:12.5px;color:var(--muted);
 }
 .footmeta a{color:var(--muted);text-decoration:none;}
 .footmeta a:hover, .footmeta a:focus-visible{color:var(--text);}
@@ -168,7 +171,7 @@ footer{border-top:1px solid var(--hairline);padding:32px 0;}
   </div>
 </div>
 
-<footer>
+<footer class="site-footer">
   <div class="shell footmeta">
     <span>PicMedic</span>
     <span data-en='<a href="#">Privacy Policy</a> &middot; <a href="#">Contact</a>'><a href="#">개인정보처리방침</a> · <a href="#">문의하기</a></span>

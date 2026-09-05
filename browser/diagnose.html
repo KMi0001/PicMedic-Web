@@ -40,11 +40,16 @@
   .theme-toggle[aria-pressed="true"] .knob{transform:translateX(16px);}
   @media (prefers-reduced-motion: reduce){.theme-toggle .track, .theme-toggle .knob{transition:none;}}
 
-  /* 안내문구(사진이 서버로 전송되지 않는다는 안내) — 화면 하단에 항상 떠 있는
-     고정 바로 유지하되, 배경을 깔아 스크롤 시 사이트 푸터 텍스트와 겹쳐 보이지
-     않게 함. 푸터에는 이 바 높이만큼 아래쪽 여백을 더해 내용이 가려지지 않게 함. */
-  .privacy-note{background:var(--nav-bg);padding-top:10px;padding-bottom:10px;border-top:1px solid var(--nav-hairline);z-index:5;}
-  .site-footer{background:var(--nav-bg);border-top:1px solid var(--nav-hairline);margin-top:32px;padding-bottom:56px;}
+  /* 안내문구(사진이 서버로 전송되지 않는다는 안내) — style.css는 이걸 화면 하단
+     고정 바로 만들지만, 이 페이지에선 메인 콘텐츠 영역 가장 마지막 요소로
+     자연스럽게 흘러가게 고정을 해제한다. 위치는 body 쪽 </main> 바로 앞으로 옮김. */
+  .privacy-note{
+    position:static; left:auto; bottom:auto; transform:none;
+    width:auto; max-width:none; padding:0; margin-top:32px;
+  }
+  /* site footer — 화면 하단에 항상 고정, 모든 페이지 동일 */
+  .site-footer{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--nav-bg);border-top:1px solid var(--nav-hairline);}
+  .app{padding-bottom:calc(64px + 72px);}
   .site-footer .row{
     max-width:720px;margin:0 auto;padding:20px 24px;display:flex;justify-content:space-between;
     align-items:center;flex-wrap:wrap;gap:12px;font-family:'IBM Plex Sans KR','Malgun Gothic',sans-serif;
@@ -108,14 +113,6 @@
       <input type="file" id="file-input" accept="image/*,.heic,.heif" hidden />
     </section>
 
-    <p class="privacy-note">
-      <svg class="privacy-note__icon" viewBox="0 0 16 16" aria-hidden="true">
-        <circle class="privacy-note__icon-bg" cx="8" cy="8" r="8" />
-        <path class="privacy-note__icon-check" d="M4.5 8.3l2.3 2.3L11.5 5.8" />
-      </svg>
-      <span>사진은 서버로 전송되지 않고, 이 브라우저 탭 안에서만 분석됩니다.</span>
-    </p>
-
     <section id="loading" class="loading hidden">
       <p>진단 중...</p>
     </section>
@@ -154,6 +151,14 @@
     <footer class="app__footer">
       <p>진단은 여기까지 무료예요. 손상된 사진을 직접 복구하는 <strong>PicMedic 데스크톱 버전</strong>도 준비하고 있어요.</p>
     </footer>
+
+    <p class="privacy-note">
+      <svg class="privacy-note__icon" viewBox="0 0 16 16" aria-hidden="true">
+        <circle class="privacy-note__icon-bg" cx="8" cy="8" r="8" />
+        <path class="privacy-note__icon-check" d="M4.5 8.3l2.3 2.3L11.5 5.8" />
+      </svg>
+      <span>사진은 서버로 전송되지 않고, 이 브라우저 탭 안에서만 분석됩니다.</span>
+    </p>
   </main>
 
   <footer class="site-footer">

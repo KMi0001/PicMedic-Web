@@ -164,13 +164,18 @@ h1{
 .qa .q{font-size:15.5px;font-weight:600;margin:0 0 8px;}
 .qa .a{font-size:14px;line-height:1.7;color:var(--muted);margin:0;max-width:52ch;}
 
-/* footer */
-footer{border-top:1px solid var(--hairline);padding:48px 0 32px;}
-footer h2{font-size:clamp(22px,3.4vw,28px);font-weight:700;margin:0 0 18px;text-wrap:balance;}
+/* closing CTA — 페이지 본문의 마지막 섹션(고정 푸터와는 별개) */
+.closing{border-top:1px solid var(--hairline);padding:48px 0;padding-bottom:calc(48px + 72px);}
+.closing h2{font-size:clamp(22px,3.4vw,28px);font-weight:700;margin:0 0 18px;text-wrap:balance;}
+
+/* site footer — 화면 하단에 항상 고정, 모든 페이지 동일 */
+.site-footer{
+  position:fixed;left:0;right:0;bottom:0;z-index:20;
+  background:var(--bg);border-top:1px solid var(--hairline);
+}
 .footmeta{
   display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
-  margin-top:44px;padding-top:20px;border-top:1px solid var(--hairline);
-  font-size:12.5px;color:var(--muted);
+  padding:14px 24px;font-size:12.5px;color:var(--muted);
 }
 .footmeta a{color:var(--muted);text-decoration:none;}
 .footmeta a:hover, .footmeta a:focus-visible{color:var(--text);}
@@ -310,16 +315,19 @@ footer h2{font-size:clamp(22px,3.4vw,28px);font-weight:700;margin:0 0 18px;text-
   </div>
 </section>
 
-<footer>
+<section class="closing">
   <div class="shell">
     <h2 data-en="Find out what's wrong with your photo, right now.">지금 바로 사진을 진단해보세요.</h2>
     <a href="diagnose.html" class="cta" data-en="Diagnose for free →">무료로 진단하기 →</a>
-    <div class="footmeta">
-      <span>PicMedic</span>
-      <span data-en='<a href="#">Privacy Policy</a> &middot; <a href="#">Contact</a>'><a href="#">개인정보처리방침</a> · <a href="#">문의하기</a></span>
-      <span>© 2026 PicMedic</span>
-      <button id="lang-toggle" class="lang-toggle" type="button" aria-label="View in English">English</button>
-    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="shell footmeta">
+    <span>PicMedic</span>
+    <span data-en='<a href="#">Privacy Policy</a> &middot; <a href="#">Contact</a>'><a href="#">개인정보처리방침</a> · <a href="#">문의하기</a></span>
+    <span>© 2026 PicMedic</span>
+    <button id="lang-toggle" class="lang-toggle" type="button" aria-label="View in English">English</button>
   </div>
 </footer>
 
