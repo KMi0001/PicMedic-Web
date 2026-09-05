@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>PicMedic</title>
+<link rel="icon" href="favicon.png" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
 :root{
@@ -63,7 +64,7 @@ nav.top .row{
   display:flex;align-items:center;justify-content:space-between;
   padding:20px 0;
 }
-.logo{font-weight:700;font-size:16px;letter-spacing:-.01em;}
+.logo{font-weight:700;font-size:20px;letter-spacing:-.01em;text-decoration:none;color:var(--text);}
 .navlinks{display:flex;gap:28px;align-items:center;}
 .navlinks a{font-size:13.5px;color:var(--muted);text-decoration:none;}
 .navlinks a:hover, .navlinks a:focus-visible{color:var(--text);}
@@ -199,7 +200,7 @@ h1{
 
 <nav class="top">
   <div class="shell row">
-    <span class="logo">PicMedic</span>
+    <a class="logo" href="index.html">PicMedic</a>
     <div class="navlinks">
       <a href="index.html" data-en="Home">홈</a>
       <a href="faq.html">FAQ</a>
