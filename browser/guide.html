@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>PicMedic FAQ</title>
+<title>PicMedic 사용방법</title>
 <link rel="icon" href="favicon.png" />
-<meta name="description" content="PicMedic 사진 진단 서비스에 대해 자주 묻는 질문 — 서버 업로드 여부, 지원 형식, 데스크톱 버전과의 차이를 안내합니다." />
+<meta name="description" content="PicMedic 무료 사진 진단 사용방법 — 파일 선택부터 결과 배지 읽는 법까지 3단계로 안내합니다." />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
 :root{
@@ -88,16 +88,45 @@ nav.top .row{
   font-size:clamp(28px,4.4vw,38px);line-height:1.28;font-weight:700;margin:0;
   text-wrap:balance;
 }
+.pagehead .lede{font-size:15px;line-height:1.7;color:var(--muted);margin:14px 0 0;max-width:48ch;}
 
-/* faq */
-.faq{padding:32px 0 44px;}
-.qa{border-top:1px solid var(--hairline);padding:20px 0;}
-.qa:first-of-type{border-top:none;}
-.qa .q{font-size:15.5px;font-weight:600;margin:0 0 8px;}
-.qa .a{font-size:14px;line-height:1.7;color:var(--muted);margin:0;}
+/* guide steps */
+.guide{padding:32px 0 12px;}
+.gstep{border-top:1px solid var(--hairline);padding:24px 0;display:flex;gap:18px;}
+.gstep:first-of-type{border-top:none;}
+.gstep .no{font-size:13px;color:var(--accent);font-weight:700;flex:0 0 28px;}
+.gstep h3{font-size:15.5px;font-weight:700;margin:0 0 6px;}
+.gstep p{font-size:14px;line-height:1.7;color:var(--muted);margin:0;}
 
-.backlink{border-top:1px solid var(--hairline);padding:32px 0;padding-bottom:calc(32px + 104px);}
-.backlink a{font-size:14px;font-weight:600;color:var(--accent);text-decoration:underline;text-underline-offset:4px;}
+/* badge quick legend */
+.legend{border-top:1px solid var(--hairline);padding:32px 0;}
+.legend h2{font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--text);margin:0 0 20px;}
+.status-badge{
+  display:inline-block;margin-right:10px;padding:3px 11px;border-radius:20px;
+  font-size:12px;font-weight:700;color:#fff;vertical-align:1px;
+}
+.status-badge--정상{background:#2FAF66;}
+.status-badge--의심{background:#D9A441;}
+.status-badge--손상{background:#DA5A5A;}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .status-badge--정상{background:#3FCB7B;}
+  :root:not([data-theme="light"]) .status-badge--의심{background:#E6B458;}
+  :root:not([data-theme="light"]) .status-badge--손상{background:#E37373;}
+}
+:root[data-theme="dark"] .status-badge--정상{background:#3FCB7B;}
+:root[data-theme="dark"] .status-badge--의심{background:#E6B458;}
+:root[data-theme="dark"] .status-badge--손상{background:#E37373;}
+.legend .qa{border-top:1px solid var(--hairline);padding:14px 0;}
+.legend .qa:first-of-type{border-top:none;}
+.legend .qa p{margin:0;font-size:14px;line-height:1.6;color:var(--muted);}
+.legend .qa .q{margin-bottom:4px;}
+
+.cta-row{border-top:1px solid var(--hairline);padding:32px 0;padding-bottom:calc(32px + 104px);}
+.cta{
+  display:inline-block;font-size:15px;font-weight:600;color:var(--accent);
+  text-decoration:underline;text-underline-offset:4px;
+}
+.cta:hover, .cta:focus-visible{text-decoration-thickness:2px;}
 
 /* site footer — 화면 하단에 항상 고정, 모든 페이지 동일 */
 .site-footer{
@@ -121,16 +150,6 @@ nav.top .row{
    필요 — 지금은 무료 진단만 제공하고 실제 결제는 MS 스토어에서 이뤄지므로
    해당 없을 수 있음(확정은 법률 검토 필요). */
 .bizinfo{padding:0 24px 10px;font-size:10.5px;line-height:1.6;color:var(--muted);opacity:.75;}
-
-/* 임시 사용방법 링크 — index.html과 동일(정식 도움말 진입점이 정해지기 전까지의
-   임시 배치) */
-.guide-fab{
-  position:fixed;right:20px;bottom:76px;z-index:25;
-  background:var(--accent);color:#fff;font-size:13px;font-weight:600;
-  padding:10px 16px;border-radius:24px;text-decoration:none;
-  box-shadow:0 2px 8px rgba(0,0,0,.18);
-}
-.guide-fab:hover, .guide-fab:focus-visible{opacity:.9;}
 </style>
 
 <script>
@@ -163,39 +182,61 @@ nav.top .row{
 
 <header class="pagehead">
   <div class="shell">
-    <span class="eyebrow mono" data-en="PICMEDIC — FAQ">PICMEDIC — 자주 묻는 질문</span>
-    <h1 data-en="Frequently asked questions">자주 묻는 질문</h1>
+    <span class="eyebrow mono" data-en="PICMEDIC — HOW TO USE">PICMEDIC — 사용방법</span>
+    <h1 data-en="Three steps to check your photo">세 단계면 충분해요</h1>
+    <p class="lede" data-en="No sign-up, no upload — pick a file and the result shows up right away.">가입도 업로드도 필요 없어요. 파일만 고르면 바로 결과가 나와요.</p>
   </div>
 </header>
 
-<section class="faq">
+<section class="guide">
   <div class="shell">
-    <div class="qa">
-      <p class="q" data-en="Are my photos uploaded to a server?">제 사진이 서버에 업로드되나요?</p>
-      <p class="a" data-en="No. Diagnosis on this page runs entirely inside your browser and is never sent anywhere.">아니요. 이 페이지의 진단은 방문자의 브라우저 안에서만 처리되고, 어디로도 전송되지 않아요.</p>
+    <div class="gstep">
+      <div class="no mono">01</div>
+      <div>
+        <h3 data-en="Open the diagnosis page">진단 페이지 열기</h3>
+        <p data-en="Click “Diagnose for free” in the top menu, or go straight to the diagnosis page.">상단 메뉴의 “무료로 진단하기”를 누르거나, 진단 페이지로 바로 이동하세요.</p>
+      </div>
     </div>
-    <div class="qa">
-      <p class="q" data-en="Can I repair my photo here too?">복구도 여기서 할 수 있나요?</p>
-      <p class="a" data-en="Not yet — this page only offers free diagnosis for now. Repairing the file is being prepared for the PicMedic desktop version.">아니요, 지금은 진단까지만 무료로 제공돼요. 사진을 직접 복구하는 기능은 PicMedic 데스크톱 버전에서 준비 중이에요.</p>
+    <div class="gstep">
+      <div class="no mono">02</div>
+      <div>
+        <h3 data-en="Pick the photo you're unsure about">확인하고 싶은 사진 선택하기</h3>
+        <p data-en="Choose a file that won't open, looks broken, or seems blurry. It's checked instantly inside this browser tab — never uploaded anywhere.">안 열리거나, 깨진 것 같거나, 흐릿해 보이는 사진을 골라주세요. 이 브라우저 탭 안에서 바로 확인되고, 어디로도 업로드되지 않아요.</p>
+      </div>
     </div>
-    <div class="qa">
-      <p class="q" data-en="Which file types are supported?">어떤 파일까지 지원하나요?</p>
-      <p class="a" data-en="HEIC is supported, along with JPEG, PNG, GIF, BMP and WEBP. TIFF isn't supported yet.">HEIC를 포함해 JPEG·PNG·GIF·BMP·WEBP 형식을 지원해요. TIFF는 아직 지원하지 않아요.</p>
-    </div>
-    <div class="qa">
-      <p class="q" data-en="Are my photos ever kept or looked at by anyone?">제 사진을 누가 보관하거나 볼 수 있나요?</p>
-      <p class="a" data-en="No. Nothing is uploaded, so there's nothing stored on our side to see.">아니요. 어디에도 업로드되지 않아서 저희 쪽에 남거나 볼 수 있는 사진 자체가 없어요.</p>
+    <div class="gstep">
+      <div class="no mono">03</div>
+      <div>
+        <h3 data-en="Read the result badge">결과 배지 확인하기</h3>
+        <p data-en="A badge tells you at a glance whether the file is fine, needs a second look, or is damaged — plus why.">정상인지, 확인이 필요한지, 손상됐는지를 배지로 한눈에 보여주고 이유도 같이 알려드려요.</p>
+      </div>
     </div>
   </div>
 </section>
 
-<div class="backlink">
+<section class="legend">
   <div class="shell">
-    <a href="index.html" data-en="← Back to home">← 홈으로 돌아가기</a>
+    <h2 class="mono" data-en="WHAT THE BADGES MEAN">배지가 뭘 뜻하나요</h2>
+    <div class="qa">
+      <p class="q"><span class="status-badge status-badge--정상" data-en="Normal">정상</span></p>
+      <p data-en="Opens without any issues.">문제없이 열리는 사진이에요.</p>
+    </div>
+    <div class="qa">
+      <p class="q"><span class="status-badge status-badge--의심" data-en="Suspect">의심</span></p>
+      <p data-en="It opens, but something needs a second look — like a mismatched extension.">열리긴 하지만 확장자 불일치 등 확인이 필요한 상태예요.</p>
+    </div>
+    <div class="qa">
+      <p class="q"><span class="status-badge status-badge--손상" data-en="Damaged">손상</span></p>
+      <p data-en="The file is broken — it won't open, or only part of it shows.">파일이 깨져서 못 열거나 일부만 보여요.</p>
+    </div>
+  </div>
+</section>
+
+<div class="cta-row">
+  <div class="shell">
+    <a href="diagnose.html" class="cta" data-en="Diagnose for free →">무료로 진단하기 →</a>
   </div>
 </div>
-
-<a href="guide.html" class="guide-fab" data-en="How to use">사용방법</a>
 
 <footer class="site-footer">
   <div class="shell footmeta">

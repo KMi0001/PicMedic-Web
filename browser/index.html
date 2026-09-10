@@ -73,6 +73,8 @@ nav.top .row{
 .navcta{font-size:13.5px;font-weight:600;color:var(--accent);text-decoration:none;}
 .navcta:hover, .navcta:focus-visible{text-decoration:underline;}
 
+.theme-toggle-group{display:flex;align-items:center;gap:6px;}
+.theme-toggle-group .mode-label{font-size:12.5px;color:var(--muted);line-height:1;}
 .theme-toggle{
   background:none;border:none;padding:0;margin:0;cursor:pointer;
   display:flex;align-items:center;line-height:0;
@@ -168,7 +170,7 @@ h1{
 .qa .a{font-size:14px;line-height:1.7;color:var(--muted);margin:0;}
 
 /* closing CTA — 페이지 본문의 마지막 섹션(고정 푸터와는 별개) */
-.closing{border-top:1px solid var(--hairline);padding:48px 0;padding-bottom:calc(48px + 72px);}
+.closing{border-top:1px solid var(--hairline);padding:48px 0;padding-bottom:calc(48px + 104px);}
 .closing h2{font-size:clamp(22px,3.4vw,28px);font-weight:700;margin:0 0 18px;text-wrap:balance;}
 
 /* site footer — 화면 하단에 항상 고정, 모든 페이지 동일 */
@@ -187,6 +189,22 @@ h1{
   text-decoration:underline;text-underline-offset:3px;cursor:pointer;
 }
 .lang-toggle:hover, .lang-toggle:focus-visible{color:var(--text);}
+
+/* 사업자 정보 — 오픈 전 실제 값으로 교체할 자리(2026-09-11, 사용자 요청으로
+   폼만 미리 짜둠). 통신판매업신고번호는 이 사이트에서 직접 결제를 받을 때만
+   필요 — 지금은 무료 진단만 제공하고 실제 결제는 MS 스토어에서 이뤄지므로
+   해당 없을 수 있음(확정은 법률 검토 필요). */
+.bizinfo{padding:0 24px 10px;font-size:10.5px;line-height:1.6;color:var(--muted);opacity:.75;}
+
+/* 임시 사용방법 링크 — 정식 도움말 진입점(내비/온보딩 등)이 정해지기 전까지의
+   임시 배치. 고정 푸터 바로 위에 겹치지 않게 띄운다. */
+.guide-fab{
+  position:fixed;right:20px;bottom:76px;z-index:25;
+  background:var(--accent);color:#fff;font-size:13px;font-weight:600;
+  padding:10px 16px;border-radius:24px;text-decoration:none;
+  box-shadow:0 2px 8px rgba(0,0,0,.18);
+}
+.guide-fab:hover, .guide-fab:focus-visible{opacity:.9;}
 </style>
 
 <script>
@@ -207,9 +225,12 @@ h1{
       <a href="index.html" data-en="Home">홈</a>
       <a href="faq.html">FAQ</a>
       <a href="diagnose.html" class="navcta" data-en="Diagnose for free">무료로 진단하기</a>
-      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="다크 모드 전환" aria-pressed="false">
-        <span class="track"><span class="knob"></span></span>
-      </button>
+      <span class="theme-toggle-group">
+        <span class="mode-label" data-en="Mode" aria-hidden="true">모드</span>
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="다크 모드 전환" aria-pressed="false">
+          <span class="track"><span class="knob"></span></span>
+        </button>
+      </span>
     </div>
   </div>
 </nav>
@@ -325,13 +346,18 @@ h1{
   </div>
 </section>
 
+<a href="guide.html" class="guide-fab" data-en="How to use">사용방법</a>
+
 <footer class="site-footer">
   <div class="shell footmeta">
     <span>PicMedic</span>
-    <span data-en='<a href="#">Privacy Policy</a> &middot; <a href="#">Contact</a>'><a href="#">개인정보처리방침</a> · <a href="#">문의하기</a></span>
+    <span data-en='<a href="privacy-policy.html">Privacy Policy</a> &middot; <a href="mailto:TODO@example.com">Contact</a>'><a href="privacy-policy.html">개인정보처리방침</a> · <a href="mailto:TODO@example.com">문의하기</a></span>
     <span>© 2026 PicMedic</span>
     <button id="lang-toggle" class="lang-toggle" type="button" aria-label="View in English">English</button>
   </div>
+  <!-- TODO(오픈 전 실제 값으로 교체): 상호/대표자/사업자등록번호/주소/연락처.
+       통신판매업신고번호는 이 사이트에서 직접 결제를 받게 될 경우에만 채울 것. -->
+  <div class="shell bizinfo" data-en="Name: [Business name] &middot; CEO: [CEO name] &middot; Registration No.: [000-00-00000] &middot; Address: [Business address] &middot; Mail-order sales No.: [if applicable] &middot; Contact: [email or phone]">상호 [상호명] · 대표자 [대표자명] · 사업자등록번호 [000-00-00000] · 주소 [사업장 주소] · 통신판매업신고번호 [해당 시 기재] · 문의 [이메일 또는 전화번호]</div>
 </footer>
 
 <script>

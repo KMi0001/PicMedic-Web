@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>PicMedic FAQ</title>
+<title>PicMedic 개인정보처리방침</title>
 <link rel="icon" href="favicon.png" />
-<meta name="description" content="PicMedic 사진 진단 서비스에 대해 자주 묻는 질문 — 서버 업로드 여부, 지원 형식, 데스크톱 버전과의 차이를 안내합니다." />
+<meta name="description" content="PicMedic 웹 진단 서비스의 개인정보처리방침 — 사진 및 위치 정보가 서버로 전송되지 않는다는 점을 안내합니다." />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
 :root{
@@ -43,7 +43,7 @@ body{
   -webkit-font-smoothing:antialiased;
   padding-top:72px;
 }
-a{color:inherit;}
+a{color:var(--accent);}
 .mono{font-family:'IBM Plex Mono',monospace;}
 .shell{max-width:720px;margin:0 auto;padding:0 24px;}
 
@@ -85,19 +85,25 @@ nav.top .row{
 .pagehead{padding:48px 0 8px;}
 .eyebrow{font-size:11.5px;letter-spacing:.1em;color:var(--muted);margin:0 0 16px;}
 .pagehead h1{
-  font-size:clamp(28px,4.4vw,38px);line-height:1.28;font-weight:700;margin:0;
+  font-size:clamp(26px,4vw,34px);line-height:1.28;font-weight:700;margin:0;
   text-wrap:balance;
 }
+.updated{font-size:12.5px;color:var(--muted);margin:10px 0 0;}
 
-/* faq */
-.faq{padding:32px 0 44px;}
-.qa{border-top:1px solid var(--hairline);padding:20px 0;}
-.qa:first-of-type{border-top:none;}
-.qa .q{font-size:15.5px;font-weight:600;margin:0 0 8px;}
-.qa .a{font-size:14px;line-height:1.7;color:var(--muted);margin:0;}
-
-.backlink{border-top:1px solid var(--hairline);padding:32px 0;padding-bottom:calc(32px + 104px);}
-.backlink a{font-size:14px;font-weight:600;color:var(--accent);text-decoration:underline;text-underline-offset:4px;}
+/* content */
+.doc{padding:24px 0;padding-bottom:calc(24px + 104px);}
+.doc section{border-top:1px solid var(--hairline);padding:24px 0;}
+.doc section:first-of-type{border-top:none;}
+.doc h2{font-size:15.5px;font-weight:700;margin:0 0 10px;}
+.doc p{font-size:14px;line-height:1.75;color:var(--muted);margin:0 0 10px;}
+.doc p:last-child{margin-bottom:0;}
+.doc ul{margin:0 0 10px;padding-left:20px;}
+.doc li{font-size:14px;line-height:1.75;color:var(--muted);margin-bottom:4px;}
+.doc strong{color:var(--text);}
+.todo{
+  background:var(--accent-soft);border-radius:8px;padding:10px 14px;
+  font-size:13px;color:var(--text);margin:10px 0;
+}
 
 /* site footer — 화면 하단에 항상 고정, 모든 페이지 동일 */
 .site-footer{
@@ -121,16 +127,6 @@ nav.top .row{
    필요 — 지금은 무료 진단만 제공하고 실제 결제는 MS 스토어에서 이뤄지므로
    해당 없을 수 있음(확정은 법률 검토 필요). */
 .bizinfo{padding:0 24px 10px;font-size:10.5px;line-height:1.6;color:var(--muted);opacity:.75;}
-
-/* 임시 사용방법 링크 — index.html과 동일(정식 도움말 진입점이 정해지기 전까지의
-   임시 배치) */
-.guide-fab{
-  position:fixed;right:20px;bottom:76px;z-index:25;
-  background:var(--accent);color:#fff;font-size:13px;font-weight:600;
-  padding:10px 16px;border-radius:24px;text-decoration:none;
-  box-shadow:0 2px 8px rgba(0,0,0,.18);
-}
-.guide-fab:hover, .guide-fab:focus-visible{opacity:.9;}
 </style>
 
 <script>
@@ -163,39 +159,59 @@ nav.top .row{
 
 <header class="pagehead">
   <div class="shell">
-    <span class="eyebrow mono" data-en="PICMEDIC — FAQ">PICMEDIC — 자주 묻는 질문</span>
-    <h1 data-en="Frequently asked questions">자주 묻는 질문</h1>
+    <span class="eyebrow mono" data-en="PICMEDIC — PRIVACY POLICY">PICMEDIC — 개인정보처리방침</span>
+    <h1 data-en="We don't collect your photos.">사진을 수집하지 않습니다.</h1>
+    <p class="updated" data-en="This is a draft — fill in the launch date before publishing.">이 문서는 초안입니다 — 실제 게시 전 시행일을 채워주세요.</p>
   </div>
 </header>
 
-<section class="faq">
+<div class="doc">
   <div class="shell">
-    <div class="qa">
-      <p class="q" data-en="Are my photos uploaded to a server?">제 사진이 서버에 업로드되나요?</p>
-      <p class="a" data-en="No. Diagnosis on this page runs entirely inside your browser and is never sent anywhere.">아니요. 이 페이지의 진단은 방문자의 브라우저 안에서만 처리되고, 어디로도 전송되지 않아요.</p>
-    </div>
-    <div class="qa">
-      <p class="q" data-en="Can I repair my photo here too?">복구도 여기서 할 수 있나요?</p>
-      <p class="a" data-en="Not yet — this page only offers free diagnosis for now. Repairing the file is being prepared for the PicMedic desktop version.">아니요, 지금은 진단까지만 무료로 제공돼요. 사진을 직접 복구하는 기능은 PicMedic 데스크톱 버전에서 준비 중이에요.</p>
-    </div>
-    <div class="qa">
-      <p class="q" data-en="Which file types are supported?">어떤 파일까지 지원하나요?</p>
-      <p class="a" data-en="HEIC is supported, along with JPEG, PNG, GIF, BMP and WEBP. TIFF isn't supported yet.">HEIC를 포함해 JPEG·PNG·GIF·BMP·WEBP 형식을 지원해요. TIFF는 아직 지원하지 않아요.</p>
-    </div>
-    <div class="qa">
-      <p class="q" data-en="Are my photos ever kept or looked at by anyone?">제 사진을 누가 보관하거나 볼 수 있나요?</p>
-      <p class="a" data-en="No. Nothing is uploaded, so there's nothing stored on our side to see.">아니요. 어디에도 업로드되지 않아서 저희 쪽에 남거나 볼 수 있는 사진 자체가 없어요.</p>
-    </div>
-  </div>
-</section>
 
-<div class="backlink">
-  <div class="shell">
-    <a href="index.html" data-en="← Back to home">← 홈으로 돌아가기</a>
+    <section>
+      <h2 data-en="Summary">요약</h2>
+      <p data-en="PicMedic's free web diagnosis runs entirely inside your browser. Your photo is never uploaded, and nothing about it is sent to our servers or anyone else's.">PicMedic의 무료 웹 진단은 방문자의 브라우저 안에서만 실행됩니다. 사진 파일은 업로드되지 않으며, 그 어떤 정보도 저희 서버나 제3자에게 전송되지 않습니다.</p>
+    </section>
+
+    <section>
+      <h2 data-en="What we collect">수집하는 정보</h2>
+      <p data-en="Nothing about your photos. Specifically, this site never sends any of the following anywhere:">사진에 관한 어떤 것도 수집하지 않습니다. 구체적으로 아래 항목은 어디로도 전송되지 않습니다:</p>
+      <ul>
+        <li data-en="The photo file itself">사진 파일 자체</li>
+        <li data-en="EXIF data in the photo (capture location, date, camera model, etc.)">사진의 EXIF 정보(촬영 위치, 날짜, 카메라 기종 등)</li>
+        <li data-en="File name or any identifying detail about the file">파일명 등 파일을 특정할 수 있는 정보</li>
+      </ul>
+      <p data-en="Diagnosis (format detection, corruption check, blur/exposure/noise analysis) runs with JavaScript already loaded in your browser, using only the file you selected on your own device.">진단(형식 판별, 손상 여부, 블러·노출·노이즈 분석)은 이미 브라우저에 로드된 자바스크립트로, 사용자가 선택한 파일을 기기 안에서만 사용해 수행됩니다.</p>
+    </section>
+
+    <section>
+      <h2 data-en="What is stored locally">브라우저에 저장되는 정보</h2>
+      <p data-en="This site uses your browser's localStorage — data that stays on your device and is never sent to us — to remember two small preferences:">이 사이트는 브라우저의 localStorage(방문자의 기기에만 남고 저희에게 전송되지 않는 저장소)를 사용해 아래 두 가지 설정만 기억합니다:</p>
+      <ul>
+        <li data-en="Whether you chose light or dark mode">라이트/다크 모드 중 무엇을 선택했는지</li>
+        <li data-en="Whether you chose Korean or English">한국어/영어 중 무엇을 선택했는지</li>
+      </ul>
+      <p data-en="Clearing your browser's site data removes this. No cookies and no analytics/tracking scripts are used.">브라우저의 사이트 데이터를 지우면 이 정보도 함께 삭제됩니다. 쿠키나 분석/추적 스크립트는 사용하지 않습니다.</p>
+    </section>
+
+    <section>
+      <h2 data-en="Third-party services">제3자 서비스</h2>
+      <p data-en="This page loads a web font from Google Fonts and a HEIC-decoding library (libheif-js) from a public CDN (jsDelivr) so the browser can render the page and open HEIC files. Loading these may expose your IP address and browser information to Google/jsDelivr per their own policies, the same as loading any web font or script would. Neither service receives your photo.">이 페이지는 Google Fonts에서 웹폰트를, 공개 CDN(jsDelivr)에서 HEIC 디코딩 라이브러리(libheif-js)를 불러옵니다 — 일반적인 웹폰트·스크립트 로딩과 마찬가지로, 이 과정에서 방문자의 IP 주소와 브라우저 정보가 각 서비스 정책에 따라 노출될 수 있습니다. 두 서비스 모두 사진 파일 자체를 받지는 않습니다.</p>
+    </section>
+
+    <section>
+      <h2 data-en="Contact">문의</h2>
+      <p data-en="Questions about this policy: (add a contact email before publishing)">이 방침에 대한 문의: (게시 전 문의 이메일을 채워주세요)</p>
+      <div class="todo" data-en="TODO before publishing: contact email, effective date, and — if this site is operated as a registered business — business name/registration number in the footer below.">게시 전 TODO: 문의 이메일, 시행일, 그리고 사업자로 운영 중이라면 아래 푸터의 사업자명/사업자등록번호도 채워주세요.</div>
+    </section>
+
+    <section>
+      <h2 data-en="Changes">변경 이력</h2>
+      <p data-en="If this policy changes, we'll update this page and its effective date.">이 방침이 바뀌면 이 페이지와 시행일을 갱신합니다.</p>
+    </section>
+
   </div>
 </div>
-
-<a href="guide.html" class="guide-fab" data-en="How to use">사용방법</a>
 
 <footer class="site-footer">
   <div class="shell footmeta">
