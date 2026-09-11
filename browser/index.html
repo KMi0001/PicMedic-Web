@@ -107,23 +107,30 @@ h1{
 .step:first-child{padding-left:0;}
 .step:last-child{border-right:none;padding-right:0;}
 .step .no{font-size:12px;color:var(--accent);margin-bottom:10px;}
-.step .tag{
-  display:inline-block;font-size:10px;font-weight:600;letter-spacing:.04em;
-  color:var(--muted);border:1px solid var(--hairline);border-radius:20px;
-  padding:2px 8px;margin-bottom:8px;
-}
 .step h3{font-size:16px;font-weight:700;margin:0 0 8px;}
 .step p{font-size:13.5px;line-height:1.65;color:var(--muted);margin:0;}
 @media (max-width:600px){
   .steps-grid{grid-template-columns:1fr;gap:24px;}
   .step{border-right:none;padding:0;}
 }
+/* 지원 포맷을 "이렇게 진행돼요" 섹션 안으로 옮겨온 자리(2026-09-11) —
+   더 이상 별도 섹션이 아니라서 헤더만큼 크게 강조할 필요 없이 작은
+   라벨로 둠. */
+.steps-formats{
+  margin-top:32px;padding-top:24px;border-top:1px solid var(--hairline);
+  text-align:center;
+}
+.steps-formats__label{
+  display:block;font-size:12px;letter-spacing:.06em;color:var(--muted);margin-bottom:6px;
+}
+.steps-formats__list{font-size:14px;color:var(--text);}
 
 /* scenarios / badge legend (reuse the qa row pattern) */
 .scenarios{border-top:1px solid var(--hairline);padding:44px 0;}
 .badges{border-top:1px solid var(--hairline);padding:44px 0;}
 .scenarios h2, .badges h2, .faq h2, .steps h2{
-  font-size:clamp(22px,3.4vw,28px);font-weight:700;letter-spacing:.06em;color:var(--text);margin:0 0 24px;
+  font-size:clamp(22px,3.4vw,28px);font-weight:700;color:var(--text);margin:0 0 24px;
+  text-align:center;
 }
 .qa .q .tag{margin-right:8px;vertical-align:1px;}
 .status-badge{
@@ -136,12 +143,20 @@ h1{
 .status-badge--안내{background:var(--neutral-badge);}
 .badge-icon{margin-right:8px;font-size:15px;vertical-align:-1px;}
 .badges .q{font-weight:700;}
-/* 배지 설명을 배지 옆으로 나란히 배치(2026-09-11) — 좁은 화면에서는 다시 위아래로 */
-.badges .qa{display:flex;align-items:center;gap:16px;}
-.badges .qa .q{margin:0;flex-shrink:0;}
-.badges .qa .a{margin:0;}
+/* 배지 영역/설명 영역을 세로 구분선으로 확실히 나눈 2단 레이아웃(2026-09-11).
+   배지 라벨 폭이 서로 달라서(정상/의심/손상 알약형 vs 인화 적합 등 아이콘형)
+   고정폭 칼럼으로 맞춰야 설명 텍스트 시작 위치가 가지런해진다. 좁은
+   화면에서는 구분선 없이 다시 위아래로. */
+.badges .qa{display:flex;align-items:stretch;gap:0;}
+.badges .qa .q{
+  margin:0;flex:0 0 128px;display:flex;align-items:center;
+  padding-right:16px;border-right:1px solid var(--hairline);
+}
+.badges .qa .a{margin:0;padding-left:16px;display:flex;align-items:center;}
 @media (max-width:480px){
   .badges .qa{flex-direction:column;align-items:flex-start;gap:6px;}
+  .badges .qa .q{flex:none;border-right:none;padding-right:0;}
+  .badges .qa .a{padding-left:0;}
 }
 
 /* statement band */
@@ -244,7 +259,7 @@ h1{
 
 <section class="scenarios" id="scenarios">
   <div class="shell">
-    <h2 class="mono" data-en="WHEN TO USE IT">이럴 때 써보세요</h2>
+    <h2 data-en="WHEN TO USE IT">이럴 때 써보세요</h2>
     <div class="qa">
       <p class="q" data-en="My photo won't open">사진이 안 열려요</p>
       <p class="a" data-en="It saved fine but won't open, or only shows a gray screen — part or all of the file may be damaged.">저장은 됐는데 열리지 않거나 회색 화면만 뜬다면, 파일 일부 또는 전체가 손상됐을 수 있어요.</p>
@@ -270,26 +285,27 @@ h1{
 
 <section class="steps" id="steps">
   <div class="shell">
-    <h2 class="mono" data-en="HOW IT WORKS">이렇게 진행돼요</h2>
+    <h2 data-en="HOW IT WORKS">이렇게 진행돼요</h2>
     <div class="steps-grid">
       <div class="step">
         <div class="no mono">01</div>
-        <span class="tag" data-en="FREE">무료</span>
         <h3 data-en="Diagnose">진단</h3>
         <p data-en="We automatically check format, corruption, and quality the moment you pick a file.">파일을 선택하면 형식·손상·화질까지 자동으로 확인해요.</p>
       </div>
       <div class="step">
         <div class="no mono">02</div>
-        <span class="tag" data-en="FREE">무료</span>
         <h3 data-en="See why">원인 확인</h3>
         <p data-en="We show you exactly why it won't open or where it's damaged, right in the result screen.">왜 안 열리는지, 어디가 손상됐는지 결과 화면에서 바로 알려드려요.</p>
       </div>
       <div class="step">
         <div class="no mono">03</div>
-        <span class="tag" data-en="DESKTOP VERSION">데스크톱 버전</span>
         <h3 data-en="Repair">복구</h3>
         <p data-en="Actually repairing the file is handled by the PicMedic desktop app, currently in the works.">직접 복구하는 기능은 준비 중인 PicMedic 데스크톱 버전에서 제공돼요.</p>
       </div>
+    </div>
+    <div class="steps-formats">
+      <span class="steps-formats__label" data-en="SUPPORTED FORMATS">지원 포맷</span>
+      <span class="steps-formats__list">HEIC · JPEG · PNG · GIF · BMP · WEBP</span>
     </div>
   </div>
 </section>
@@ -301,16 +317,9 @@ h1{
   </div>
 </section>
 
-<section class="formats">
-  <div class="shell">
-    <span class="label mono" data-en="SUPPORTED FORMATS">지원 포맷</span>
-    <div class="list">HEIC · JPEG · PNG · GIF · BMP · WEBP</div>
-  </div>
-</section>
-
 <section class="badges" id="badges">
   <div class="shell">
-    <h2 class="mono" data-en="WHAT THE BADGES MEAN">배지가 뭘 뜻하나요</h2>
+    <h2 data-en="WHAT THE BADGES MEAN">배지가 뭘 뜻하나요</h2>
     <div class="qa">
       <p class="q"><span class="status-badge status-badge--정상" data-en="Normal">정상</span></p>
       <p class="a" data-en="Opens without any issues.">문제없이 열리는 사진이에요.</p>
