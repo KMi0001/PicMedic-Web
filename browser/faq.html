@@ -8,31 +8,24 @@
 <meta name="description" content="PicMedic 사진 진단 서비스에 대해 자주 묻는 질문 — 서버 업로드 여부, 지원 형식, 데스크톱 버전과의 차이를 안내합니다." />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
+/* gui/theme.py COLORS(버터·아이보리 + 톤온톤 잉크, 골드 포인트)와 동일한 값.
+   웹버전은 다크가 기본값(2026-09-11)이라 기본 :root에 DARK_COLORS를 두고
+   [data-theme="light"]에서만 LIGHT_COLORS로 덮어쓴다. */
 :root{
-  --bg:#FFFFFF;
-  --text:#14181C;
-  --muted:#6B7280;
-  --accent:#1F9E8C;
-  --accent-soft:#EAF6F3;
-  --hairline:#E7E9EC;
+  --bg:#1E1A15;
+  --text:#EDE6D6;
+  --muted:#A79A82;
+  --accent:#D9B54A;
+  --accent-soft:#3A3222;
+  --hairline:#3D362A;
 }
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#0E1113;
-    --text:#F1F3F2;
-    --muted:#8B9490;
-    --accent:#39C9AE;
-    --accent-soft:#123029;
-    --hairline:#232826;
-  }
-}
-:root[data-theme="dark"]{
-  --bg:#0E1113;
-  --text:#F1F3F2;
-  --muted:#8B9490;
-  --accent:#39C9AE;
-  --accent-soft:#123029;
-  --hairline:#232826;
+:root[data-theme="light"]{
+  --bg:#F7F1E4;
+  --text:#2A2420;
+  --muted:#7A7060;
+  --accent:#D9B54A;
+  --accent-soft:#F1E6C6;
+  --hairline:#E6DCC5;
 }
 
 *{box-sizing:border-box;}
@@ -152,10 +145,10 @@ nav.top .row{
       <a href="faq.html">FAQ</a>
       <a href="diagnose.html" class="navcta" data-en="Diagnose for free">무료로 진단하기</a>
       <span class="theme-toggle-group">
-        <span class="mode-label" data-en="Mode" aria-hidden="true">모드</span>
-        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="다크 모드 전환" aria-pressed="false">
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="다크 모드 전환" aria-pressed="true">
           <span class="track"><span class="knob"></span></span>
         </button>
+        <span class="mode-label" data-en="Mode" aria-hidden="true">모드</span>
       </span>
     </div>
   </div>
@@ -220,7 +213,7 @@ nav.top .row{
   function isDark(){
     var explicit = document.documentElement.getAttribute('data-theme');
     if (explicit) return explicit === 'dark';
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return true; // 다크가 기본값(2026-09-11) — 시스템 설정과 무관하게 고정
   }
   function sync(){
     toggle.setAttribute('aria-pressed', isDark() ? 'true' : 'false');
