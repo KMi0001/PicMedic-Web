@@ -216,15 +216,15 @@ nav.top .row{
 <footer class="site-footer">
   <div class="shell footmeta">
     <span>PicMedic</span>
-    <span data-en='<a href="privacy-policy.html">Privacy Policy</a> &middot; <a href="mailto:TODO@example.com">Contact</a>'><a href="privacy-policy.html">개인정보처리방침</a> · <a href="mailto:TODO@example.com">문의하기</a></span>
+    <span class="footlinks" data-en='<a href="privacy-policy.html">Privacy Policy</a> &middot; <a href="mailto:TODO@example.com">Contact</a>'><a href="privacy-policy.html">개인정보처리방침</a> · <a href="mailto:TODO@example.com">문의하기</a></span>
     <span>© 2026 PicMedic</span>
     <button id="lang-toggle" class="lang-toggle" type="button" aria-label="View in English">English</button>
   </div>
-  <!-- TODO(오픈 전 실제 값으로 교체): 상호/대표자/사업자등록번호/주소/연락처.
-       통신판매업신고번호는 이 사이트에서 직접 결제를 받게 될 경우에만 채울 것. -->
+  <!-- 사업자정보/문의 이메일 값은 site-content.js에서 채운다(admin.html에서 편집). -->
   <div class="shell bizinfo" data-en="Name: [Business name] &middot; CEO: [CEO name] &middot; Registration No.: [000-00-00000] &middot; Address: [Business address] &middot; Mail-order sales No.: [if applicable] &middot; Contact: [email or phone]">상호 [상호명] · 대표자 [대표자명] · 사업자등록번호 [000-00-00000] · 주소 [사업장 주소] · 통신판매업신고번호 [해당 시 기재] · 문의 [이메일 또는 전화번호]</div>
 </footer>
 
+<script src="site-content.js"></script>
 <script>
 (function(){
   var toggle = document.getElementById('theme-toggle');

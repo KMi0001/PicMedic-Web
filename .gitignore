@@ -12,3 +12,8 @@ Thumbs.db
 sample_photos/
 run.log
 server.log
+
+# 사업자정보 등 site-content.js 편집용 로컬 전용 도구. public 저장소에
+# "관리자 페이지"로 노출되면 안 되므로 절대 커밋하지 않는다 — 로컬에서만
+# browser/ 폴더에 넣고 열어서 쓴 뒤 site-content.js만 커밋할 것.
+browser/admin.html
