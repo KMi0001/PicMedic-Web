@@ -170,21 +170,26 @@ nav.top .row{
 
 <section class="faq">
   <div class="shell">
-    <div class="qa">
-      <p class="q" data-en="Are my photos uploaded to a server?">제 사진이 서버에 업로드되나요?</p>
-      <p class="a" data-en="No. Diagnosis on this page runs entirely inside your browser and is never sent anywhere.">아니요. 이 페이지의 진단은 방문자의 브라우저 안에서만 처리되고, 어디로도 전송되지 않아요.</p>
-    </div>
-    <div class="qa">
-      <p class="q" data-en="Can I repair my photo here too?">복구도 여기서 할 수 있나요?</p>
-      <p class="a" data-en="Not yet — this page only offers free diagnosis for now. Repairing the file is being prepared for the PicMedic desktop version.">아니요, 지금은 진단까지만 무료로 제공돼요. 사진을 직접 복구하는 기능은 PicMedic 데스크톱 버전에서 준비 중이에요.</p>
-    </div>
-    <div class="qa">
-      <p class="q" data-en="Which file types are supported?">어떤 파일까지 지원하나요?</p>
-      <p class="a" data-en="HEIC is supported, along with JPEG, PNG, GIF, BMP and WEBP. TIFF isn't supported yet.">HEIC를 포함해 JPEG·PNG·GIF·BMP·WEBP 형식을 지원해요. TIFF는 아직 지원하지 않아요.</p>
-    </div>
-    <div class="qa">
-      <p class="q" data-en="Are my photos ever kept or looked at by anyone?">제 사진을 누가 보관하거나 볼 수 있나요?</p>
-      <p class="a" data-en="No. Nothing is uploaded, so there's nothing stored on our side to see.">아니요. 어디에도 업로드되지 않아서 저희 쪽에 남거나 볼 수 있는 사진 자체가 없어요.</p>
+    <!-- 기본값(JS 비활성 시 폴백)이자 site-content.js 로드 전 초기 렌더링.
+         site-content.js가 CONTENT.faq 배열 기준으로 이 안을 통째로 다시 그린다
+         (admin.html에서 편집). -->
+    <div id="faq-list">
+      <div class="qa">
+        <p class="q" data-en="Are my photos uploaded to a server?">제 사진이 서버에 업로드되나요?</p>
+        <p class="a" data-en="No. Diagnosis on this page runs entirely inside your browser and is never sent anywhere.">아니요. 이 페이지의 진단은 방문자의 브라우저 안에서만 처리되고, 어디로도 전송되지 않아요.</p>
+      </div>
+      <div class="qa">
+        <p class="q" data-en="Can I repair my photo here too?">복구도 여기서 할 수 있나요?</p>
+        <p class="a" data-en="Not yet — this page only offers free diagnosis for now. Repairing the file is being prepared for the PicMedic desktop version.">아니요, 지금은 진단까지만 무료로 제공돼요. 사진을 직접 복구하는 기능은 PicMedic 데스크톱 버전에서 준비 중이에요.</p>
+      </div>
+      <div class="qa">
+        <p class="q" data-en="Which file types are supported?">어떤 파일까지 지원하나요?</p>
+        <p class="a" data-en="HEIC is supported, along with JPEG, PNG, GIF, BMP and WEBP. TIFF isn't supported yet.">HEIC를 포함해 JPEG·PNG·GIF·BMP·WEBP 형식을 지원해요. TIFF는 아직 지원하지 않아요.</p>
+      </div>
+      <div class="qa">
+        <p class="q" data-en="Are my photos ever kept or looked at by anyone?">제 사진을 누가 보관하거나 볼 수 있나요?</p>
+        <p class="a" data-en="No. Nothing is uploaded, so there's nothing stored on our side to see.">아니요. 어디에도 업로드되지 않아서 저희 쪽에 남거나 볼 수 있는 사진 자체가 없어요.</p>
+      </div>
     </div>
   </div>
 </section>

@@ -12,8 +12,43 @@
       "mailOrderNo": { "ko": "[해당 시 기재]", "en": "[if applicable]" },
       "contact": "[이메일 또는 전화번호]"
     },
-    "contactEmail": "TODO@example.com"
+    "contactEmail": "TODO@example.com",
+    "faq": [
+      {
+        "q": { "ko": "제 사진이 서버에 업로드되나요?", "en": "Are my photos uploaded to a server?" },
+        "a": { "ko": "아니요. 이 페이지의 진단은 방문자의 브라우저 안에서만 처리되고, 어디로도 전송되지 않아요.", "en": "No. Diagnosis on this page runs entirely inside your browser and is never sent anywhere." }
+      },
+      {
+        "q": { "ko": "복구도 여기서 할 수 있나요?", "en": "Can I repair my photo here too?" },
+        "a": { "ko": "아니요, 지금은 진단까지만 무료로 제공돼요. 사진을 직접 복구하는 기능은 PicMedic 데스크톱 버전에서 준비 중이에요.", "en": "Not yet — this page only offers free diagnosis for now. Repairing the file is being prepared for the PicMedic desktop version." }
+      },
+      {
+        "q": { "ko": "어떤 파일까지 지원하나요?", "en": "Which file types are supported?" },
+        "a": { "ko": "HEIC를 포함해 JPEG·PNG·GIF·BMP·WEBP 형식을 지원해요. TIFF는 아직 지원하지 않아요.", "en": "HEIC is supported, along with JPEG, PNG, GIF, BMP and WEBP. TIFF isn't supported yet." }
+      },
+      {
+        "q": { "ko": "제 사진을 누가 보관하거나 볼 수 있나요?", "en": "Are my photos ever kept or looked at by anyone?" },
+        "a": { "ko": "아니요. 어디에도 업로드되지 않아서 저희 쪽에 남거나 볼 수 있는 사진 자체가 없어요.", "en": "No. Nothing is uploaded, so there's nothing stored on our side to see." }
+      }
+    ]
   };
+
+  function escapeHtml(str) {
+    return String(str)
+      .split("&").join("&amp;")
+      .split("<").join("&lt;")
+      .split(">").join("&gt;")
+      .split('"').join("&quot;");
+  }
+
+  function renderFaqListHtml() {
+    return CONTENT.faq.map(function (item) {
+      return '<div class="qa">' +
+        '<p class="q" data-en="' + escapeHtml(item.q.en) + '">' + escapeHtml(item.q.ko) + '</p>' +
+        '<p class="a" data-en="' + escapeHtml(item.a.en) + '">' + escapeHtml(item.a.ko) + '</p>' +
+        '</div>';
+    }).join("");
+  }
 
   function renderBizinfo(lang) {
     var b = CONTENT.bizinfo;
@@ -50,7 +85,13 @@
     footlinksEl.innerHTML = renderFootlinks("ko");
   }
 
+  var faqListEl = document.getElementById("faq-list");
+  if (faqListEl) {
+    faqListEl.innerHTML = renderFaqListHtml();
+  }
+
   window.PICMEDIC_SITE_CONTENT = CONTENT;
   window.PICMEDIC_RENDER_BIZINFO = renderBizinfo;
   window.PICMEDIC_RENDER_FOOTLINKS = renderFootlinks;
+  window.PICMEDIC_RENDER_FAQ_LIST = renderFaqListHtml;
 })();
