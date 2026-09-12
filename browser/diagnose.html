@@ -172,6 +172,23 @@
         </p>
       </div>
 
+      <div class="convert hidden" id="convert">
+        <h3 class="convert__title">다른 형식으로 저장</h3>
+        <div class="convert__row">
+          <select id="convert-format" class="convert__select">
+            <option value="jpeg">JPEG</option>
+            <option value="png">PNG</option>
+            <option value="webp">WEBP</option>
+          </select>
+          <div class="convert__quality-wrap" id="convert-quality-wrap">
+            <label for="convert-quality" class="convert__quality-label">품질 <span id="convert-quality-value">90</span></label>
+            <input type="range" id="convert-quality" min="10" max="100" value="90" />
+          </div>
+          <button id="convert-btn" class="button button--secondary convert__btn" type="button">다운로드</button>
+        </div>
+        <p class="convert__note">이 브라우저 탭 안에서 바로 변환돼요 — 어디로도 업로드되지 않아요.</p>
+      </div>
+
       <button id="retry-btn" class="button button--secondary">다른 사진 진단하기</button>
     </section>
 

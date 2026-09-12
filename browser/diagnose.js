@@ -541,5 +541,8 @@ async function diagnose(file) {
     height,
     fileSize: file.size,
     errorMessage: null,
+    // 형식 변환용 원본 해상도 캔버스. preview는 640px로 축소된 별도 캔버스라
+    // 변환 결과물로 못 쓴다(app.js의 "다른 형식으로 저장" 기능이 사용).
+    canvas,
   };
 }
