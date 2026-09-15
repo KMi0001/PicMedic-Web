@@ -70,13 +70,11 @@
   .guide-fab:hover{opacity:.9;}
 
   /* 이 페이지 전용 — 사진/동영상 두 슬롯 선택 UI (diagnose.html은 파일 하나만
-     고르면 되지만, 여기는 짝을 확인하는 거라 두 개를 나란히 고르게 한다). */
-  .lp-slots{display:flex;gap:16px;margin-bottom:20px;}
-  .lp-slot{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;}
+     고르면 되지만, 사진만 먼저 분석해보고 그 다음에 동영상을 고르게 한다). */
+  .lp-slot{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;margin:16px 0;}
   .lp-slot__label{margin:0 0 10px;font-size:12.5px;font-weight:600;color:var(--text-secondary);}
   .lp-slot__filename{margin:8px 0 0;font-size:12px;color:var(--text-secondary);word-break:break-all;min-height:1.4em;}
   .lp-slot__filename--filled{color:var(--text);font-weight:600;}
-  @media (max-width: 480px){.lp-slots{flex-direction:column;}}
 </style>
 
 <script>
@@ -117,24 +115,13 @@
     </header>
 
     <section id="picker" class="picker">
-      <div class="lp-slots">
-        <div class="lp-slot">
-          <p class="lp-slot__label">사진 (HEIC 또는 JPG)</p>
-          <button id="pick-image-btn" class="button button--secondary" type="button">사진 선택</button>
-          <p id="image-filename" class="lp-slot__filename"></p>
-        </div>
-        <div class="lp-slot">
-          <p class="lp-slot__label">동영상 (.MOV)</p>
-          <button id="pick-video-btn" class="button button--secondary" type="button">동영상 선택</button>
-          <p id="video-filename" class="lp-slot__filename"></p>
-        </div>
-      </div>
-
-      <button id="check-btn" class="button button--primary" type="button" disabled>확인하기</button>
+      <button id="pick-image-btn" class="button button--primary" type="button">사진 선택</button>
       <p class="picker__hint">
-        같은 사진을 찍을 때 아이폰이 같이 저장한 두 파일이에요 — 보통 파일명이
-        같고(예: IMG_1234.HEIC / IMG_1234.MOV), 원래 있던 폴더에 그대로 있다면
-        둘 다 아직 남아있을 거예요. 여기로 두 파일을 한꺼번에 끌어다 놓아도 돼요.
+        라이브 포토였는지 확인하고 싶은 사진(HEIC 또는 JPG)을 먼저 골라주세요 —
+        짝이었던 동영상이 있는지는 사진만 봐도 알 수 있어요. 짝이 있는 걸로
+        나오면, 그 동영상(.MOV) 파일을 추가로 골라서 진짜 짝이 맞는지까지
+        확인하고 다운로드할 수 있어요. 여기로 사진과 동영상을 한꺼번에
+        끌어다 놓아도 돼요.
       </p>
       <input type="file" id="image-input" accept="image/*,.heic,.heif" hidden />
       <input type="file" id="video-input" accept="video/*,.mov" hidden />
@@ -149,8 +136,14 @@
       <h2 id="result-filename" class="result__filename"></h2>
       <p id="result-message" class="result__message"></p>
 
+      <div id="video-step" class="lp-slot hidden">
+        <p class="lp-slot__label">동영상 (.MOV)</p>
+        <button id="pick-video-btn" class="button button--secondary" type="button">동영상 선택</button>
+        <p id="video-filename" class="lp-slot__filename"></p>
+      </div>
+
       <a id="download-btn" class="button button--primary hidden" download>동영상 파일 다운로드</a>
-      <button id="retry-btn" class="button button--secondary" type="button">다른 파일로 다시 확인하기</button>
+      <button id="retry-btn" class="button button--secondary" type="button">다른 사진으로 다시 확인하기</button>
     </section>
 
     <footer class="app__footer">
