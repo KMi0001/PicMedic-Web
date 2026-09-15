@@ -8,23 +8,18 @@
 <script src="https://cdn.jsdelivr.net/npm/libheif-js@1.19.8/libheif-wasm/libheif-bundle.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
-  /* 사이트 공통 내비/푸터 전용 색상 — style.css의 :root 토큰(민트 톤, 진단 카드가 씀)과
-     이름이 겹치면 카드 색까지 덮어써버려서 --nav-* 로 이름공간을 분리했다. index.html/faq.html과
-     같은 값(라이트/다크)을 써서 내비·푸터는 똑같이 보이지만, 진단 카드 자체는 아직
-     다크모드를 지원하지 않아 토글해도 카드는 라이트 톤 그대로 남는다. */
+  /* 사이트 공통 내비/푸터 전용 색상 — style.css의 :root 토큰(진단 카드가 씀)과
+     이름이 겹치면 카드 색까지 덮어써버려서 --nav-* 로 이름공간을 분리했다.
+     index.html/faq.html과 같은 값(gui/theme.py 팔레트)을 써서 내비·푸터·카드가
+     똑같이 보인다. 웹버전은 다크가 기본값(2026-09-11)이라 기본 :root에 DARK_COLORS를
+     두고 [data-theme="light"]에서만 LIGHT_COLORS로 덮어쓴다. */
   :root{
-    --nav-bg:#FFFFFF; --nav-text:#14181C; --nav-muted:#6B7280;
-    --nav-accent:#1F9E8C; --nav-hairline:#E7E9EC;
+    --nav-bg:#1E1A15; --nav-text:#EDE6D6; --nav-muted:#A79A82;
+    --nav-accent:#D9B54A; --nav-hairline:#3D362A;
   }
-  @media (prefers-color-scheme: dark){
-    :root:not([data-theme="light"]){
-      --nav-bg:#0E1113; --nav-text:#F1F3F2; --nav-muted:#8B9490;
-      --nav-accent:#39C9AE; --nav-hairline:#232826;
-    }
-  }
-  :root[data-theme="dark"]{
-    --nav-bg:#0E1113; --nav-text:#F1F3F2; --nav-muted:#8B9490;
-    --nav-accent:#39C9AE; --nav-hairline:#232826;
+  :root[data-theme="light"]{
+    --nav-bg:#F7F1E4; --nav-text:#2A2420; --nav-muted:#7A7060;
+    --nav-accent:#D9B54A; --nav-hairline:#E6DCC5;
   }
   /* nav — 화면 상단에 항상 고정, 모든 페이지 동일 */
   .site-nav{position:fixed;top:0;left:0;right:0;z-index:30;background:var(--nav-bg);border-bottom:1px solid var(--nav-hairline);}
@@ -109,10 +104,10 @@
         <a class="navlink" href="live-photo.html">라이브 포토</a>
         <a class="navcta" href="diagnose.html">무료로 진단하기</a>
         <span class="theme-toggle-group">
-          <span class="mode-label" data-en="Mode" aria-hidden="true">모드</span>
-          <button id="theme-toggle" class="theme-toggle" type="button" aria-label="다크 모드 전환" aria-pressed="false">
+          <button id="theme-toggle" class="theme-toggle" type="button" aria-label="다크 모드 전환" aria-pressed="true">
             <span class="track"><span class="knob"></span></span>
           </button>
+          <span class="mode-label" data-en="Mode" aria-hidden="true">모드</span>
         </span>
       </div>
     </div>
@@ -178,6 +173,23 @@
         </p>
       </div>
 
+      <div class="convert hidden" id="convert">
+        <h3 class="convert__title">다른 형식으로 저장</h3>
+        <div class="convert__row">
+          <select id="convert-format" class="convert__select">
+            <option value="jpeg">JPEG</option>
+            <option value="png">PNG</option>
+            <option value="webp">WEBP</option>
+          </select>
+          <div class="convert__quality-wrap" id="convert-quality-wrap">
+            <label for="convert-quality" class="convert__quality-label">품질 <span id="convert-quality-value">90</span></label>
+            <input type="range" id="convert-quality" min="10" max="100" value="90" />
+          </div>
+          <button id="convert-btn" class="button button--secondary convert__btn" type="button">다운로드</button>
+        </div>
+        <p class="convert__note">이 브라우저 탭 안에서 바로 변환돼요 — 어디로도 업로드되지 않아요.</p>
+      </div>
+
       <button id="retry-btn" class="button button--secondary">다른 사진 진단하기</button>
     </section>
 
@@ -199,15 +211,15 @@
   <footer class="site-footer">
     <div class="row">
       <span>PicMedic</span>
-      <span data-en='<a href="privacy-policy.html">Privacy Policy</a> &middot; <a href="mailto:TODO@example.com">Contact</a>'><a href="privacy-policy.html">개인정보처리방침</a> · <a href="mailto:TODO@example.com">문의하기</a></span>
+      <span class="footlinks" data-en='<a href="privacy-policy.html">Privacy Policy</a> &middot; <a href="mailto:TODO@example.com">Contact</a>'><a href="privacy-policy.html">개인정보처리방침</a> · <a href="mailto:TODO@example.com">문의하기</a></span>
       <span>© 2026 PicMedic</span>
       <button id="lang-toggle" class="lang-toggle" type="button" aria-label="View in English">English</button>
     </div>
-    <!-- TODO(오픈 전 실제 값으로 교체): 상호/대표자/사업자등록번호/주소/연락처.
-         통신판매업신고번호는 이 사이트에서 직접 결제를 받게 될 경우에만 채울 것. -->
+    <!-- 사업자정보/문의 이메일 값은 site-content.js에서 채운다(admin.html에서 편집). -->
     <div class="bizinfo" data-en="Name: [Business name] &middot; CEO: [CEO name] &middot; Registration No.: [000-00-00000] &middot; Address: [Business address] &middot; Mail-order sales No.: [if applicable] &middot; Contact: [email or phone]">상호 [상호명] · 대표자 [대표자명] · 사업자등록번호 [000-00-00000] · 주소 [사업장 주소] · 통신판매업신고번호 [해당 시 기재] · 문의 [이메일 또는 전화번호]</div>
   </footer>
 
+  <script src="site-content.js"></script>
   <script src="diagnose.js"></script>
   <script src="app.js"></script>
   <script>
@@ -216,7 +228,7 @@
     function isDark(){
       var explicit = document.documentElement.getAttribute('data-theme');
       if (explicit) return explicit === 'dark';
-      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+      return true; // 다크가 기본값(2026-09-11) — 시스템 설정과 무관하게 고정
     }
     function sync(){
       toggle.setAttribute('aria-pressed', isDark() ? 'true' : 'false');

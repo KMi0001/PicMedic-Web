@@ -7,43 +7,32 @@
 <link rel="icon" href="favicon.png" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
+/* gui/theme.py COLORS(버터·아이보리 + 톤온톤 잉크, 골드 포인트)와 동일한 값.
+   웹버전은 다크가 기본값(2026-09-11)이라 기본 :root에 DARK_COLORS를 두고
+   [data-theme="light"]에서만 LIGHT_COLORS로 덮어쓴다. */
 :root{
-  --bg:#FFFFFF;
-  --text:#14181C;
-  --muted:#6B7280;
-  --accent:#1F9E8C;
-  --accent-soft:#EAF6F3;
-  --hairline:#E7E9EC;
-  --success:#2FAF66;
-  --warning:#D9A441;
-  --danger:#DA5A5A;
-  --neutral-badge:#8FAFA0;
+  --bg:#1E1A15;
+  --text:#EDE6D6;
+  --muted:#A79A82;
+  --accent:#D9B54A;
+  --accent-soft:#3A3222;
+  --hairline:#3D362A;
+  --success:#8FA06B;
+  --warning:#D4934F;
+  --danger:#C77A6C;
+  --neutral-badge:#7A7060;
 }
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#0E1113;
-    --text:#F1F3F2;
-    --muted:#8B9490;
-    --accent:#39C9AE;
-    --accent-soft:#123029;
-    --hairline:#232826;
-    --success:#3FCB7B;
-    --warning:#E6B458;
-    --danger:#E37373;
-    --neutral-badge:#6B7A75;
-  }
-}
-:root[data-theme="dark"]{
-  --bg:#0E1113;
-  --text:#F1F3F2;
-  --muted:#8B9490;
-  --accent:#39C9AE;
-  --accent-soft:#123029;
-  --hairline:#232826;
-  --success:#3FCB7B;
-  --warning:#E6B458;
-  --danger:#E37373;
-  --neutral-badge:#6B7A75;
+:root[data-theme="light"]{
+  --bg:#F7F1E4;
+  --text:#2A2420;
+  --muted:#7A7060;
+  --accent:#D9B54A;
+  --accent-soft:#F1E6C6;
+  --hairline:#E6DCC5;
+  --success:#6E7F4E;
+  --warning:#B97A3A;
+  --danger:#A6453A;
+  --neutral-badge:#A79A82;
 }
 
 *{box-sizing:border-box;}
@@ -118,23 +107,30 @@ h1{
 .step:first-child{padding-left:0;}
 .step:last-child{border-right:none;padding-right:0;}
 .step .no{font-size:12px;color:var(--accent);margin-bottom:10px;}
-.step .tag{
-  display:inline-block;font-size:10px;font-weight:600;letter-spacing:.04em;
-  color:var(--muted);border:1px solid var(--hairline);border-radius:20px;
-  padding:2px 8px;margin-bottom:8px;
-}
 .step h3{font-size:16px;font-weight:700;margin:0 0 8px;}
 .step p{font-size:13.5px;line-height:1.65;color:var(--muted);margin:0;}
 @media (max-width:600px){
   .steps-grid{grid-template-columns:1fr;gap:24px;}
   .step{border-right:none;padding:0;}
 }
+/* 지원 포맷을 "이렇게 진행돼요" 섹션 안으로 옮겨온 자리(2026-09-11) —
+   더 이상 별도 섹션이 아니라서 헤더만큼 크게 강조할 필요 없이 작은
+   라벨로 둠. */
+.steps-formats{
+  margin-top:32px;padding-top:24px;border-top:1px solid var(--hairline);
+  text-align:center;
+}
+.steps-formats__label{
+  display:block;font-size:12px;letter-spacing:.06em;color:var(--muted);margin-bottom:6px;
+}
+.steps-formats__list{font-size:14px;color:var(--text);}
 
 /* scenarios / badge legend (reuse the qa row pattern) */
 .scenarios{border-top:1px solid var(--hairline);padding:44px 0;}
 .badges{border-top:1px solid var(--hairline);padding:44px 0;}
-.scenarios h2, .badges h2, .faq h2{
-  font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--text);margin:0 0 24px;
+.scenarios h2, .badges h2, .faq h2, .steps h2{
+  font-size:clamp(22px,3.4vw,28px);font-weight:700;color:var(--text);margin:0 0 24px;
+  text-align:center;
 }
 .qa .q .tag{margin-right:8px;vertical-align:1px;}
 .status-badge{
@@ -147,6 +143,21 @@ h1{
 .status-badge--안내{background:var(--neutral-badge);}
 .badge-icon{margin-right:8px;font-size:15px;vertical-align:-1px;}
 .badges .q{font-weight:700;}
+/* 배지 영역/설명 영역을 세로 구분선으로 확실히 나눈 2단 레이아웃(2026-09-11).
+   배지 라벨 폭이 서로 달라서(정상/의심/손상 알약형 vs 인화 적합 등 아이콘형)
+   고정폭 칼럼으로 맞춰야 설명 텍스트 시작 위치가 가지런해진다. 좁은
+   화면에서는 구분선 없이 다시 위아래로. */
+.badges .qa{display:flex;align-items:stretch;gap:0;}
+.badges .qa .q{
+  margin:0;flex:0 0 128px;display:flex;align-items:center;
+  padding-right:16px;border-right:1px solid var(--hairline);
+}
+.badges .qa .a{margin:0;padding-left:16px;display:flex;align-items:center;}
+@media (max-width:480px){
+  .badges .qa{flex-direction:column;align-items:flex-start;gap:6px;}
+  .badges .qa .q{flex:none;border-right:none;padding-right:0;}
+  .badges .qa .a{padding-left:0;}
+}
 
 /* statement band */
 .statement{background:var(--accent-soft);}
@@ -159,7 +170,7 @@ h1{
 
 /* formats */
 .formats{border-top:1px solid var(--hairline);padding:36px 0;}
-.formats .label{font-size:11.5px;letter-spacing:.08em;color:var(--muted);display:block;margin-bottom:10px;}
+.formats .label{font-size:clamp(22px,3.4vw,28px);letter-spacing:.08em;color:var(--muted);display:block;margin-bottom:10px;}
 .formats .list{font-size:15px;color:var(--text);}
 
 /* faq */
@@ -227,10 +238,10 @@ h1{
       <a href="live-photo.html" data-en="Live Photo">라이브 포토</a>
       <a href="diagnose.html" class="navcta" data-en="Diagnose for free">무료로 진단하기</a>
       <span class="theme-toggle-group">
-        <span class="mode-label" data-en="Mode" aria-hidden="true">모드</span>
-        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="다크 모드 전환" aria-pressed="false">
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="다크 모드 전환" aria-pressed="true">
           <span class="track"><span class="knob"></span></span>
         </button>
+        <span class="mode-label" data-en="Mode" aria-hidden="true">모드</span>
       </span>
     </div>
   </div>
@@ -249,7 +260,7 @@ h1{
 
 <section class="scenarios" id="scenarios">
   <div class="shell">
-    <h2 class="mono" data-en="WHEN TO USE IT">이럴 때 써보세요</h2>
+    <h2 data-en="WHEN TO USE IT">이럴 때 써보세요</h2>
     <div class="qa">
       <p class="q" data-en="My photo won't open">사진이 안 열려요</p>
       <p class="a" data-en="It saved fine but won't open, or only shows a gray screen — part or all of the file may be damaged.">저장은 됐는데 열리지 않거나 회색 화면만 뜬다면, 파일 일부 또는 전체가 손상됐을 수 있어요.</p>
@@ -274,24 +285,28 @@ h1{
 </section>
 
 <section class="steps" id="steps">
-  <div class="shell steps-grid">
-    <div class="step">
-      <div class="no mono">01</div>
-      <span class="tag" data-en="FREE">무료</span>
-      <h3 data-en="Diagnose">진단</h3>
-      <p data-en="We automatically check format, corruption, and quality the moment you pick a file.">파일을 선택하면 형식·손상·화질까지 자동으로 확인해요.</p>
+  <div class="shell">
+    <h2 data-en="HOW IT WORKS">이렇게 진행돼요</h2>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="no mono">01</div>
+        <h3 data-en="Diagnose">진단</h3>
+        <p data-en="We automatically check format, corruption, and quality the moment you pick a file.">파일을 선택하면 형식·손상·화질까지 자동으로 확인해요.</p>
+      </div>
+      <div class="step">
+        <div class="no mono">02</div>
+        <h3 data-en="See why">원인 확인</h3>
+        <p data-en="We show you exactly why it won't open or where it's damaged, right in the result screen.">왜 안 열리는지, 어디가 손상됐는지 결과 화면에서 바로 알려드려요.</p>
+      </div>
+      <div class="step">
+        <div class="no mono">03</div>
+        <h3 data-en="Repair">복구</h3>
+        <p data-en="Actually repairing the file is handled by the PicMedic desktop app, currently in the works.">직접 복구하는 기능은 준비 중인 PicMedic 데스크톱 버전에서 제공돼요.</p>
+      </div>
     </div>
-    <div class="step">
-      <div class="no mono">02</div>
-      <span class="tag" data-en="FREE">무료</span>
-      <h3 data-en="See why">원인 확인</h3>
-      <p data-en="We show you exactly why it won't open or where it's damaged, right in the result screen.">왜 안 열리는지, 어디가 손상됐는지 결과 화면에서 바로 알려드려요.</p>
-    </div>
-    <div class="step">
-      <div class="no mono">03</div>
-      <span class="tag" data-en="DESKTOP VERSION">데스크톱 버전</span>
-      <h3 data-en="Repair">복구</h3>
-      <p data-en="Actually repairing the file is handled by the PicMedic desktop app, currently in the works.">직접 복구하는 기능은 준비 중인 PicMedic 데스크톱 버전에서 제공돼요.</p>
+    <div class="steps-formats">
+      <span class="steps-formats__label" data-en="SUPPORTED FORMATS">지원 포맷</span>
+      <span class="steps-formats__list">HEIC · JPEG · PNG · GIF · BMP · WEBP</span>
     </div>
   </div>
 </section>
@@ -303,16 +318,9 @@ h1{
   </div>
 </section>
 
-<section class="formats">
-  <div class="shell">
-    <span class="label mono" data-en="SUPPORTED FORMATS">지원 포맷</span>
-    <div class="list">HEIC · JPEG · PNG · GIF · BMP · WEBP</div>
-  </div>
-</section>
-
 <section class="badges" id="badges">
   <div class="shell">
-    <h2 class="mono" data-en="WHAT THE BADGES MEAN">배지가 뭘 뜻하나요</h2>
+    <h2 data-en="WHAT THE BADGES MEAN">배지가 뭘 뜻하나요</h2>
     <div class="qa">
       <p class="q"><span class="status-badge status-badge--정상" data-en="Normal">정상</span></p>
       <p class="a" data-en="Opens without any issues.">문제없이 열리는 사진이에요.</p>
@@ -352,22 +360,22 @@ h1{
 <footer class="site-footer">
   <div class="shell footmeta">
     <span>PicMedic</span>
-    <span data-en='<a href="privacy-policy.html">Privacy Policy</a> &middot; <a href="mailto:TODO@example.com">Contact</a>'><a href="privacy-policy.html">개인정보처리방침</a> · <a href="mailto:TODO@example.com">문의하기</a></span>
+    <span class="footlinks" data-en='<a href="privacy-policy.html">Privacy Policy</a> &middot; <a href="mailto:TODO@example.com">Contact</a>'><a href="privacy-policy.html">개인정보처리방침</a> · <a href="mailto:TODO@example.com">문의하기</a></span>
     <span>© 2026 PicMedic</span>
     <button id="lang-toggle" class="lang-toggle" type="button" aria-label="View in English">English</button>
   </div>
-  <!-- TODO(오픈 전 실제 값으로 교체): 상호/대표자/사업자등록번호/주소/연락처.
-       통신판매업신고번호는 이 사이트에서 직접 결제를 받게 될 경우에만 채울 것. -->
+  <!-- 사업자정보/문의 이메일 값은 site-content.js에서 채운다(admin.html에서 편집). -->
   <div class="shell bizinfo" data-en="Name: [Business name] &middot; CEO: [CEO name] &middot; Registration No.: [000-00-00000] &middot; Address: [Business address] &middot; Mail-order sales No.: [if applicable] &middot; Contact: [email or phone]">상호 [상호명] · 대표자 [대표자명] · 사업자등록번호 [000-00-00000] · 주소 [사업장 주소] · 통신판매업신고번호 [해당 시 기재] · 문의 [이메일 또는 전화번호]</div>
 </footer>
 
+<script src="site-content.js"></script>
 <script>
 (function(){
   var toggle = document.getElementById('theme-toggle');
   function isDark(){
     var explicit = document.documentElement.getAttribute('data-theme');
     if (explicit) return explicit === 'dark';
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return true; // 다크가 기본값(2026-09-11) — 시스템 설정과 무관하게 고정
   }
   function sync(){
     toggle.setAttribute('aria-pressed', isDark() ? 'true' : 'false');
