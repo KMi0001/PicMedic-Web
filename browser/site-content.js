@@ -34,7 +34,22 @@
         "q": { "ko": "라이브포토 진단은 뭘 해주나요?", "en": "What does the Live Photo Check do?" },
         "a": { "ko": "사진(HEIC/JPG)과 동영상(.MOV)이 애플이 촬영 당시 심어둔 같은 식별자를 공유하는지 대조해서, 원래 짝이었던 라이브 포토가 맞는지 확인하고 동영상을 받을 수 있게 해줘요. 폴더째로 올리면 여러 장을 한꺼번에 찾아주지만, 다운로드는 한 번에 하나씩이에요 — 한꺼번에 정리·내보내기는 PicMedic 데스크톱 버전에서 할 수 있어요.", "en": "It checks whether a photo (HEIC/JPG) and a video (.MOV) share the same identifier Apple embeds at capture time, confirming they were originally a Live Photo pair and letting you download the video. Uploading a whole folder finds many at once, but downloads are still one at a time — batch organizing/exporting is available in the PicMedic desktop version." }
       }
-    ]
+    ],
+    // 각 페이지 하단(app__footer)에 뜨는 짧은 안내문구 — admin.html에서 페이지별로
+    // 따로 고칠 수 있다. ko가 빈 문자열이면 그 페이지는 안내 문단 자체를 숨긴다
+    // (2026-09-16, 사용자 요청 — 사진 진단 페이지는 데스크톱 버전이 나올 때까지
+    // 비워두고, 나중에 완성되면 admin.html에서 채워 넣기로 함).
+    "pageNotes": {
+      "diagnose": { "ko": "", "en": "" },
+      "livePhoto": {
+        "ko": "손상된 사진을 직접 복구하는 <strong>PicMedic 데스크톱 버전</strong>에는 여러 장을 한 번에 찾아 정리하는 기능도 있어요.",
+        "en": "The <strong>PicMedic desktop version</strong> can find and organize many Live Photos at once, and repair damaged ones too."
+      },
+      "convert": {
+        "ko": "여러 장을 한 번에 바꾸거나 손상된 사진을 복구하는 기능은 <strong>PicMedic 데스크톱 버전</strong>에 있어요.",
+        "en": "Converting many photos at once, or repairing damaged ones, is available in the <strong>PicMedic desktop version</strong>."
+      }
+    }
   };
 
   function escapeHtml(str) {
@@ -70,6 +85,10 @@
       " · 문의 " + b.contact;
   }
 
+  function renderPageNote(key) {
+    return (CONTENT.pageNotes && CONTENT.pageNotes[key]) || { ko: "", en: "" };
+  }
+
   function renderFootlinks(lang) {
     if (lang === "en") {
       return '<a href="privacy-policy.html">Privacy Policy</a> &middot; <a href="mailto:' + CONTENT.contactEmail + '">Contact</a>';
@@ -94,8 +113,22 @@
     faqListEl.innerHTML = renderFaqListHtml();
   }
 
+  var pageNoteEl = document.querySelector("[data-page-note]");
+  if (pageNoteEl) {
+    var note = renderPageNote(pageNoteEl.getAttribute("data-page-note"));
+    var pageNoteTextEl = pageNoteEl.querySelector("p");
+    if (note.ko) {
+      pageNoteTextEl.setAttribute("data-en", note.en);
+      pageNoteTextEl.innerHTML = note.ko;
+      pageNoteEl.classList.remove("hidden");
+    } else {
+      pageNoteEl.classList.add("hidden");
+    }
+  }
+
   window.PICMEDIC_SITE_CONTENT = CONTENT;
   window.PICMEDIC_RENDER_BIZINFO = renderBizinfo;
   window.PICMEDIC_RENDER_FOOTLINKS = renderFootlinks;
   window.PICMEDIC_RENDER_FAQ_LIST = renderFaqListHtml;
+  window.PICMEDIC_RENDER_PAGE_NOTE = renderPageNote;
 })();
