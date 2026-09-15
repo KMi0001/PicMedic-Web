@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" />
-<title>PicMedic</title>
+<title>PicMedic — 변환하기</title>
 <link rel="icon" href="favicon.png" />
 <link rel="stylesheet" href="style.css" />
 <script src="https://cdn.jsdelivr.net/npm/libheif-js@1.19.8/libheif-wasm/libheif-bundle.js"></script>
@@ -10,7 +10,7 @@
 <style>
   /* 사이트 공통 내비/푸터 전용 색상 — style.css의 :root 토큰(진단 카드가 씀)과
      이름이 겹치면 카드 색까지 덮어써버려서 --nav-* 로 이름공간을 분리했다.
-     index.html/faq.html과 같은 값(gui/theme.py 팔레트)을 써서 내비·푸터·카드가
+     다른 페이지와 같은 값(gui/theme.py 팔레트)을 써서 내비·푸터·카드가
      똑같이 보인다. 웹버전은 다크가 기본값(2026-09-11)이라 기본 :root에 DARK_COLORS를
      두고 [data-theme="light"]에서만 LIGHT_COLORS로 덮어쓴다. */
   :root{
@@ -21,7 +21,6 @@
     --nav-bg:#F7F1E4; --nav-text:#2A2420; --nav-muted:#7A7060;
     --nav-accent:#D9B54A; --nav-hairline:#E6DCC5;
   }
-  /* nav — 화면 상단에 항상 고정, 모든 페이지 동일 */
   .site-nav{position:fixed;top:0;left:0;right:0;z-index:30;background:var(--nav-bg);border-bottom:1px solid var(--nav-hairline);}
   body{padding-top:72px;}
   .site-nav .row{max-width:720px;margin:0 auto;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;}
@@ -41,14 +40,10 @@
   .theme-toggle[aria-pressed="true"] .knob{transform:translateX(16px);}
   @media (prefers-reduced-motion: reduce){.theme-toggle .track, .theme-toggle .knob{transition:none;}}
 
-  /* 안내문구(사진이 서버로 전송되지 않는다는 안내) — style.css는 이걸 화면 하단
-     고정 바로 만들지만, 이 페이지에선 메인 콘텐츠 영역 가장 마지막 요소로
-     자연스럽게 흘러가게 고정을 해제한다. 위치는 body 쪽 </main> 바로 앞으로 옮김. */
   .privacy-note{
     position:static; left:auto; bottom:auto; transform:none;
     width:auto; max-width:none; padding:0; margin-top:32px;
   }
-  /* site footer — 화면 하단에 항상 고정, 모든 페이지 동일 */
   .site-footer{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--nav-bg);border-top:1px solid var(--nav-hairline);}
   .app{padding-bottom:calc(64px + 104px);}
   .site-footer .row{
@@ -58,10 +53,6 @@
   }
   .site-footer a{color:var(--nav-muted);text-decoration:none;}
   .site-footer a:hover{color:var(--nav-text);}
-  /* 사업자 정보 — 오픈 전 실제 값으로 교체할 자리(2026-09-11, 사용자 요청으로
-     폼만 미리 짜둠). 통신판매업신고번호는 이 사이트에서 직접 결제를 받을 때만
-     필요 — 지금은 무료 진단만 제공하고 실제 결제는 MS 스토어에서 이뤄지므로
-     해당 없을 수 있음(확정은 법률 검토 필요). */
   .bizinfo{
     max-width:720px;margin:0 auto;padding:0 24px 10px;font-family:'IBM Plex Sans KR','Malgun Gothic',sans-serif;
     font-size:10.5px;line-height:1.6;color:var(--nav-muted);opacity:.75;
@@ -71,9 +62,6 @@
     text-decoration:underline;text-underline-offset:3px;cursor:pointer;
   }
   .lang-toggle:hover{color:var(--nav-text);}
-
-  /* 임시 사용방법 링크 — index.html/faq.html과 동일 (정식 도움말 진입점이
-     정해지기 전까지의 임시 배치) */
   .guide-fab{
     position:fixed;right:20px;bottom:76px;z-index:25;
     background:var(--nav-accent);color:#fff;font-family:'IBM Plex Sans KR','Malgun Gothic',sans-serif;
@@ -82,10 +70,11 @@
   }
   .guide-fab:hover{opacity:.9;}
 
-  /* "라이브 포토였을 수도" 태그 — 다른 result__tag는 그냥 정보용 표시지만
-     이건 live-photo.html로 이어지는 링크라 누를 수 있다는 걸 색으로 구분한다. */
-  .result__tag--link{color:var(--primary);border-color:var(--primary);text-decoration:none;cursor:pointer;}
-  .result__tag--link:hover{background-color:var(--selection);}
+  /* 이 페이지 전용 — 진단 없이 바로 변환만 하므로 convert__row를 큰 버튼과
+     세로로 쌓는다(diagnose.html 결과 화면 안의 작은 보조 기능일 때와 다르게
+     여기서는 이게 페이지의 주된 동작이라 더 눈에 띄어야 함). */
+  .convert__row{margin:16px 0 0;}
+  #convert-btn{width:100%;margin-top:14px;}
 </style>
 
 <script>
@@ -121,87 +110,47 @@
 
   <main class="app">
     <header class="app__header">
-      <h1>PicMedic</h1>
-      <p class="app__tagline">안 열리거나, 흐릿하거나, 이상하게 찍힌 사진 이유를 알려드려요.</p>
-      <p class="app__description">형식·손상·해상도까지 한 번에 진단해드려요.</p>
+      <h1>사진 변환하기</h1>
+      <p class="app__tagline">진단 없이, 사진 형식만 바로 바꾸고 싶을 때.</p>
+      <p class="app__description">HEIC를 포함해 JPEG·PNG·GIF·BMP·WEBP 사진을 JPEG/PNG/WEBP로 바꿔서 받을 수 있어요.</p>
     </header>
 
-    <section id="scenarios" class="scenarios">
-      <div class="scenario">
-        <span class="scenario__icon" aria-hidden="true">🩺</span>
-        <p class="scenario__text">사진이 안 열려요</p>
-      </div>
-      <div class="scenario">
-        <span class="scenario__icon" aria-hidden="true">🔍</span>
-        <p class="scenario__text">흐릿하거나 이상하게 나왔어요</p>
-      </div>
-      <div class="scenario">
-        <span class="scenario__icon" aria-hidden="true">🖼️</span>
-        <p class="scenario__text">인화 맡기기 전에 확인하고 싶어요</p>
-      </div>
-    </section>
-
     <section id="picker" class="picker">
-      <button id="pick-btn" class="button button--primary">사진 선택</button>
-      <p class="picker__hint">카메라 사진부터 캡처본까지, 사진이라면 뭐든요. 여기로 끌어다 놓아도 돼요.</p>
+      <button id="pick-btn" class="button button--primary" type="button">사진 선택</button>
+      <p class="picker__hint">바꾸고 싶은 사진을 골라주세요. 여기로 끌어다 놓아도 돼요.</p>
       <input type="file" id="file-input" accept="image/*,.heic,.heif" hidden />
     </section>
 
     <section id="loading" class="loading hidden">
-      <p>진단 중...</p>
+      <p>불러오는 중...</p>
     </section>
 
     <section id="result" class="result hidden">
-      <div class="result__preview-wrap hidden" id="result-preview-wrap">
+      <div class="result__preview-wrap" id="result-preview-wrap">
         <img class="result__preview" id="result-preview" alt="선택한 사진 미리보기" />
       </div>
 
-      <div class="result__badge" id="result-badge"></div>
-      <span id="result-screenshot-tag" class="result__tag hidden">스크린샷</span>
-      <a id="result-live-photo-tag" class="result__tag result__tag--link hidden" href="live-photo.html">라이브포토</a>
       <h2 id="result-filename" class="result__filename"></h2>
-      <p id="result-message" class="result__message"></p>
 
-      <div class="cert hidden" id="cert">
-        <span class="cert__icon" id="cert-icon"></span>
-        <div class="cert__text">
-          <p class="cert__label" id="cert-label"></p>
-          <p class="cert__hint">화질 · 표준 인화 사이즈(4x6") 기준 추정이에요</p>
+      <div class="convert__row">
+        <select id="convert-format" class="convert__select">
+          <option value="jpeg">JPEG</option>
+          <option value="png">PNG</option>
+          <option value="webp">WEBP</option>
+        </select>
+        <div class="convert__quality-wrap" id="convert-quality-wrap">
+          <label for="convert-quality" class="convert__quality-label">품질 <span id="convert-quality-value">90</span></label>
+          <input type="range" id="convert-quality" min="10" max="100" value="90" />
         </div>
       </div>
+      <button id="convert-btn" class="button button--primary" type="button">변환해서 다운로드</button>
+      <p class="convert__note">이 브라우저 탭 안에서 바로 변환돼요 — 어디로도 업로드되지 않아요.</p>
 
-      <dl class="result__details" id="result-details"></dl>
-
-      <div class="print-suitability hidden" id="print-suitability">
-        <h3 class="print-suitability__title">인화 적합성</h3>
-        <div class="print-suitability__grid" id="print-suitability-grid"></div>
-        <p class="print-suitability__note hidden" id="print-suitability-note">
-          화질 이슈가 있어 인화하면 더 도드라져 보일 수 있어요.
-        </p>
-      </div>
-
-      <div class="convert hidden" id="convert">
-        <h3 class="convert__title">다른 형식으로 저장</h3>
-        <div class="convert__row">
-          <select id="convert-format" class="convert__select">
-            <option value="jpeg">JPEG</option>
-            <option value="png">PNG</option>
-            <option value="webp">WEBP</option>
-          </select>
-          <div class="convert__quality-wrap" id="convert-quality-wrap">
-            <label for="convert-quality" class="convert__quality-label">품질 <span id="convert-quality-value">90</span></label>
-            <input type="range" id="convert-quality" min="10" max="100" value="90" />
-          </div>
-          <button id="convert-btn" class="button button--secondary convert__btn" type="button">다운로드</button>
-        </div>
-        <p class="convert__note">이 브라우저 탭 안에서 바로 변환돼요 — 어디로도 업로드되지 않아요.</p>
-      </div>
-
-      <button id="retry-btn" class="button button--secondary">다른 사진 진단하기</button>
+      <button id="retry-btn" class="button button--secondary" type="button">다른 사진 변환하기</button>
     </section>
 
     <footer class="app__footer">
-      <p>진단은 여기까지 무료예요. 손상된 사진을 직접 복구하는 <strong>PicMedic 데스크톱 버전</strong>도 준비하고 있어요.</p>
+      <p>여러 장을 한 번에 바꾸거나 손상된 사진을 복구하는 기능은 <strong>PicMedic 데스크톱 버전</strong>에 있어요.</p>
     </footer>
 
     <p class="privacy-note">
@@ -209,7 +158,7 @@
         <circle class="privacy-note__icon-bg" cx="8" cy="8" r="8" />
         <path class="privacy-note__icon-check" d="M4.5 8.3l2.3 2.3L11.5 5.8" />
       </svg>
-      <span>사진은 서버로 전송되지 않고, 이 브라우저 탭 안에서만 분석됩니다.</span>
+      <span>사진은 서버로 전송되지 않고, 이 브라우저 탭 안에서만 처리됩니다.</span>
     </p>
   </main>
 
@@ -227,9 +176,8 @@
   </footer>
 
   <script src="site-content.js"></script>
-  <script src="live-photo-core.js"></script>
   <script src="diagnose.js"></script>
-  <script src="app.js"></script>
+  <script src="convert-app.js"></script>
   <script>
   (function(){
     var toggle = document.getElementById('theme-toggle');
