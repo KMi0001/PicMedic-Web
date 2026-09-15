@@ -218,6 +218,9 @@ function findHeicExifBytes(bytes) {
 // 공개 API
 // ---------------------------------------------------------------------------
 
+const IMAGE_EXTENSIONS = new Set([".heic", ".heif", ".jpg", ".jpeg"]);
+const VIDEO_EXTENSIONS = new Set([".mov", ".mp4", ".m4v"]);
+
 function extensionOf(filename) {
   const idx = filename.lastIndexOf(".");
   return idx === -1 ? "" : filename.slice(idx).toLowerCase();
@@ -253,4 +256,66 @@ async function checkLivePhotoPair(imageFile, videoFile) {
     imageHadMetadata: imageUuids.size > 0,
     videoHadMetadata: videoUuids.size > 0,
   };
+}
+
+function yieldToUI() {
+  return new Promise((resolve) => setTimeout(resolve, 0));
+}
+
+// 폴더째로 고른 파일 목록(webkitdirectory) 안에서 라이브 포토 짝을 한꺼번에
+// 찾는다 — 데스크톱판 core/live_photo_finder.py::find_live_photo_matches와
+// 같은 알고리즘이다. 사진 하나의 EXIF에는 진짜 Content Identifier 말고도
+// 다른 UUID(DocumentID 등)가 같이 들어있는 경우가 흔해서, 그 UUID들이
+// 가리키는 MOV가 여러 개로 갈리면(어느 쪽이 진짜인지 모호하면) 매칭시키지
+// 않는다 — 그렇지 않으면 사진 한 장이 사진과 무관한 동영상 여러 개와 동시에
+// 매칭돼버린다(데스크톱판에서 실제로 겪은 버그, core/live_photo_finder.py
+// 커밋 참고). MOV 하나도 결과에 한 번만 쓰이게 한다 — 같은 사진이 폴더
+// 여러 곳에 중복 백업돼 있어도 동영상을 여러 번 내보내지 않기 위함.
+async function findLivePhotoMatchesInFiles(files, onProgress) {
+  const imageFiles = [];
+  const movFiles = [];
+  for (const f of files) {
+    const ext = extensionOf(f.name);
+    if (VIDEO_EXTENSIONS.has(ext)) movFiles.push(f);
+    else if (IMAGE_EXTENSIONS.has(ext)) imageFiles.push(f);
+  }
+
+  const total = imageFiles.length + movFiles.length;
+  let done = 0;
+
+  const uuidToMovs = new Map();
+  for (const movFile of movFiles) {
+    done += 1;
+    if (onProgress) onProgress(done, total, movFile.name);
+    const uuids = await extractUuidsFromVideo(movFile);
+    for (const u of uuids) {
+      if (!uuidToMovs.has(u)) uuidToMovs.set(u, []);
+      uuidToMovs.get(u).push(movFile);
+    }
+    if (done % 15 === 0) await yieldToUI();
+  }
+
+  const matches = [];
+  const usedMovs = new Set();
+  for (const imageFile of imageFiles) {
+    done += 1;
+    if (onProgress) onProgress(done, total, imageFile.name);
+    const uuids = await extractUuidsFromImage(imageFile);
+    if (uuids.size > 0) {
+      const candidateMovs = new Set();
+      for (const u of uuids) {
+        const movs = uuidToMovs.get(u);
+        if (movs) for (const m of movs) candidateMovs.add(m);
+      }
+      if (candidateMovs.size === 1) {
+        const movFile = [...candidateMovs][0];
+        if (!usedMovs.has(movFile)) {
+          usedMovs.add(movFile);
+          matches.push({ imageFile, movFile });
+        }
+      }
+    }
+    if (done % 15 === 0) await yieldToUI();
+  }
+  return matches;
 }

@@ -75,6 +75,21 @@
   .lp-slot__label{margin:0 0 10px;font-size:12.5px;font-weight:600;color:var(--text-secondary);}
   .lp-slot__filename{margin:8px 0 0;font-size:12px;color:var(--text-secondary);word-break:break-all;min-height:1.4em;}
   .lp-slot__filename--filled{color:var(--text);font-weight:600;}
+
+  /* 폴더째로 한꺼번에 확인하기 진입점 — 사진 하나 고르기가 주된 흐름이라
+     눈에 덜 띄는 텍스트 링크로 둔다. */
+  .picker__bulk{margin:14px 0 0;font-size:12px;color:var(--text-secondary);}
+  .link-btn{background:none;border:none;padding:0;font:inherit;font-size:inherit;color:var(--primary);text-decoration:underline;text-underline-offset:2px;cursor:pointer;}
+  .link-btn:hover{color:var(--primary-hover);}
+
+  /* 폴더 스캔 결과 목록 — 찾은 짝마다 한 줄(파일명 + 다운로드 버튼). */
+  .lp-bulk-list{max-height:360px;overflow-y:auto;border:1px solid var(--border);border-radius:10px;margin:16px 0;}
+  .lp-bulk-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:1px solid var(--border);}
+  .lp-bulk-row:last-child{border-bottom:none;}
+  .lp-bulk-row__name{font-size:12.5px;color:var(--text);word-break:break-all;}
+  .lp-bulk-row__btn{flex:0 0 auto;padding:6px 12px;font-size:12px;border-radius:6px;background-color:var(--primary);color:var(--on-primary);text-decoration:none;font-weight:600;}
+  .lp-bulk-row__btn:hover{background-color:var(--primary-hover);}
+  .lp-bulk-empty{padding:20px;text-align:center;font-size:13px;color:var(--text-secondary);}
 </style>
 
 <script>
@@ -125,10 +140,16 @@
       </p>
       <input type="file" id="image-input" accept="image/*,.heic,.heif" hidden />
       <input type="file" id="video-input" accept="video/*,.mov" hidden />
+      <input type="file" id="folder-input" webkitdirectory multiple hidden />
+
+      <p class="picker__bulk">
+        사진이 여러 장이면
+        <button id="pick-folder-btn" class="link-btn" type="button">폴더째로 한꺼번에 확인하기</button>
+      </p>
     </section>
 
     <section id="loading" class="loading hidden">
-      <p>확인하는 중...</p>
+      <p id="loading-text">확인하는 중...</p>
     </section>
 
     <section id="result" class="result hidden">
@@ -144,6 +165,13 @@
 
       <a id="download-btn" class="button button--primary hidden" download>동영상 파일 다운로드</a>
       <button id="retry-btn" class="button button--secondary" type="button">다른 사진으로 다시 확인하기</button>
+    </section>
+
+    <section id="bulk-result" class="result hidden">
+      <h2 id="bulk-result-title" class="result__filename"></h2>
+      <p id="bulk-result-message" class="result__message"></p>
+      <div id="bulk-list" class="lp-bulk-list"></div>
+      <button id="bulk-retry-btn" class="button button--secondary" type="button">다른 폴더로 다시 확인하기</button>
     </section>
 
     <footer class="app__footer">

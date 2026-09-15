@@ -9,28 +9,44 @@
  *   2) 동영상까지 고르면 checkLivePhotoPair()로 둘이 진짜 짝인지 대조해서
  *      최종 확인/다운로드를 보여준다.
  * 사진+동영상을 한꺼번에 끌어다 놓으면 1단계를 건너뛰고 바로 2단계로 간다.
+ *
+ * "폴더째로 한꺼번에 확인하기"는 별도 흐름 — webkitdirectory로 폴더 안
+ * 파일을 전부 읽어서 live-photo-core.js::findLivePhotoMatchesInFiles()로
+ * 짝을 다 찾고, 찾은 목록을 보여준다(2026-09-15, 사용자 요청 — 여러 장을
+ * 한 번에 처리하고 싶은데 결과는 ZIP 없이 목록+개별 다운로드로).
+ * VIDEO_EXTENSIONS/IMAGE_EXTENSIONS는 live-photo-core.js가 이미 선언한
+ * 전역을 그대로 쓴다(플레인 스크립트라 모듈 없이 전역을 공유함).
  */
 
 const imageInput = document.getElementById("image-input");
 const videoInput = document.getElementById("video-input");
+const folderInput = document.getElementById("folder-input");
 const pickImageBtn = document.getElementById("pick-image-btn");
 const pickVideoBtn = document.getElementById("pick-video-btn");
+const pickFolderBtn = document.getElementById("pick-folder-btn");
 const videoStepEl = document.getElementById("video-step");
 const videoFilenameEl = document.getElementById("video-filename");
 const pickerSection = document.getElementById("picker");
 const loadingSection = document.getElementById("loading");
+const loadingTextEl = document.getElementById("loading-text");
 const resultSection = document.getElementById("result");
 const badgeEl = document.getElementById("result-badge");
 const filenameEl = document.getElementById("result-filename");
 const messageEl = document.getElementById("result-message");
 const downloadBtn = document.getElementById("download-btn");
 const retryBtn = document.getElementById("retry-btn");
+const bulkResultSection = document.getElementById("bulk-result");
+const bulkResultTitleEl = document.getElementById("bulk-result-title");
+const bulkResultMessageEl = document.getElementById("bulk-result-message");
+const bulkListEl = document.getElementById("bulk-list");
+const bulkRetryBtn = document.getElementById("bulk-retry-btn");
 
-const VIDEO_EXTENSIONS = new Set([".mov", ".mp4", ".m4v"]);
+const ALL_SECTIONS = [pickerSection, loadingSection, resultSection, bulkResultSection];
 
 let selectedImage = null;
 let selectedVideo = null;
 let downloadUrl = null; // URL.createObjectURL로 만든 것 — 새로 만들 때마다 이전 것은 해제해야 메모리가 안 샌다.
+let bulkDownloadUrls = []; // 폴더 모드에서 만든 것들 — retry 시 한꺼번에 해제.
 
 function extensionOf(filename) {
   const idx = filename.lastIndexOf(".");
@@ -38,7 +54,7 @@ function extensionOf(filename) {
 }
 
 function showSection(section) {
-  for (const el of [pickerSection, loadingSection, resultSection]) {
+  for (const el of ALL_SECTIONS) {
     el.classList.toggle("hidden", el !== section);
   }
 }
@@ -108,6 +124,7 @@ async function handleImageSelected(file) {
   if (!file) return;
   selectedImage = file;
   selectedVideo = null; // 새 사진을 고르면 이전에 골랐던 동영상은 초기화(다른 사진과 섞이지 않게)
+  loadingTextEl.textContent = "확인하는 중...";
   showSection(loadingSection);
   try {
     const uuids = await extractUuidsFromImage(file);
@@ -121,6 +138,7 @@ async function handleImageSelected(file) {
 async function handleVideoSelected(file) {
   if (!file || !selectedImage) return;
   selectedVideo = file;
+  loadingTextEl.textContent = "확인하는 중...";
   showSection(loadingSection);
   try {
     const check = await checkLivePhotoPair(selectedImage, selectedVideo);
@@ -134,6 +152,7 @@ async function handleVideoSelected(file) {
 // 사진과 동영상을 한꺼번에 끌어다 놓으면 1단계를 건너뛰고 바로 최종 확인으로 간다.
 async function handleBothSelected(imageFile, videoFile) {
   selectedImage = imageFile;
+  loadingTextEl.textContent = "확인하는 중...";
   showSection(loadingSection);
   try {
     const check = await checkLivePhotoPair(imageFile, videoFile);
@@ -187,5 +206,76 @@ retryBtn.addEventListener("click", () => {
   videoInput.value = "";
   clearDownloadUrl();
   videoStepEl.classList.add("hidden");
+  showSection(pickerSection);
+});
+
+// --- 폴더째로 한꺼번에 확인하기 ------------------------------------------
+
+function clearBulkDownloadUrls() {
+  for (const url of bulkDownloadUrls) URL.revokeObjectURL(url);
+  bulkDownloadUrls = [];
+}
+
+function renderBulkResult(matches) {
+  bulkResultTitleEl.textContent = `라이브 포토 ${matches.length}개를 찾았어요`;
+  bulkResultMessageEl.textContent =
+    matches.length > 0
+      ? "사진과 동영상이 같은 식별자를 공유하는 걸 확인해서 찾은 목록이에요. 각 항목의 다운로드 버튼으로 동영상만 받을 수 있어요."
+      : "이 폴더에서는 짝이 확인되는 라이브 포토를 찾지 못했어요.";
+
+  bulkListEl.innerHTML = "";
+  if (matches.length === 0) {
+    const empty = document.createElement("p");
+    empty.className = "lp-bulk-empty";
+    empty.textContent = "사진과 동영상이 정말 같은 폴더 안에 있는지 확인해보세요.";
+    bulkListEl.appendChild(empty);
+  }
+  for (const { imageFile, movFile } of matches) {
+    const row = document.createElement("div");
+    row.className = "lp-bulk-row";
+
+    const name = document.createElement("span");
+    name.className = "lp-bulk-row__name";
+    name.textContent = `${imageFile.name} ↔ ${movFile.name}`;
+    row.appendChild(name);
+
+    const url = URL.createObjectURL(movFile);
+    bulkDownloadUrls.push(url);
+    const link = document.createElement("a");
+    link.className = "lp-bulk-row__btn";
+    link.href = url;
+    link.download = suggestedDownloadName(imageFile, movFile);
+    link.textContent = "다운로드";
+    row.appendChild(link);
+
+    bulkListEl.appendChild(row);
+  }
+
+  showSection(bulkResultSection);
+}
+
+async function handleFolderSelected(fileList) {
+  const files = Array.from(fileList || []);
+  if (files.length === 0) return;
+  clearBulkDownloadUrls();
+  loadingTextEl.textContent = "폴더를 훑는 중...";
+  showSection(loadingSection);
+  try {
+    const matches = await findLivePhotoMatchesInFiles(files, (current, total, name) => {
+      loadingTextEl.textContent = `확인하는 중... (${current}/${total}) ${name}`;
+    });
+    renderBulkResult(matches);
+  } catch (err) {
+    console.error("폴더 확인 실패", err);
+    showSection(pickerSection);
+  }
+}
+
+pickFolderBtn.addEventListener("click", () => folderInput.click());
+folderInput.addEventListener("change", () => handleFolderSelected(folderInput.files));
+
+bulkRetryBtn.addEventListener("click", () => {
+  clearBulkDownloadUrls();
+  folderInput.value = "";
   showSection(pickerSection);
 });
