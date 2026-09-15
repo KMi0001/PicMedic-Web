@@ -34,6 +34,7 @@ const badgeEl = document.getElementById("result-badge");
 const filenameEl = document.getElementById("result-filename");
 const messageEl = document.getElementById("result-message");
 const downloadBtn = document.getElementById("download-btn");
+const resultVideoEl = document.getElementById("result-video");
 const retryBtn = document.getElementById("retry-btn");
 const bulkResultSection = document.getElementById("bulk-result");
 const bulkResultTitleEl = document.getElementById("bulk-result-title");
@@ -72,6 +73,10 @@ function clearDownloadUrl() {
     downloadUrl = null;
   }
   downloadBtn.classList.add("hidden");
+  resultVideoEl.pause();
+  resultVideoEl.removeAttribute("src");
+  resultVideoEl.load();
+  resultVideoEl.classList.add("hidden");
 }
 
 // 1단계 결과 — 사진 혼자만 보고 라이브 포토였을 가능성을 안내한다.
@@ -112,6 +117,13 @@ function renderFinalResult(check, imageFile, videoFile) {
     downloadBtn.href = downloadUrl;
     downloadBtn.download = suggestedDownloadName(imageFile, videoFile);
     downloadBtn.classList.remove("hidden");
+
+    // 브라우저가 이 코덱을 못 그리면(예: HEVC 인코딩된 MOV를 일부 브라우저가
+    // 재생 못 함) onerror로 조용히 숨긴다 — 다운로드 버튼은 항상 그대로 있어서
+    // 재생이 안 돼도 파일 자체는 받을 수 있다.
+    resultVideoEl.onerror = () => resultVideoEl.classList.add("hidden");
+    resultVideoEl.src = downloadUrl;
+    resultVideoEl.classList.remove("hidden");
   } else {
     badgeEl.textContent = "짝이 아님";
     badgeEl.className = "result__badge result__badge--안내";
