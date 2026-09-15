@@ -39,6 +39,7 @@ const bulkResultSection = document.getElementById("bulk-result");
 const bulkResultTitleEl = document.getElementById("bulk-result-title");
 const bulkResultMessageEl = document.getElementById("bulk-result-message");
 const bulkListEl = document.getElementById("bulk-list");
+const bulkDesktopNoteEl = document.getElementById("bulk-desktop-note");
 const bulkRetryBtn = document.getElementById("bulk-retry-btn");
 
 const ALL_SECTIONS = [pickerSection, loadingSection, resultSection, bulkResultSection];
@@ -222,6 +223,7 @@ function renderBulkResult(matches) {
     matches.length > 0
       ? "사진과 동영상이 같은 식별자를 공유하는 걸 확인해서 찾은 목록이에요. 각 항목의 다운로드 버튼으로 동영상만 받을 수 있어요."
       : "이 폴더에서는 짝이 확인되는 라이브 포토를 찾지 못했어요.";
+  bulkDesktopNoteEl.classList.toggle("hidden", matches.length === 0);
 
   bulkListEl.innerHTML = "";
   if (matches.length === 0) {
