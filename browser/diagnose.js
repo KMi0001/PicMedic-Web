@@ -446,6 +446,7 @@ async function diagnose(file) {
         isMismatched: false,
         isLowResolution: false,
         isProbableScreenshot: false,
+        isProbableLivePhoto: false,
         qualityIssues: [],
         printSizes: null,
         certification: null,
@@ -461,6 +462,18 @@ async function diagnose(file) {
 
   const isMismatched = detectedFormat ? !extensionMatchesFormat(extension, detectedFormat) : false;
 
+  // 라이브포토였는지 힌트만 살짝 보여준다(live-photo-core.js::extractUuidsFromImage
+  // 재사용) — 여기서는 짝 동영상까지 찾아 대조하지 않고, 사진 혼자만으로
+  // "그런 흔적이 있는지"만 본다. 손상돼서 못 열리는 사진도 헤더 메타데이터는
+  // 멀쩡할 수 있어서, readable 여부와 무관하게 시도한다.
+  let isProbableLivePhoto = false;
+  try {
+    const uuids = await extractUuidsFromImage(file);
+    isProbableLivePhoto = uuids.size > 0;
+  } catch (err) {
+    isProbableLivePhoto = false;
+  }
+
   if (detectedFormat && !BROWSER_DECODABLE_FORMATS.has(detectedFormat)) {
     return {
       filename,
@@ -472,6 +485,7 @@ async function diagnose(file) {
       isMismatched,
       isLowResolution: false,
       isProbableScreenshot: false,
+      isProbableLivePhoto,
       qualityIssues: [],
       printSizes: null,
       certification: null,
@@ -497,6 +511,7 @@ async function diagnose(file) {
       isMismatched,
       isLowResolution: false,
       isProbableScreenshot: false,
+      isProbableLivePhoto,
       qualityIssues: [],
       printSizes: null,
       certification: null,
@@ -533,6 +548,7 @@ async function diagnose(file) {
     isMismatched,
     isLowResolution: lowRes,
     isProbableScreenshot: screenshot,
+    isProbableLivePhoto,
     qualityIssues,
     printSizes,
     certification,

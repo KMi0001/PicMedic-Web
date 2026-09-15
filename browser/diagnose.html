@@ -81,6 +81,11 @@
     text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.18);
   }
   .guide-fab:hover{opacity:.9;}
+
+  /* "라이브 포토였을 수도" 태그 — 다른 result__tag는 그냥 정보용 표시지만
+     이건 live-photo.html로 이어지는 링크라 누를 수 있다는 걸 색으로 구분한다. */
+  .result__tag--link{color:var(--primary);border-color:var(--primary);text-decoration:none;cursor:pointer;}
+  .result__tag--link:hover{background-color:var(--selection);}
 </style>
 
 <script>
@@ -152,6 +157,7 @@
 
       <div class="result__badge" id="result-badge"></div>
       <span id="result-screenshot-tag" class="result__tag hidden">스크린샷</span>
+      <a id="result-live-photo-tag" class="result__tag result__tag--link hidden" href="live-photo.html">라이브 포토였을 수도 · 확인하기</a>
       <h2 id="result-filename" class="result__filename"></h2>
       <p id="result-message" class="result__message"></p>
 
@@ -220,6 +226,7 @@
   </footer>
 
   <script src="site-content.js"></script>
+  <script src="live-photo-core.js"></script>
   <script src="diagnose.js"></script>
   <script src="app.js"></script>
   <script>

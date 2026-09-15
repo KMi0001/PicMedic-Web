@@ -131,6 +131,9 @@ function renderResult(result) {
   const screenshotTag = document.getElementById("result-screenshot-tag");
   screenshotTag.classList.toggle("hidden", !result.isProbableScreenshot);
 
+  const livePhotoTag = document.getElementById("result-live-photo-tag");
+  livePhotoTag.classList.toggle("hidden", !result.isProbableLivePhoto);
+
   filenameEl.textContent = result.filename;
   messageEl.textContent = result.message;
 
