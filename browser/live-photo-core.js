@@ -262,6 +262,22 @@ function yieldToUI() {
   return new Promise((resolve) => setTimeout(resolve, 0));
 }
 
+// 같은 UUID를 공유하는 MOV가 여러 개면(예: "동영상 다운로드"로 만든 복사본이
+// 스캔 범위 안에 같이 들어온 경우), 크기가 같은 것들은 "같은 동영상의
+// 복사본"으로 보고 하나만 남긴다 — 서로 다른 두 동영상이 우연히 같은 UUID와
+// 같은 파일 크기를 동시에 가질 확률은 사실상 0에 가깝다(데스크톱판
+// core/live_photo_finder.py::_dedupe_identical_movs와 같은 근거, 2026-09-16
+// 사용자 리포트로 발견 — 내보내기 결과를 원본과 같은 폴더 아래에 둔 채로
+// 다시 스캔하니 전부 매칭 안 됨).
+function dedupeIdenticalMovs(candidateMovs) {
+  if (candidateMovs.size <= 1) return candidateMovs;
+  const bySize = new Map();
+  for (const f of candidateMovs) {
+    if (!bySize.has(f.size)) bySize.set(f.size, f);
+  }
+  return new Set(bySize.values());
+}
+
 // 폴더째로 고른 파일 목록(webkitdirectory) 안에서 라이브 포토 짝을 한꺼번에
 // 찾는다 — 데스크톱판 core/live_photo_finder.py::find_live_photo_matches와
 // 같은 알고리즘이다. 사진 하나의 EXIF에는 진짜 Content Identifier 말고도
@@ -302,11 +318,12 @@ async function findLivePhotoMatchesInFiles(files, onProgress) {
     if (onProgress) onProgress(done, total, imageFile.name);
     const uuids = await extractUuidsFromImage(imageFile);
     if (uuids.size > 0) {
-      const candidateMovs = new Set();
+      let candidateMovs = new Set();
       for (const u of uuids) {
         const movs = uuidToMovs.get(u);
         if (movs) for (const m of movs) candidateMovs.add(m);
       }
+      candidateMovs = dedupeIdenticalMovs(candidateMovs);
       if (candidateMovs.size === 1) {
         const movFile = [...candidateMovs][0];
         if (!usedMovs.has(movFile)) {
