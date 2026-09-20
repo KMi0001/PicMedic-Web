@@ -100,6 +100,29 @@ h1{
 }
 .cta:hover, .cta:focus-visible{text-decoration-thickness:2px;}
 
+
+/* tools — 웹 도구 3개 + 데스크톱 자리(탭이 생기기 전까지 "준비 중" 카드) */
+.tools{border-top:1px solid var(--hairline);padding:44px 0;}
+.tools h2{
+  font-size:clamp(22px,3.4vw,28px);font-weight:700;color:var(--text);margin:0 0 24px;
+  text-align:center;
+}
+.tools-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+@media (max-width:600px){.tools-grid{grid-template-columns:1fr;}}
+.tool{
+  display:block;text-decoration:none;color:var(--text);
+  border:1px solid var(--hairline);border-radius:12px;padding:18px 20px;
+}
+a.tool:hover, a.tool:focus-visible{border-color:var(--accent);}
+.tool h3{font-size:16px;font-weight:700;margin:0 0 6px;}
+.tool p{font-size:13.5px;line-height:1.65;color:var(--muted);margin:0;}
+.tool--soon{border-style:dashed;}
+.tool--soon h3{color:var(--muted);}
+.tool__tag{
+  display:inline-block;margin-left:8px;padding:2px 9px;border-radius:20px;
+  font-size:11px;font-weight:600;color:var(--muted);background:var(--accent-soft);vertical-align:2px;
+}
+
 /* steps */
 .steps{border-top:1px solid var(--hairline);padding:44px 0;}
 .steps-grid{display:grid;grid-template-columns:repeat(3,1fr);}
@@ -250,14 +273,38 @@ h1{
 
 <header class="hero">
   <div class="shell">
-    <span class="eyebrow mono" data-en="PICMEDIC — PHOTO FILE DIAGNOSIS">PICMEDIC — 사진 파일 진단</span>
+    <span class="eyebrow mono" data-en="PICMEDIC — PHOTO TOOLS">PICMEDIC — 사진 도구</span>
     <div class="stat mono">100%</div>
     <div class="stat-label" data-en="processed right in your browser — nothing is uploaded">브라우저 안에서만 처리돼요 · 서버 업로드 없음</div>
     <h1 data-en="Photos that won't open,\nwe'll tell you why.">안 열리거나 흐릿한 사진,<br>이유를 알려드려요.</h1>
-    <p class="lede" data-en="Just pick a file — we diagnose it right in this browser tab. Your photo is never sent anywhere.">파일을 선택하기만 하면 이 브라우저 탭 안에서 바로 진단해요. 사진은 어디로도 전송되지 않아요.</p>
+    <p class="lede" data-en="Diagnose a photo, check a Live Photo pair, or convert a format — all inside this browser tab. Your photo is never sent anywhere.">사진 진단, 라이브 포토 확인, 확장자 변환까지 모두 이 브라우저 탭 안에서 해요. 사진은 어디로도 전송되지 않아요.</p>
     <a href="diagnose.html" class="cta" data-en="Diagnose Photos →">사진 진단해보기 →</a>
   </div>
 </header>
+
+<section class="tools" id="tools">
+  <div class="shell">
+    <h2 data-en="WHAT WOULD YOU LIKE TO DO">무엇을 도와드릴까요</h2>
+    <div class="tools-grid">
+      <a class="tool" href="diagnose.html">
+        <h3 data-en="Diagnose Photos">사진 진단</h3>
+        <p data-en="Check the format, damage, and quality of a photo that won&#x27;t open or looks blurry.">안 열리거나 흐릿한 사진의 형식·손상·화질을 확인해요.</p>
+      </a>
+      <a class="tool" href="live-photo.html">
+        <h3 data-en="Live Photo Check">라이브포토 진단</h3>
+        <p data-en="Confirm a photo and a .MOV were originally a Live Photo pair, and download the video.">사진과 동영상(.MOV)이 원래 짝이었던 라이브 포토인지 확인하고 동영상을 받아요.</p>
+      </a>
+      <a class="tool" href="convert.html">
+        <h3 data-en="Convert Extension">확장자 변환</h3>
+        <p data-en="Skip the diagnosis and convert HEIC and other formats to JPEG, PNG or WEBP right away.">진단 없이, HEIC 등 사진 형식을 JPEG·PNG·WEBP로 바로 바꿔요.</p>
+      </a>
+      <div class="tool tool--soon" aria-disabled="true">
+        <h3><span data-en="PicMedic Desktop">PicMedic 데스크톱</span><span class="tool__tag" data-en="Coming soon">준비 중</span></h3>
+        <p data-en="Repair and organize many photos at once. A dedicated page is on the way.">여러 장을 한 번에 복구하고 정리해요. 소개 페이지를 준비하고 있어요.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section class="scenarios" id="scenarios">
   <div class="shell">
@@ -282,6 +329,14 @@ h1{
       <p class="q" data-en="I want to check quality before printing">인화 맡기기 전에 확인하고 싶어요</p>
       <p class="a" data-en="From 3x5 to 8x10, we tell you in advance whether the quality is good enough for each print size.">3x5부터 8x10까지, 인화 사이즈별로 화질이 충분한지 미리 알려드려요.</p>
     </div>
+    <div class="qa">
+      <p class="q" data-en="I want to turn HEIC into JPG">HEIC를 JPG로 바꾸고 싶어요</p>
+      <p class="a" data-en="You can convert straight to JPEG, PNG or WEBP without any diagnosis. Try Convert Extension.">진단 없이 바로 JPEG·PNG·WEBP로 바꿔서 받을 수 있어요. 확장자 변환을 써보세요.</p>
+    </div>
+    <div class="qa">
+      <p class="q" data-en="I&#x27;m not sure if it was a Live Photo">라이브 포토였는지 헷갈려요</p>
+      <p class="a" data-en="We check whether a photo and a .MOV were originally a pair, and let you download the video if they were.">사진과 동영상(.MOV)이 원래 짝이 맞는지 확인하고, 짝이 맞으면 동영상을 받을 수 있어요.</p>
+    </div>
   </div>
 </section>
 
@@ -301,8 +356,8 @@ h1{
       </div>
       <div class="step">
         <div class="no mono">03</div>
-        <h3 data-en="Repair">복구</h3>
-        <p data-en="Actually repairing the file is handled by the PicMedic desktop app, currently in the works.">직접 복구하는 기능은 준비 중인 PicMedic 데스크톱 버전에서 제공돼요.</p>
+        <h3 data-en="Next step">다음 단계</h3>
+        <p data-en="Convert the format if you need to. Repairing and organizing photos is handled by the PicMedic desktop version.">필요하면 확장자 변환으로 형식을 바꿔요. 복구와 사진 정리는 PicMedic 데스크톱 버전에서 다뤄요.</p>
       </div>
     </div>
     <div class="steps-formats">
@@ -314,8 +369,8 @@ h1{
 
 <section class="statement full">
   <div class="shell">
-    <h2 data-en="Your photo never leaves this tab.\nDiagnosis happens entirely in your browser.">사진은 어디에도 올라가지 않아요.<br>진단은 이 브라우저 탭 안에서 끝나요.</h2>
-    <p data-en="Need an actual repair? The desktop version picks up from here — and it never touches your original either.">복구가 필요하면, 원본은 절대 건드리지 않는 데스크톱 버전이 이어서 도와드려요.</p>
+    <h2 data-en="Your photo never leaves this tab.\nEverything happens entirely in your browser.">사진은 어디에도 올라가지 않아요.<br>모든 처리는 이 브라우저 탭 안에서 끝나요.</h2>
+    <p data-en="Need repair or organizing? The PicMedic desktop version picks up from here — and it never touches your originals either.">복구나 정리가 필요하면, 원본은 건드리지 않는 PicMedic 데스크톱 버전이 이어서 도와드려요.</p>
   </div>
 </section>
 
