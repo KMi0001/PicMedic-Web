@@ -12,7 +12,7 @@
       "mailOrderNo": { "ko": "[해당 시 기재]", "en": "[if applicable]" },
       "contact": "[이메일 또는 전화번호]"
     },
-    "contactEmail": "TODO@example.com",
+    "contactEmail": "jenn@try-cat.com",
     "faq": [
       {
         "q": { "ko": "제 사진이 서버에 업로드되나요?", "en": "Are my photos uploaded to a server?" },

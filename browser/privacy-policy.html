@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>PicMedic 개인정보처리방침</title>
 <link rel="icon" href="favicon.png" />
-<meta name="description" content="PicMedic 웹 진단 서비스의 개인정보처리방침 — 사진 및 위치 정보가 서버로 전송되지 않는다는 점을 안내합니다." />
+<meta name="description" content="PicMedic 웹 서비스와 데스크톱 앱의 개인정보처리방침 — 사진과 위치 정보를 포함해 어떤 개인정보도 수집하거나 서버로 전송하지 않는다는 점을 안내합니다." />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
 /* gui/theme.py COLORS(버터·아이보리 + 톤온톤 잉크, 골드 포인트)와 동일한 값.
@@ -155,8 +155,8 @@ nav.top .row{
 <header class="pagehead">
   <div class="shell">
     <span class="eyebrow mono" data-en="PICMEDIC — PRIVACY POLICY">PICMEDIC — 개인정보처리방침</span>
-    <h1 data-en="We don't collect your photos.">사진을 수집하지 않습니다.</h1>
-    <p class="updated" data-en="This is a draft — fill in the launch date before publishing.">이 문서는 초안입니다 — 실제 게시 전 시행일을 채워주세요.</p>
+    <h1 data-en="We don't collect your photos or personal information.">사진과 개인정보를 수집하지 않습니다.</h1>
+    <p class="updated" data-en="Effective date: 20XX-XX-XX (replace with the real date before publishing)">시행일: 20XX년 X월 X일 (게시 전 실제 날짜로 바꿔주세요)</p>
   </div>
 </header>
 
@@ -165,44 +165,74 @@ nav.top .row{
 
     <section>
       <h2 data-en="Summary">요약</h2>
-      <p data-en="PicMedic's free web diagnosis runs entirely inside your browser. Your photo is never uploaded, and nothing about it is sent to our servers or anyone else's.">PicMedic의 무료 웹 진단은 방문자의 브라우저 안에서만 실행됩니다. 사진 파일은 업로드되지 않으며, 그 어떤 정보도 저희 서버나 제3자에게 전송되지 않습니다.</p>
+      <p data-en="PicMedic (the web service and the desktop app) &lt;strong&gt;does not collect or use your photos or personal information.&lt;/strong&gt; Photos are processed only inside your browser or on your computer and are never uploaded to our servers or to anyone else.">PicMedic(웹 서비스 및 데스크톱 앱)은 <strong>이용자의 사진과 개인정보를 수집하거나 활용하지 않습니다.</strong> 사진은 이용자의 브라우저 또는 컴퓨터 안에서만 처리되며, 저희 서버나 제3자에게 업로드되지 않습니다.</p>
     </section>
 
     <section>
-      <h2 data-en="What we collect">수집하는 정보</h2>
-      <p data-en="Nothing about your photos. Specifically, this site never sends any of the following anywhere:">사진에 관한 어떤 것도 수집하지 않습니다. 구체적으로 아래 항목은 어디로도 전송되지 않습니다:</p>
+      <h2 data-en="What we don&#x27;t collect">수집하지 않는 정보</h2>
+      <p data-en="None of the following is ever sent anywhere:">아래 항목은 어디로도 전송되지 않습니다:</p>
       <ul>
         <li data-en="The photo file itself">사진 파일 자체</li>
         <li data-en="EXIF data in the photo (capture location, date, camera model, etc.)">사진의 EXIF 정보(촬영 위치, 날짜, 카메라 기종 등)</li>
         <li data-en="File name or any identifying detail about the file">파일명 등 파일을 특정할 수 있는 정보</li>
+        <li data-en="Name, phone number, email or any other identifying detail (there is no sign-up or login)">이름, 연락처, 이메일 등 이용자를 식별하는 정보 (회원가입·로그인 절차가 없습니다)</li>
       </ul>
-      <p data-en="Diagnosis (format detection, corruption check, blur/exposure/noise analysis) runs with JavaScript already loaded in your browser, using only the file you selected on your own device.">진단(형식 판별, 손상 여부, 블러·노출·노이즈 분석)은 이미 브라우저에 로드된 자바스크립트로, 사용자가 선택한 파일을 기기 안에서만 사용해 수행됩니다.</p>
     </section>
 
     <section>
-      <h2 data-en="What is stored locally">브라우저에 저장되는 정보</h2>
-      <p data-en="This site uses your browser's localStorage — data that stays on your device and is never sent to us — to remember two small preferences:">이 사이트는 브라우저의 localStorage(방문자의 기기에만 남고 저희에게 전송되지 않는 저장소)를 사용해 아래 두 가지 설정만 기억합니다:</p>
+      <h2 data-en="Web service">웹 서비스</h2>
+      <p data-en="All processing (diagnosis, conversion, etc.) runs with JavaScript already loaded in your browser, using only the file you selected on your own device. Photos are never uploaded.">진단·변환 등 모든 처리는 방문자의 브라우저에 이미 로드된 자바스크립트로, 사용자가 선택한 파일을 기기 안에서만 사용해 수행됩니다. 사진은 업로드되지 않습니다.</p>
+      <p data-en="Your browser&#x27;s localStorage — data that stays on your device and is never sent to us — remembers only the two preferences below. Clearing your browser&#x27;s site data removes them.">브라우저의 localStorage(방문자의 기기에만 남고 저희에게 전송되지 않는 저장소)에는 아래 두 가지 설정만 기억합니다. 브라우저의 사이트 데이터를 지우면 함께 삭제됩니다.</p>
       <ul>
         <li data-en="Whether you chose light or dark mode">라이트/다크 모드 중 무엇을 선택했는지</li>
         <li data-en="Whether you chose Korean or English">한국어/영어 중 무엇을 선택했는지</li>
       </ul>
-      <p data-en="Clearing your browser's site data removes this. No cookies and no analytics/tracking scripts are used.">브라우저의 사이트 데이터를 지우면 이 정보도 함께 삭제됩니다. 쿠키나 분석/추적 스크립트는 사용하지 않습니다.</p>
+      <p data-en="&lt;strong&gt;Third-party services:&lt;/strong&gt; This page loads a web font from Google Fonts and a HEIC-decoding library (libheif-js) from a public CDN (jsDelivr). As with any web font or script, loading these may expose your IP address and browser information to those services under their own policies. Neither service receives your photo."><strong>제3자 서비스:</strong> 이 페이지는 Google Fonts에서 웹폰트를, 공개 CDN(jsDelivr)에서 HEIC 디코딩 라이브러리(libheif-js)를 불러옵니다. 일반적인 웹폰트·스크립트 로딩과 마찬가지로 이 과정에서 방문자의 IP 주소와 브라우저 정보가 각 서비스 정책에 따라 노출될 수 있으며, 두 서비스 모두 사진 파일 자체는 받지 않습니다.</p>
+      <p data-en="The hosting service that delivers this site may keep ordinary access logs (time of access, IP address, etc.); PicMedic does not separately collect or use them. This site uses no cookies and no analytics or tracking scripts.">웹 페이지를 제공하는 호스팅 서비스는 일반적인 접속 기록(접속 시각, IP 등)을 자체적으로 남길 수 있으며, PicMedic은 이 기록을 별도로 수집하거나 활용하지 않습니다. 이 사이트는 쿠키나 분석·추적 스크립트를 사용하지 않습니다.</p>
     </section>
 
     <section>
-      <h2 data-en="Third-party services">제3자 서비스</h2>
-      <p data-en="This page loads a web font from Google Fonts and a HEIC-decoding library (libheif-js) from a public CDN (jsDelivr) so the browser can render the page and open HEIC files. Loading these may expose your IP address and browser information to Google/jsDelivr per their own policies, the same as loading any web font or script would. Neither service receives your photo.">이 페이지는 Google Fonts에서 웹폰트를, 공개 CDN(jsDelivr)에서 HEIC 디코딩 라이브러리(libheif-js)를 불러옵니다 — 일반적인 웹폰트·스크립트 로딩과 마찬가지로, 이 과정에서 방문자의 IP 주소와 브라우저 정보가 각 서비스 정책에 따라 노출될 수 있습니다. 두 서비스 모두 사진 파일 자체를 받지는 않습니다.</p>
+      <h2 data-en="Desktop app">데스크톱 앱</h2>
+      <p data-en="Photos and folders you choose are processed &lt;strong&gt;only on your device&lt;/strong&gt; for scanning, repair, conversion and organizing. Metadata such as capture date and GPS location is used on your device only, to display and organize photos (by date or city), and the AI category detection also runs on your device. The app has no feature that communicates with the outside.">이용자가 선택한 사진과 폴더는 검사·복구·변환·정리를 위해 <strong>기기 안에서만</strong> 처리됩니다. 사진의 촬영일·GPS 위치 같은 메타데이터도 화면 표시와 정리(날짜별·도시별)에만 기기 안에서 사용하며, AI 카테고리 분류 역시 기기 안에서 실행됩니다. 앱에는 외부와 통신하는 기능이 없습니다.</p>
+      <p data-en="For convenience, the app stores the following &lt;strong&gt;on your device only&lt;/strong&gt; and never sends it anywhere.">편의 기능을 위해 아래 정보를 <strong>기기에만</strong> 저장하며 외부로 전송하지 않습니다.</p>
+      <ul>
+        <li data-en="Activity log — to review scans and repairs">작업 기록(로그) — 검사·복구 내역 확인용</li>
+        <li data-en="Auto-saved work — scan results, category results and manual moves, so that re-scanning the same folder only analyzes what changed">자동 저장본 — 같은 폴더를 다시 검사할 때 바뀐 사진만 분석하기 위한 검사 결과·카테고리 분류·직접 옮긴 내역</li>
+        <li data-en="App settings — dark mode, the last folder you opened, etc.">앱 설정 — 다크 모드, 마지막으로 연 폴더 등</li>
+        <li data-en="Temporary trash — photos moved during cleanup and their original paths for restoring (a &#x27;temporary trash&#x27; folder next to the photos)">임시휴지통 — 정리할 때 옮겨진 사진과 복원용 원래 경로 기록 (사진이 있던 폴더 안 '임시휴지통')</li>
+      </ul>
+      <p data-en="Repaired or converted results are saved to the location you choose, leaving the original untouched.">복구·변환 결과는 원본을 그대로 둔 채 이용자가 지정한 위치에 저장됩니다.</p>
+    </section>
+
+    <section>
+      <h2 data-en="Sharing with third parties">제3자 제공 및 위탁</h2>
+      <p data-en="Because PicMedic collects no personal information, it does not share it with, or entrust it to, any third party.">PicMedic이 수집하는 개인정보가 없으므로 제3자에게 제공하거나 처리를 위탁하지 않습니다.</p>
+    </section>
+
+    <section>
+      <h2 data-en="Retention and deletion">보관 및 파기</h2>
+      <p data-en="We keep nothing on any server. You can delete the information stored on your device or in your browser yourself. Uninstalling the app leaves the repaired files you created and the temporary trash folders in place, so remove them yourself if you no longer need them.">서버에 보관하는 정보가 없습니다. 기기나 브라우저에 저장된 위 정보는 이용자가 직접 삭제할 수 있습니다. 앱을 삭제해도 이용자가 만든 복구 파일과 임시휴지통 폴더는 그대로 남으니, 필요하면 직접 정리해 주세요.</p>
+    </section>
+
+    <section>
+      <h2 data-en="Your rights">이용자의 권리</h2>
+      <p data-en="Since PicMedic holds no personal information, there is nothing to access, correct or delete on our side. You can review and delete the information stored on your own device yourself.">PicMedic이 보관하는 개인정보가 없으므로 열람·정정·삭제를 요청할 대상 정보도 없습니다. 기기에 저장된 정보는 이용자가 직접 확인하고 삭제할 수 있습니다.</p>
+    </section>
+
+    <section>
+      <h2 data-en="Children&#x27;s privacy">아동의 개인정보</h2>
+      <p data-en="We do not collect personal information from anyone, regardless of age.">연령과 관계없이 개인정보를 수집하지 않습니다.</p>
+    </section>
+
+    <section>
+      <h2 data-en="Changes">방침 변경</h2>
+      <p data-en="If we add a feature that collects personal information (accounts, ads, cloud sync, etc.), we will update this policy first and let you know. Whenever it changes, we will update this page and its effective date.">개인정보를 수집하는 기능(계정, 광고, 클라우드 연동 등)이 추가되면 이 방침을 먼저 고치고 안내합니다. 방침이 바뀌면 이 페이지와 시행일을 갱신합니다.</p>
     </section>
 
     <section>
       <h2 data-en="Contact">문의</h2>
-      <p data-en="Questions about this policy: (add a contact email before publishing)">이 방침에 대한 문의: (게시 전 문의 이메일을 채워주세요)</p>
-      <div class="todo" data-en="TODO before publishing: contact email, effective date, and — if this site is operated as a registered business — business name/registration number in the footer below.">게시 전 TODO: 문의 이메일, 시행일, 그리고 사업자로 운영 중이라면 아래 푸터의 사업자명/사업자등록번호도 채워주세요.</div>
-    </section>
-
-    <section>
-      <h2 data-en="Changes">변경 이력</h2>
-      <p data-en="If this policy changes, we'll update this page and its effective date.">이 방침이 바뀌면 이 페이지와 시행일을 갱신합니다.</p>
+      <p data-en="Questions about this policy: &lt;a href=&quot;mailto:jenn@try-cat.com&quot;&gt;jenn@try-cat.com&lt;/a&gt;">이 방침에 대한 문의: <a href="mailto:jenn@try-cat.com">jenn@try-cat.com</a></p>
+      <div class="todo" data-en="TODO before publishing: effective date (top of page), business name/registration number in the footer below, and confirm the hosting service&#x27;s access-log practice.">게시 전 TODO: 시행일(페이지 상단), 아래 푸터의 사업자명/사업자등록번호, 호스팅 서비스의 접속 기록 처리 방식 확인.</div>
     </section>
 
   </div>
