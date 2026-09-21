@@ -31,8 +31,14 @@
   .site-nav .navlinks{display:flex;gap:28px;align-items:center;}
   .site-nav a.navlink{font-family:'IBM Plex Sans KR','Malgun Gothic',sans-serif;font-size:13.5px;color:var(--nav-muted);text-decoration:none;}
   .site-nav a.navlink:hover{color:var(--nav-text);}
-  .site-nav a.navcta{font-family:'IBM Plex Sans KR','Malgun Gothic',sans-serif;font-size:13.5px;font-weight:600;color:var(--nav-accent);text-decoration:none;}
-  .site-nav a.navcta:hover{text-decoration:underline;}
+  /* 지금 보고 있는 페이지의 메뉴만 강조(aria-current="page") — 다른 페이지에서는 강조하지 않는다.
+   금색 글자는 라이트 모드 배경(아이보리)과 대비가 약해(1.75:1) 회색 메뉴보다 오히려 흐려 보였다 —
+   그래서 글자는 진한 본문색 + 굵게로 하고, 강조색(금색)은 밑줄로만 쓴다. */
+  .site-nav a.navlink[aria-current="page"]{
+    color:var(--nav-text);font-weight:600;
+    text-decoration:underline;text-decoration-color:var(--nav-accent);
+    text-decoration-thickness:2px;text-underline-offset:8px;
+  }
   .theme-toggle-group{display:flex;align-items:center;gap:6px;}
   .theme-toggle-group .mode-label{font-family:'IBM Plex Sans KR','Malgun Gothic',sans-serif;font-size:12.5px;color:var(--nav-muted);line-height:1;}
   .theme-toggle{background:none;border:none;padding:0;margin:0;cursor:pointer;display:flex;align-items:center;line-height:0;}
@@ -107,7 +113,7 @@
       <div class="navlinks">
         <a class="navlink" href="index.html">홈</a>
         <a class="navlink" href="faq.html">FAQ</a>
-        <a class="navcta" href="diagnose.html">사진 진단하기</a>
+        <a class="navlink" href="diagnose.html" aria-current="page">사진 진단하기</a>
         <a class="navlink" href="live-photo.html">라이브포토 진단</a>
         <a class="navlink" href="convert.html">확장자 변환</a>
         <span class="theme-toggle-group">
