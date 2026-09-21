@@ -94,6 +94,12 @@ h1{
   font-size:clamp(30px,5vw,44px);line-height:1.28;font-weight:700;margin:0 0 18px;
   text-wrap:balance;
 }
+/* 한국어 제목 첫 줄("PC에 백업한 아이폰 사진이 안 열리나요?")은 어떤 화면 폭에서도
+   줄바꿈하지 않는다. 그 줄은 글자 크기의 약 16.4배 폭을 차지하므로, 좌우 여백(24px×2)을
+   뺀 폭 안에 들어가도록 글자 크기를 (화면폭 - 48px) / 17.5 로 맞추고(약 6% 여유),
+   넓은 화면에서는 38px, 아주 좁은 화면에서는 15px로 제한한다. 영어 화면은 그대로다. */
+h1 .nw{white-space:nowrap;}
+html[lang="ko"] h1{font-size:clamp(15px, calc((100vw - 48px) / 17.5), 38px);}
 .lede{font-size:16px;line-height:1.75;color:var(--muted);max-width:46ch;margin:0 0 28px;}
 .cta{
   display:inline-block;font-size:15px;font-weight:600;color:var(--accent);
@@ -279,7 +285,7 @@ a.tool:hover, a.tool:focus-visible{border-color:var(--accent);}
     <span class="eyebrow mono" data-en="PICMEDIC — PHOTO TOOLS">PICMEDIC — 사진 도구</span>
     <div class="stat mono">100%</div>
     <div class="stat-label" data-en="processed right in your browser — nothing is uploaded">브라우저 안에서만 처리돼요 · 서버 업로드 없음</div>
-    <h1 data-en="Photos you backed up from your iPhone won't open on your PC?\nWe'll tell you why.">PC에 백업한 아이폰 사진이 안 열리나요?<br>이유를 알려드려요.</h1>
+    <h1 data-en="Photos you backed up from your iPhone won't open on your PC?\nWe'll tell you why."><span class="nw">PC에 백업한 아이폰 사진이 안 열리나요?</span><br>이유를 알려드려요.</h1>
     <p class="lede" data-en="Find out right in your browser whether it's damage or just the HEIC format, then convert it to JPG. Your photo is never sent anywhere.">손상인지 HEIC 형식 문제인지 브라우저에서 바로 확인하고, JPG로 바꿔 열어볼 수 있어요. 사진은 어디로도 전송되지 않아요.</p>
     <a href="diagnose.html" class="cta" data-en="Diagnose Photos →">사진 진단해보기 →</a>
   </div>
