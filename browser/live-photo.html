@@ -2,8 +2,8 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" />
-<title>PicMedic — 라이브 포토 확인: 짝 영상(.MOV) 찾기·PC에서 저장</title>
-<meta name="description" content="아이폰 라이브 포토 사진의 짝 동영상(.MOV)이 맞는지 확인하고 PC에 영상으로 저장하세요. 사진 파일만으로는 움직이지 않는 라이브 포토를 PC에서 실행하는 방법도 안내해요. 업로드 없음." />
+<title>PicMedic — 라이브 포토 확인: 짝 영상(.MOV) 찾기·MP4 변환·PC에서 저장</title>
+<meta name="description" content="아이폰 라이브 포토 사진의 짝 동영상(.MOV)이 맞는지 확인하고 PC에 영상으로 저장하거나 MP4로 변환하세요. 사진 파일만으로는 움직이지 않는 라이브 포토를 PC에서 실행하는 방법도 안내해요. 업로드 없음." />
 <link rel="icon" href="favicon.png" />
 <link rel="stylesheet" href="style.css" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
@@ -131,7 +131,7 @@
     <header class="app__header">
       <h1>라이브 포토 확인</h1>
       <p class="app__tagline">사진을 정리하다 라이브 포토였던 것 같은데 확실치 않을 때.</p>
-      <p class="app__description">사진과 동영상(.MOV) 파일을 고르면, 원래 짝이 맞는 라이브 포토인지 확인하고 그 영상을 저장할 수 있어요. PC에서는 사진 파일이 아니라 함께 저장된 .MOV 영상을 재생해야 라이브 포토가 움직여요.</p>
+      <p class="app__description">사진과 동영상(.MOV) 파일을 고르면, 원래 짝이 맞는 라이브 포토인지 확인하고 그 영상을 저장할 수 있어요. PC에서는 사진 파일이 아니라 함께 저장된 .MOV 영상을 재생해야 라이브 포토가 움직여요. 그 영상을 MP4로 변환해서 저장할 수도 있어요.</p>
     </header>
 
     <section id="picker" class="picker">
@@ -171,6 +171,8 @@
       <video id="result-video" class="lp-video hidden" controls playsinline></video>
 
       <a id="download-btn" class="button button--primary hidden" download>동영상 파일 다운로드</a>
+      <button id="mp4-btn" class="button button--secondary hidden" type="button">MP4로 변환해서 저장</button>
+      <p id="mp4-status" class="result__message hidden"></p>
       <button id="retry-btn" class="button button--secondary" type="button">다른 사진으로 다시 확인하기</button>
     </section>
 
@@ -212,6 +214,7 @@
 
   <script src="site-content.js"></script>
   <script src="live-photo-core.js"></script>
+  <script src="live-photo-mp4.js"></script>
   <script src="live-photo-app.js"></script>
   <script>
   (function(){

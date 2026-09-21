@@ -35,6 +35,8 @@ const filenameEl = document.getElementById("result-filename");
 const messageEl = document.getElementById("result-message");
 const downloadBtn = document.getElementById("download-btn");
 const resultVideoEl = document.getElementById("result-video");
+const mp4Btn = document.getElementById("mp4-btn");
+const mp4StatusEl = document.getElementById("mp4-status");
 const retryBtn = document.getElementById("retry-btn");
 const bulkResultSection = document.getElementById("bulk-result");
 const bulkResultTitleEl = document.getElementById("bulk-result-title");
@@ -73,6 +75,9 @@ function clearDownloadUrl() {
     downloadUrl = null;
   }
   downloadBtn.classList.add("hidden");
+  mp4Btn.classList.add("hidden");
+  mp4StatusEl.classList.add("hidden");
+  mp4StatusEl.textContent = "";
   resultVideoEl.pause();
   resultVideoEl.removeAttribute("src");
   resultVideoEl.load();
@@ -117,6 +122,7 @@ function renderFinalResult(check, imageFile, videoFile) {
     downloadBtn.href = downloadUrl;
     downloadBtn.download = suggestedDownloadName(imageFile, videoFile);
     downloadBtn.classList.remove("hidden");
+    mp4Btn.classList.remove("hidden");
 
     // 브라우저가 이 코덱을 못 그리면(예: HEVC 인코딩된 MOV를 일부 브라우저가
     // 재생 못 함) onerror로 조용히 숨긴다 — 다운로드 버튼은 항상 그대로 있어서
@@ -220,6 +226,62 @@ retryBtn.addEventListener("click", () => {
   clearDownloadUrl();
   videoStepEl.classList.add("hidden");
   showSection(pickerSection);
+});
+
+// --- MP4로 변환해서 저장 ---------------------------------------------------
+// live-photo-mp4.js가 영상은 그대로(재인코딩 없이), 소리는 AAC로 담아 MP4로 다시 포장한다.
+// 변환한 파일은 바로 내려받게 하고 blob URL은 곧바로 해제한다(메모리 유지 방지).
+
+function mp4StatusMessage(result) {
+  const parts = ["MP4로 변환해서 저장했어요."];
+  if (result.audioStatus === "included") {
+    parts.push("소리도 함께 담았어요.");
+  } else if (result.audioStatus === "no-audio-track") {
+    parts.push("원본 동영상에 소리가 없어서 영상만 담겼어요.");
+  } else {
+    parts.push(
+      "이 브라우저에서는 소리를 MP4에 담지 못해 영상만 저장했어요. 다른 브라우저에서 다시 시도하면 소리도 담길 수 있어요."
+    );
+  }
+  if (result.videoCodec === "hevc") {
+    parts.push(
+      "이 동영상은 HEVC(H.265) 방식이라, PC 환경에 따라 재생되지 않을 수 있어요(윈도우는 HEVC 확장 프로그램이 필요할 수 있어요)."
+    );
+  }
+  return parts.join(" ");
+}
+
+function suggestedMp4Name(imageFile) {
+  const stem = imageFile.name.slice(0, imageFile.name.length - extensionOf(imageFile.name).length);
+  return `${stem}_motion.mp4`;
+}
+
+mp4Btn.addEventListener("click", async () => {
+  if (!selectedImage || !selectedVideo) return;
+  const idleLabel = mp4Btn.textContent;
+  mp4Btn.disabled = true;
+  mp4Btn.textContent = "변환하는 중...";
+  mp4StatusEl.classList.add("hidden");
+  try {
+    const buffer = await selectedVideo.arrayBuffer();
+    const result = await LivePhotoMp4.convertMovToMp4(buffer, {});
+    const url = URL.createObjectURL(result.blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = suggestedMp4Name(selectedImage);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 10000);
+    mp4StatusEl.textContent = mp4StatusMessage(result);
+  } catch (err) {
+    console.error("MP4 변환 실패", err);
+    mp4StatusEl.textContent = `MP4로 변환하지 못했어요. ${err && err.livePhotoMp4 ? err.message : "동영상 파일을 다시 확인해주세요."} 위의 동영상 파일 다운로드로는 원본을 그대로 받을 수 있어요.`;
+  } finally {
+    mp4StatusEl.classList.remove("hidden");
+    mp4Btn.disabled = false;
+    mp4Btn.textContent = idleLabel;
+  }
 });
 
 // --- 폴더째로 한꺼번에 확인하기 ------------------------------------------

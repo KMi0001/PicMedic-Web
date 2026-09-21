@@ -52,7 +52,11 @@
       },
       {
         "q": {"ko": "라이브 포토를 PC에서 어떻게 실행하고 영상으로 저장하나요?", "en": "How do I play and save a Live Photo as a video on my PC?"},
-        "a": {"ko": "라이브 포토는 사진 파일(HEIC/JPG)과 짝이 되는 짧은 동영상(.MOV) 두 개로 이뤄져 있어요. PC에서는 사진 파일만으로는 움직이지 않고, 함께 옮겨온 .MOV 영상을 재생해야 해요. 라이브포토 진단에서 사진과 .MOV가 원래 짝이 맞는지 확인하면 그 동영상을 바로 저장할 수 있어요. .MOV가 재생되지 않으면 VLC 같은 재생 프로그램을 써보세요.", "en": "A Live Photo is a photo file (HEIC/JPG) plus a short paired video (.MOV). On a PC the photo file alone doesn't move — you play the .MOV that came with it. In Live Photo Check you can confirm the photo and .MOV were originally a pair and save that video right away. If the .MOV won't play, try a player such as VLC."}
+        "a": {"ko": "라이브 포토는 사진 파일(HEIC/JPG)과 짝이 되는 짧은 동영상(.MOV) 두 개로 이뤄져 있어요. PC에서는 사진 파일만으로는 움직이지 않고, 함께 옮겨온 .MOV 영상을 재생해야 해요. 라이브포토 진단에서 사진과 .MOV가 원래 짝이 맞는지 확인하면 그 동영상을 바로 저장할 수 있고, MP4로 변환해서 저장할 수도 있어요. .MOV가 재생되지 않으면 VLC 같은 재생 프로그램을 써보세요.", "en": "A Live Photo is a photo file (HEIC/JPG) plus a short paired video (.MOV). On a PC the photo file alone doesn't move — you play the .MOV that came with it. In Live Photo Check you can confirm the photo and .MOV were originally a pair and save that video right away, or convert it to MP4 and save that instead. If the .MOV won't play, try a player such as VLC."}
+      },
+      {
+        "q": {"ko": "라이브 포토 영상을 MP4로 변환할 수 있나요?", "en": "Can I convert a Live Photo video to MP4?"},
+        "a": {"ko": "네. 라이브포토 진단에서 사진과 짝이 맞는 .MOV를 확인한 뒤 'MP4로 변환해서 저장'을 누르면 돼요. 영상은 다시 압축하지 않고 파일 형식만 MP4로 바꿔서 화질이 그대로예요. 소리는 사용하는 브라우저에 따라 함께 담기거나, 담기지 않고 영상만 저장될 수 있어요(어느 쪽인지 화면에서 알려드려요). 아이폰의 고효율(HEVC) 설정으로 찍은 영상은 MP4로 바꿔도 PC에 HEVC 지원이 없으면 재생되지 않을 수 있어요.", "en": "Yes. In Live Photo Check, once the matching .MOV is confirmed, press 'Convert to MP4 and save'. The video isn't recompressed — only the file format changes to MP4 — so quality stays the same. Depending on your browser the sound may be included or the MP4 may be saved video-only (the page tells you which). Videos shot with the iPhone's High Efficiency (HEVC) setting may still not play on a PC without HEVC support, even as MP4."}
       },
       {
         "q": {"ko": "사진 여러 장을 한 번에 바꾸거나 정리할 수 있나요?", "en": "Can I convert or organize many photos at once?"},
