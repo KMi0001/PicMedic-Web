@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>PicMedic</title>
+<title>PicMedic — 아이폰 사진 PC에서 안 열릴 때, HEIC 진단·JPG 변환</title>
+<meta name="description" content="아이폰에서 PC로 백업한 사진이 안 열리나요? 손상인지 HEIC 형식 문제인지 브라우저에서 바로 확인하고 JPG로 변환하세요. 사진은 업로드되지 않아요." />
 <link rel="icon" href="favicon.png" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
@@ -149,6 +150,8 @@ a.tool:hover, a.tool:focus-visible{border-color:var(--accent);}
 .steps-formats__list{font-size:14px;color:var(--text);}
 
 /* scenarios / badge legend (reuse the qa row pattern) */
+.qa .links{margin:12px 0 0;display:flex;gap:18px;flex-wrap:wrap;}
+.qa .links .cta{font-size:14px;}
 .scenarios{border-top:1px solid var(--hairline);padding:44px 0;}
 .badges{border-top:1px solid var(--hairline);padding:44px 0;}
 .scenarios h2, .badges h2, .faq h2, .steps h2{
@@ -276,8 +279,8 @@ a.tool:hover, a.tool:focus-visible{border-color:var(--accent);}
     <span class="eyebrow mono" data-en="PICMEDIC — PHOTO TOOLS">PICMEDIC — 사진 도구</span>
     <div class="stat mono">100%</div>
     <div class="stat-label" data-en="processed right in your browser — nothing is uploaded">브라우저 안에서만 처리돼요 · 서버 업로드 없음</div>
-    <h1 data-en="Photos that won't open,\nwe'll tell you why.">안 열리거나 흐릿한 사진,<br>이유를 알려드려요.</h1>
-    <p class="lede" data-en="Diagnose a photo, check a Live Photo pair, or convert a format — all inside this browser tab. Your photo is never sent anywhere.">사진 진단, 라이브 포토 확인, 확장자 변환까지 모두 이 브라우저 탭 안에서 해요. 사진은 어디로도 전송되지 않아요.</p>
+    <h1 data-en="Photos you backed up from your iPhone won't open on your PC?\nWe'll tell you why.">PC에 백업한 아이폰 사진이 안 열리나요?<br>이유를 알려드려요.</h1>
+    <p class="lede" data-en="Find out right in your browser whether it's damage or just the HEIC format, then convert it to JPG. Your photo is never sent anywhere.">손상인지 HEIC 형식 문제인지 브라우저에서 바로 확인하고, JPG로 바꿔 열어볼 수 있어요. 사진은 어디로도 전송되지 않아요.</p>
     <a href="diagnose.html" class="cta" data-en="Diagnose Photos →">사진 진단해보기 →</a>
   </div>
 </header>
@@ -288,7 +291,7 @@ a.tool:hover, a.tool:focus-visible{border-color:var(--accent);}
     <div class="tools-grid">
       <a class="tool" href="diagnose.html">
         <h3 data-en="Diagnose Photos">사진 진단</h3>
-        <p data-en="Check the format, damage, and quality of a photo that won&#x27;t open or looks blurry.">안 열리거나 흐릿한 사진의 형식·손상·화질을 확인해요.</p>
+        <p data-en="Check the format, damage, and quality of a photo that won&#x27;t open on your PC (iPhone HEIC included).">PC에서 안 열리는 사진(아이폰 HEIC 포함)의 형식·손상·화질을 확인해요.</p>
       </a>
       <a class="tool" href="live-photo.html">
         <h3 data-en="Live Photo Check">라이브포토 진단</h3>
@@ -309,6 +312,11 @@ a.tool:hover, a.tool:focus-visible{border-color:var(--accent);}
 <section class="scenarios" id="scenarios">
   <div class="shell">
     <h2 data-en="WHEN TO USE IT">이럴 때 써보세요</h2>
+    <div class="qa">
+      <p class="q" data-en="I backed up my iPhone photos to my PC and they won&#x27;t open">아이폰 사진을 PC로 백업했는데 안 열려요</p>
+      <p class="a" data-en="iPhones save photos as HEIC. After copying them to a PC (especially Windows), the default photo app may not open them, or show only a gray screen or blank thumbnail. It may be a format issue rather than a damaged file — or the copy may have been cut off and the file really is damaged. Use &lt;strong&gt;Diagnose Photos&lt;/strong&gt; to tell which, and if it&#x27;s the format, &lt;strong&gt;Convert Extension&lt;/strong&gt; turns it into JPG so you can open it.">아이폰은 사진을 HEIC 형식으로 저장해요. 이 파일을 PC(특히 윈도우)로 옮기면 기본 사진 앱에서 안 열리거나, 회색 화면·빈 썸네일만 보일 수 있어요. 파일이 깨진 게 아니라 형식 문제일 수도 있고, 옮기는 도중에 끊겨서 실제로 손상된 경우도 있어요. <strong>사진 진단</strong>으로 어느 쪽인지 확인하고, 형식 문제라면 <strong>확장자 변환</strong>으로 JPG로 바꿔서 열어보세요.</p>
+      <p class="links" data-en="&lt;a href=&quot;diagnose.html&quot; class=&quot;cta&quot;&gt;Diagnose Photos →&lt;/a&gt;&lt;a href=&quot;convert.html&quot; class=&quot;cta&quot;&gt;Convert to JPG →&lt;/a&gt;"><a href="diagnose.html" class="cta">사진 진단하기 →</a><a href="convert.html" class="cta">JPG로 변환하기 →</a></p>
+    </div>
     <div class="qa">
       <p class="q" data-en="My photo won't open">사진이 안 열려요</p>
       <p class="a" data-en="It saved fine but won't open, or only shows a gray screen — part or all of the file may be damaged.">저장은 됐는데 열리지 않거나 회색 화면만 뜬다면, 파일 일부 또는 전체가 손상됐을 수 있어요.</p>
