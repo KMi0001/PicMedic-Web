@@ -35,6 +35,7 @@ const filenameEl = document.getElementById("result-filename");
 const messageEl = document.getElementById("result-message");
 const downloadBtn = document.getElementById("download-btn");
 const resultVideoEl = document.getElementById("result-video");
+const pickAnotherBtn = document.getElementById("pick-another-btn");
 const mp4Btn = document.getElementById("mp4-btn");
 const mp4StatusEl = document.getElementById("mp4-status");
 const retryBtn = document.getElementById("retry-btn");
@@ -84,11 +85,20 @@ function clearDownloadUrl() {
   resultVideoEl.classList.add("hidden");
 }
 
+// 짝이 확인된 결과에서는 동영상을 다시 고를 이유가 없어서, 동영상 선택 슬롯과 맨 아래
+// "다시 확인하기" 대신 맨 위의 "다른 라이브포토 사진 선택" 버튼 하나만 둔다. 사진만 고른
+// 단계와 짝이 안 맞는 결과에서는 동영상을 (다시) 골라야 하므로 슬롯을 그대로 둔다.
+function setMatchedLayout(matched) {
+  pickAnotherBtn.classList.toggle("hidden", !matched);
+  videoStepEl.classList.toggle("hidden", matched);
+  retryBtn.classList.toggle("hidden", matched);
+}
+
 // 1단계 결과 — 사진 혼자만 보고 라이브 포토였을 가능성을 안내한다.
 function renderImageOnlyResult(imageFile, uuids) {
   clearDownloadUrl();
   filenameEl.textContent = imageFile.name;
-  videoStepEl.classList.remove("hidden");
+  setMatchedLayout(false);
   videoFilenameEl.textContent = "아직 선택 안 함";
   videoFilenameEl.classList.remove("lp-slot__filename--filled");
 
@@ -109,7 +119,7 @@ function renderImageOnlyResult(imageFile, uuids) {
 function renderFinalResult(check, imageFile, videoFile) {
   clearDownloadUrl();
   filenameEl.textContent = `${imageFile.name}  ↔  ${videoFile.name}`;
-  videoStepEl.classList.remove("hidden");
+  setMatchedLayout(check.matched);
   videoFilenameEl.textContent = videoFile.name;
   videoFilenameEl.classList.add("lp-slot__filename--filled");
 
@@ -216,6 +226,12 @@ for (const eventName of ["dragleave", "drop"]) {
 pickerSection.addEventListener("drop", (e) => {
   const files = e.dataTransfer.files;
   if (files && files.length > 0) assignDroppedFiles(files);
+});
+
+// 새 사진을 고르면 handleImageSelected가 이전에 고른 동영상을 초기화하고 1단계부터 다시 시작한다.
+pickAnotherBtn.addEventListener("click", () => {
+  imageInput.value = "";
+  imageInput.click();
 });
 
 retryBtn.addEventListener("click", () => {
