@@ -1,78 +1,72 @@
 # PicMedic Web
 
-PicMedic 데스크톱 앱(PySide6)의 웹버전. 방향/의사결정 배경은 원본 저장소의
-[PLATFORM_EXPANSION.md](../PicMedic/PLATFORM_EXPANSION.md) 참고. 이 저장소
-안에 **서로 다른 두 갈래**가 있다 — 진단 로직은 같은 원칙(손상/의심/정상/안내,
-"추정" 표기 등)을 따르지만 구현이 완전히 별개다.
+> 아이폰 사진이 PC에서 안 열릴 때 — **손상인지 HEIC 형식 문제인지** 브라우저에서 바로 진단하고,
+> JPG로 변환하고, 라이브 포토 짝 영상을 찾아 MP4로 저장하는 **무료 웹 도구**.
+> 사진은 **어디에도 업로드되지 않는다** (모든 처리가 방문자 브라우저 탭 안에서 끝남).
 
-## 갈래 ① 로컬 상주형 (`web/` + `main.py`) — 파이썬
+PicMedic 데스크톱 앱(PySide6, 별도 저장소 `PicMedic`)의 웹버전이다.
+웹은 "무료 진단/간단 변환" 창구, 복구·일괄 정리는 데스크톱(유료, MS 스토어 판매 예정) 담당.
 
-서버 없는 **pywebview 기반 "로컬 상주 + 웹 UI"**. OS 내장 웹뷰(Windows
-WebView2 / macOS WebKit)를 파이썬이 띄우고, 화면은 HTML/CSS/JS로 작성한다.
-진단 로직(`core/`, `models/`, `utils/`)은 원본 데스크톱 앱에서 그대로
-가져왔다 — Qt 의존성이 없는 순수 Python이라 수정 없이 재사용.
+---
 
-**core/ 동기화**: 지금은 원본 저장소(`../PicMedic`)의 `core/`, `models/`,
-`utils/`를 복사해온 상태(단일 소스 아님). 두 프로젝트 중 하나에서 로직을
-고치면 다른 쪽에는 수동으로 반영해야 한다.
+## 📚 문서 지도 (처음 오면 이 순서로)
 
-**설치·실행**
-```
-pip install -r requirements.txt
-python main.py
-```
+| 문서 | 내용 |
+|---|---|
+| **[docs/HANDOFF.md](docs/HANDOFF.md)** | **인수인계서** — 현재 상태, 가져가야 할 것 체크리스트, 오픈 전 남은 일, 주의사항 |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | 폴더/파일 구조, 페이지별 스크립트 로드 순서, 진단·라이브포토·MP4 알고리즘, 임계값 |
+| [docs/DECISIONS.md](docs/DECISIONS.md) | 지금까지 내린 결정과 그 이유(날짜별) — "왜 이렇게 돼 있지?"의 답 |
+| [AGENTS.md](AGENTS.md) | 이 저장소에서 작업하는 AI/개발자가 지켜야 할 규칙 요약 |
 
-**테스트**
-```
-python tests/test_diagnosis.py
-```
-모두 [PASS]로 통과해야 합니다. pytest 없이 원본 저장소와 동일한 방식(직접
-실행 + PASS/FAIL 출력)으로 작성돼 있음.
+---
 
-## 갈래 ② 브라우저형 (`browser/`) — 순수 자바스크립트, 서버 없음
+## 한눈에 보기
 
-**진짜 URL로 접속하는 정적 웹사이트.** 백엔드가 아예 없다 — 파일 서빙 말고는
-서버가 하는 일이 없고, 사진은 방문자의 브라우저 탭 안에서만 처리된다(어디로도
-전송 안 됨). `core/diagnosis.py`의 로직을 자바스크립트(`browser/diagnose.js`)로
-새로 이식한 것이라 파이썬/Pillow 의존성이 전혀 없다.
+이 저장소 안에는 **서로 별개인 두 갈래**가 있다. 진단 원칙(손상/의심/정상/안내 배지, "~추정" 표기)은 같지만 코드는 완전히 따로다.
 
-HEIC는 [`libheif-js`](https://github.com/catdad-experiments/libheif-js)
-(libheif를 WASM으로 컴파일한 라이브러리, CDN에서 로드)로 디코딩한다. 나머지
-형식(JPEG/PNG/GIF/BMP/WEBP)은 브라우저 `<img>` 태그가 원래 지원하는 걸
-그대로 씀.
+| | ① 브라우저형 `browser/` ⭐ **주력** | ② 로컬 상주형 `web/` + `main.py` |
+|---|---|---|
+| 형태 | 정적 웹사이트 (서버 없음) | pywebview 데스크톱 창 + HTML UI |
+| 언어 | 순수 JavaScript (빌드 없음, 프레임워크 없음) | Python + HTML/JS |
+| 배포 | `main`에 push → GitHub Actions → GitHub Pages 자동 배포 | 로컬 실행만 (배포 없음) |
+| 기능 | 사진 진단 · 라이브포토 진단(+MP4 변환) · 확장자 변환 · FAQ · 사용방법 · 개인정보처리방침 | "사진이 이상해요" 단일 파일 진단 프로토타입 |
+| 상태 | 실제 서비스 대상. 계속 개발 중 | 1차 프로토타입에서 멈춤 |
 
-**페이지 구성**: `browser/index.html`(랜딩 페이지, 미니멀 화이트 톤 —
-라이트/다크 토글 + 한국어/English 토글 포함)과 `browser/diagnose.html`(실제
-진단 도구, 기존 `index.html` 내용 그대로 옮김). 랜딩의 "무료로 진단하기"
-CTA가 `diagnose.html`로 연결된다.
+## 빠른 실행
 
-**실행**: 빌드 과정 없음. `browser/` 전체를 정적 파일로 아무 데나
-올리면 끝(`index.html`이 진입점). `main`에 `browser/` 변경사항이 푸시되면
-[`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml)이
-자동으로 GitHub Pages에 배포한다(저장소 Settings → Pages → Source를
-"GitHub Actions"로 설정해둬야 함). 로컬에서 확인하려면:
-```
+**① 브라우저형 (주력)** — 빌드 과정 없음
+```bash
 cd browser
 python -m http.server 8000
+# → http://localhost:8000
 ```
-그 뒤 `http://localhost:8000`으로 접속.
+배포: `main` 브랜치에 `browser/**` 변경이 push되면 [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml)이
+`browser/` 폴더 통째로 GitHub Pages에 올린다. (저장소 Settings → Pages → Source = **GitHub Actions** 필요)
 
-**파이썬판과의 차이 (중요)**
-- **EXIF 미지원** — 촬영기기/촬영일시가 없고, 스크린샷 감지도 파일명
-  패턴만 사용(파이썬판의 "PNG+EXIF없음" 보조 신호 없음).
-- **CMYK 색공간 감지, 압축폭탄 안전장치 재분류 없음** — Pillow 전용 개념이라
-  이식 안 함.
-- **손상 판정이 더 거칠다** — 가장 큰 차이. Pillow는 "일부만 디코딩된
-  파일"을 부분 손상으로 세밀하게 잡아내는데, 브라우저의 `<img>` 디코더는
-  꽤 관대해서 잘린 JPEG도 에러 없이 "정상"으로 처리하는 경우가 실제로
-  확인됨(`03_손상된_파일.jpg` 샘플로 테스트 시 파이썬판은 "손상"으로,
-  브라우저판은 "정상"으로 나옴). 완전히 못 여는 파일만 확실히 잡힌다.
-- TIFF는 브라우저가 `<img>`로 못 그려서 미지원 처리.
+**② 로컬 상주형 (파이썬)**
+```bash
+pip install -r requirements.txt   # Pillow, pillow-heif, pywebview
+python main.py
+python tests/test_diagnosis.py    # 모두 [PASS] 나와야 함 (pytest 아님, 직접 실행)
+```
 
-## 상태
+## 페이지 구성 (`browser/`)
 
-1차 기능 "사진이 이상해요"(단일 파일 진단) — 두 갈래 모두 구현. 상세 판정
-기준은 원본 저장소의
-[사진이_이상해요_기획_web.md](../PicMedic/사진이_이상해요_기획_web.md) 참고
-(주로 ① 기준으로 작성됨, ②는 위 차이점 참고). 기획 문서는 2026-09-03에
-`PicMedic` 저장소 쪽으로 옮겨 다른 PRD 문서들과 함께 모아뒀다.
+| 파일 | 역할 |
+|---|---|
+| `index.html` | 랜딩 페이지 (도구 카드 4개, 사용 시나리오, 배지 설명) |
+| `diagnose.html` | **사진 진단** — 형식/손상/화질/인화 적합성 + 결과 화면에서 형식 변환 |
+| `live-photo.html` | **라이브포토 진단** — 사진↔MOV 짝 확인, MOV 다운로드, MP4 변환, 폴더 일괄 찾기 |
+| `convert.html` | **확장자 변환** — 진단 없이 HEIC 등 → JPEG/PNG/WEBP |
+| `faq.html` | FAQ (내용은 `site-content.js`에서 생성 + JSON-LD 자동 삽입) |
+| `guide.html` | 사용방법 (우하단 "사용방법" 버튼에서 연결) |
+| `privacy-policy.html` | 개인정보처리방침 (**시행일 등 게시 전 TODO 남아 있음**) |
+| `site-content.js` | 사업자정보·문의 이메일·FAQ·페이지 하단 안내문구 — **사이트 공통 편집 데이터** |
+
+모든 페이지: 다크 모드 기본 + 라이트 토글, 한국어 기본 + English 토글 (`data-en` 속성 방식, [ARCHITECTURE.md](docs/ARCHITECTURE.md#다국어--테마) 참고).
+
+## 관련 외부 자료 (이 저장소 밖에 있음)
+
+- 원본 데스크톱 저장소 **`PicMedic`** — 여기 `core/`, `models/`, `utils/`의 원본, 방향 문서 `PLATFORM_EXPANSION.md`,
+  기획 문서 `사진이_이상해요_기획_web.md` (2026-09-03에 이쪽으로 옮김) 및 다른 PRD들.
+- 로컬 전용 `browser/admin.html` — `site-content.js` 편집기. **git에 없음** (`.gitignore`). 자세한 건 [HANDOFF.md](docs/HANDOFF.md#2-가져가야-할-것-체크리스트).
