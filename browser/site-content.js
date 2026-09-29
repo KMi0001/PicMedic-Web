@@ -5,12 +5,8 @@
 (function () {
   var CONTENT = {
     "bizinfo": {
-      "name": { "ko": "[상호명]", "en": "[Business name]" },
-      "ceo": { "ko": "[대표자명]", "en": "[CEO name]" },
-      "regNo": "[000-00-00000]",
-      "address": { "ko": "[사업장 주소]", "en": "[Business address]" },
-      "mailOrderNo": { "ko": "[해당 시 기재]", "en": "[if applicable]" },
-      "contact": "[이메일 또는 전화번호]"
+      "name": { "ko": "주식회사 트라이캣", "en": "TRYCAT Inc." },
+      "regNo": "425-81-01546"
     },
     "contactEmail": "jenn@try-cat.com",
     "faq": [
@@ -97,20 +93,13 @@
     }).join("");
   }
 
+  // 상호와 사업자등록번호만 표기한다(대표자·주소는 싣지 않기로 함).
   function renderBizinfo(lang) {
     var b = CONTENT.bizinfo;
     if (lang === "en") {
-      return "Name: " + b.name.en + " &middot; CEO: " + b.ceo.en +
-        " &middot; Registration No.: " + b.regNo +
-        " &middot; Address: " + b.address.en +
-        " &middot; Mail-order sales No.: " + b.mailOrderNo.en +
-        " &middot; Contact: " + b.contact;
+      return "Company: " + b.name.en + " &middot; Business Registration No.: " + b.regNo;
     }
-    return "상호 " + b.name.ko + " · 대표자 " + b.ceo.ko +
-      " · 사업자등록번호 " + b.regNo +
-      " · 주소 " + b.address.ko +
-      " · 통신판매업신고번호 " + b.mailOrderNo.ko +
-      " · 문의 " + b.contact;
+    return "상호 " + b.name.ko + " · 사업자등록번호 " + b.regNo;
   }
 
   function renderPageNote(key) {
