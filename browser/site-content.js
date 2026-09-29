@@ -108,9 +108,9 @@
 
   function renderFootlinks(lang) {
     if (lang === "en") {
-      return '<a href="privacy-policy.html">Privacy Policy</a> &middot; <a href="mailto:' + CONTENT.contactEmail + '">Contact</a>';
+      return '<a href="privacy-policy.html"><strong>Privacy Policy</strong></a> &middot; <a href="mailto:' + CONTENT.contactEmail + '">Contact</a>';
     }
-    return '<a href="privacy-policy.html">개인정보처리방침</a> · <a href="mailto:' + CONTENT.contactEmail + '">문의하기</a>';
+    return '<a href="privacy-policy.html"><strong>개인정보 처리방침</strong></a> · <a href="mailto:' + CONTENT.contactEmail + '">문의하기</a>';
   }
 
   var bizinfoEl = document.querySelector(".bizinfo");
