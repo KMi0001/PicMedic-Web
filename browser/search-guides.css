@@ -11,17 +11,17 @@
   text-align: left;
 }
 .search-guides h2 {
-  margin: 0 0 8px;
-  font-size: 12px;
-  font-weight: 500;
+  margin: 0 0 10px;
+  font-size: 14px;
+  font-weight: 600;
   line-height: 1.5;
-  color: inherit;
+  color: var(--nav-text, var(--text));
   letter-spacing: 0;
 }
 .search-guides ul {
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px 18px;
+  flex-direction: column;
+  gap: 6px;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -34,7 +34,9 @@
 }
 .search-guides a {
   color: inherit;
-  text-decoration: none;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
   overflow-wrap: anywhere;
 }
 .search-guides a:hover,
