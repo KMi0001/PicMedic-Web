@@ -43,6 +43,11 @@
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+.search-guides.search-guides--inline {
+  max-width: none;
+  margin: 20px 0 0;
+  padding: 14px 0 0;
+}
 @media (max-width: 540px) {
   .search-guides { margin-top: 12px; padding: 12px 20px 0; }
   .search-guides ul { flex-direction: column; gap: 4px; }
