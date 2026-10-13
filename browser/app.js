@@ -56,9 +56,9 @@ function formatBytes(bytes) {
 function addDetailRow(label, value) {
   const row = document.createElement("div");
   const dt = document.createElement("dt");
-  dt.textContent = label;
+  PicMedicI18n.setText(dt, label);
   const dd = document.createElement("dd");
-  dd.textContent = value;
+  PicMedicI18n.setText(dd, value);
   row.append(dt, dd);
   detailsEl.appendChild(row);
 }
@@ -80,7 +80,7 @@ function renderPrintSuitability(result) {
 
     const levelBadge = document.createElement("span");
     levelBadge.className = `print-size__level print-size__level--${level}`;
-    levelBadge.textContent = level;
+    PicMedicI18n.setText(levelBadge, level);
 
     cell.append(sizeLabel, levelBadge);
     printSuitabilityGridEl.appendChild(cell);
@@ -98,7 +98,7 @@ function renderCertification(result) {
   const { tier, label, icon } = result.certification;
   certEl.className = `cert cert--${tier}`;
   certIconEl.textContent = icon;
-  certLabelEl.textContent = label;
+  PicMedicI18n.setText(certLabelEl, label);
 }
 
 function renderConvert(result) {
@@ -125,7 +125,7 @@ function renderResult(result) {
     previewWrapEl.classList.add("hidden");
   }
 
-  badgeEl.textContent = result.severity;
+  PicMedicI18n.setText(badgeEl, result.severity);
   badgeEl.className = `result__badge result__badge--${result.severity}`;
 
   const screenshotTag = document.getElementById("result-screenshot-tag");
@@ -135,7 +135,7 @@ function renderResult(result) {
   livePhotoTag.classList.toggle("hidden", !result.isProbableLivePhoto);
 
   filenameEl.textContent = result.filename;
-  messageEl.textContent = result.message;
+  PicMedicI18n.setText(messageEl, result.message);
 
   renderCertification(result);
 

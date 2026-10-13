@@ -78,7 +78,7 @@ function clearDownloadUrl() {
   downloadBtn.classList.add("hidden");
   mp4Btn.classList.add("hidden");
   mp4StatusEl.classList.add("hidden");
-  mp4StatusEl.textContent = "";
+  PicMedicI18n.setText(mp4StatusEl, "");
   resultVideoEl.pause();
   resultVideoEl.removeAttribute("src");
   resultVideoEl.load();
@@ -99,17 +99,17 @@ function renderImageOnlyResult(imageFile, uuids) {
   clearDownloadUrl();
   filenameEl.textContent = imageFile.name;
   setMatchedLayout(false);
-  videoFilenameEl.textContent = "아직 선택 안 함";
+  PicMedicI18n.setText(videoFilenameEl, "아직 선택 안 함");
   videoFilenameEl.classList.remove("lp-slot__filename--filled");
 
   if (uuids.size > 0) {
-    badgeEl.textContent = "라이브 포토였을 가능성 있음";
+    PicMedicI18n.setText(badgeEl, "라이브 포토였을 가능성 있음");
     badgeEl.className = "result__badge result__badge--의심";
-    messageEl.textContent = "이 사진에 라이브 포토 식별자가 남아있어요. 원래 짝이었던 동영상(.MOV) 파일이 있다면 아래에서 골라 진짜 짝이 맞는지 확인해보세요.";
+    PicMedicI18n.setText(messageEl, "이 사진에 라이브 포토 식별자가 남아있어요. 원래 짝이었던 동영상(.MOV) 파일이 있다면 아래에서 골라 진짜 짝이 맞는지 확인해보세요.");
   } else {
-    badgeEl.textContent = "라이브 포토 흔적 없음";
+    PicMedicI18n.setText(badgeEl, "라이브 포토 흔적 없음");
     badgeEl.className = "result__badge result__badge--안내";
-    messageEl.textContent = "이 사진에서는 라이브 포토였다는 흔적을 찾지 못했어요. 이미 다른 형식으로 변환됐거나, 원래 라이브 포토가 아니었을 수 있어요. 그래도 짝이라고 생각되는 동영상이 있다면 골라서 확인해볼 수 있어요.";
+    PicMedicI18n.setText(messageEl, "이 사진에서는 라이브 포토였다는 흔적을 찾지 못했어요. 이미 다른 형식으로 변환됐거나, 원래 라이브 포토가 아니었을 수 있어요. 그래도 짝이라고 생각되는 동영상이 있다면 골라서 확인해볼 수 있어요.");
   }
 
   showSection(resultSection);
@@ -120,13 +120,13 @@ function renderFinalResult(check, imageFile, videoFile) {
   clearDownloadUrl();
   filenameEl.textContent = `${imageFile.name}  ↔  ${videoFile.name}`;
   setMatchedLayout(check.matched);
-  videoFilenameEl.textContent = videoFile.name;
+  PicMedicI18n.setUserText(videoFilenameEl, videoFile.name);
   videoFilenameEl.classList.add("lp-slot__filename--filled");
 
   if (check.matched) {
-    badgeEl.textContent = "확인됨";
+    PicMedicI18n.setText(badgeEl, "확인됨");
     badgeEl.className = "result__badge result__badge--정상";
-    messageEl.textContent = "두 파일이 같은 식별자를 공유하는 걸 확인했어요 — 원래 짝이었던 라이브 포토가 맞아요.";
+    PicMedicI18n.setText(messageEl, "두 파일이 같은 식별자를 공유하는 걸 확인했어요 — 원래 짝이었던 라이브 포토가 맞아요.");
 
     downloadUrl = URL.createObjectURL(videoFile);
     downloadBtn.href = downloadUrl;
@@ -141,9 +141,9 @@ function renderFinalResult(check, imageFile, videoFile) {
     resultVideoEl.src = downloadUrl;
     resultVideoEl.classList.remove("hidden");
   } else {
-    badgeEl.textContent = "짝이 아님";
+    PicMedicI18n.setText(badgeEl, "짝이 아님");
     badgeEl.className = "result__badge result__badge--안내";
-    messageEl.textContent = "두 파일이 같은 식별자를 공유하지 않아요 — 이 사진과 이 동영상은 원래 짝이 아닌 것 같아요.";
+    PicMedicI18n.setText(messageEl, "두 파일이 같은 식별자를 공유하지 않아요 — 이 사진과 이 동영상은 원래 짝이 아닌 것 같아요.");
   }
 
   showSection(resultSection);
@@ -153,7 +153,7 @@ async function handleImageSelected(file) {
   if (!file) return;
   selectedImage = file;
   selectedVideo = null; // 새 사진을 고르면 이전에 골랐던 동영상은 초기화(다른 사진과 섞이지 않게)
-  loadingTextEl.textContent = "확인하는 중...";
+  PicMedicI18n.setText(loadingTextEl, "확인하는 중...");
   showSection(loadingSection);
   try {
     const uuids = await extractUuidsFromImage(file);
@@ -167,7 +167,7 @@ async function handleImageSelected(file) {
 async function handleVideoSelected(file) {
   if (!file || !selectedImage) return;
   selectedVideo = file;
-  loadingTextEl.textContent = "확인하는 중...";
+  PicMedicI18n.setText(loadingTextEl, "확인하는 중...");
   showSection(loadingSection);
   try {
     const check = await checkLivePhotoPair(selectedImage, selectedVideo);
@@ -181,7 +181,7 @@ async function handleVideoSelected(file) {
 // 사진과 동영상을 한꺼번에 끌어다 놓으면 1단계를 건너뛰고 바로 최종 확인으로 간다.
 async function handleBothSelected(imageFile, videoFile) {
   selectedImage = imageFile;
-  loadingTextEl.textContent = "확인하는 중...";
+  PicMedicI18n.setText(loadingTextEl, "확인하는 중...");
   showSection(loadingSection);
   try {
     const check = await checkLivePhotoPair(imageFile, videoFile);
@@ -274,9 +274,9 @@ function suggestedMp4Name(imageFile) {
 
 mp4Btn.addEventListener("click", async () => {
   if (!selectedImage || !selectedVideo) return;
-  const idleLabel = mp4Btn.textContent;
+  const idleLabel = "MP4로 변환해서 저장";
   mp4Btn.disabled = true;
-  mp4Btn.textContent = "변환하는 중...";
+  PicMedicI18n.setText(mp4Btn, "변환하는 중...");
   mp4StatusEl.classList.add("hidden");
   try {
     const buffer = await selectedVideo.arrayBuffer();
@@ -289,14 +289,14 @@ mp4Btn.addEventListener("click", async () => {
     link.click();
     link.remove();
     setTimeout(() => URL.revokeObjectURL(url), 10000);
-    mp4StatusEl.textContent = mp4StatusMessage(result);
+    PicMedicI18n.setText(mp4StatusEl, mp4StatusMessage(result));
   } catch (err) {
     console.error("MP4 변환 실패", err);
-    mp4StatusEl.textContent = `MP4로 변환하지 못했어요. ${err && err.livePhotoMp4 ? err.message : "동영상 파일을 다시 확인해주세요."} 위의 동영상 파일 다운로드로는 원본을 그대로 받을 수 있어요.`;
+    PicMedicI18n.setText(mp4StatusEl, `MP4로 변환하지 못했어요. ${err && err.livePhotoMp4 ? err.message : "동영상 파일을 다시 확인해주세요."} 위의 동영상 파일 다운로드로는 원본을 그대로 받을 수 있어요.`);
   } finally {
     mp4StatusEl.classList.remove("hidden");
     mp4Btn.disabled = false;
-    mp4Btn.textContent = idleLabel;
+    PicMedicI18n.setText(mp4Btn, idleLabel);
   }
 });
 
@@ -308,18 +308,17 @@ function clearBulkDownloadUrls() {
 }
 
 function renderBulkResult(matches) {
-  bulkResultTitleEl.textContent = `라이브 포토 ${matches.length}개를 찾았어요`;
-  bulkResultMessageEl.textContent =
-    matches.length > 0
+  PicMedicI18n.setText(bulkResultTitleEl, `라이브 포토 ${matches.length}개를 찾았어요`);
+  PicMedicI18n.setText(bulkResultMessageEl, matches.length > 0
       ? "사진과 동영상이 같은 식별자를 공유하는 걸 확인해서 찾은 목록이에요. 각 항목의 다운로드 버튼으로 동영상만 받을 수 있어요."
-      : "이 폴더에서는 짝이 확인되는 라이브 포토를 찾지 못했어요.";
+      : "이 폴더에서는 짝이 확인되는 라이브 포토를 찾지 못했어요.");
   bulkDesktopNoteEl.classList.toggle("hidden", matches.length === 0);
 
   bulkListEl.innerHTML = "";
   if (matches.length === 0) {
     const empty = document.createElement("p");
     empty.className = "lp-bulk-empty";
-    empty.textContent = "사진과 동영상이 정말 같은 폴더 안에 있는지 확인해보세요.";
+    PicMedicI18n.setText(empty, "사진과 동영상이 정말 같은 폴더 안에 있는지 확인해보세요.");
     bulkListEl.appendChild(empty);
   }
   for (const { imageFile, movFile } of matches) {
@@ -337,7 +336,7 @@ function renderBulkResult(matches) {
     link.className = "lp-bulk-row__btn";
     link.href = url;
     link.download = suggestedDownloadName(imageFile, movFile);
-    link.textContent = "다운로드";
+    PicMedicI18n.setText(link, "다운로드");
     row.appendChild(link);
 
     bulkListEl.appendChild(row);
@@ -350,11 +349,11 @@ async function handleFolderSelected(fileList) {
   const files = Array.from(fileList || []);
   if (files.length === 0) return;
   clearBulkDownloadUrls();
-  loadingTextEl.textContent = "폴더를 훑는 중...";
+  PicMedicI18n.setText(loadingTextEl, "폴더를 훑는 중...");
   showSection(loadingSection);
   try {
     const matches = await findLivePhotoMatchesInFiles(files, (current, total, name) => {
-      loadingTextEl.textContent = `확인하는 중... (${current}/${total}) ${name}`;
+      PicMedicI18n.setText(loadingTextEl, `확인하는 중... (${current}/${total}) ${name}`);
     });
     renderBulkResult(matches);
   } catch (err) {

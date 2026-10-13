@@ -382,34 +382,6 @@ nav.top .row{
 })();
 </script>
 
-<script>
-(function(){
-  var STORAGE_KEY = 'picmedic-lang';
-  var langToggle = document.getElementById('lang-toggle');
-  var nodes = document.querySelectorAll('[data-en]');
-  nodes.forEach(function(el){ el.setAttribute('data-ko', el.innerHTML); });
-
-  function applyLang(lang){
-    nodes.forEach(function(el){
-      var raw = lang === 'en' ? el.getAttribute('data-en') : el.getAttribute('data-ko');
-      el.innerHTML = raw.split('\\n').join('<br>');
-    });
-    document.documentElement.setAttribute('lang', lang);
-    langToggle.textContent = lang === 'en' ? '한국어' : 'English';
-    langToggle.setAttribute('aria-label', lang === 'en' ? '한국어로 보기' : 'View in English');
-  }
-
-  var stored;
-  try{ stored = localStorage.getItem(STORAGE_KEY); }catch(e){}
-  var currentLang = stored === 'en' ? 'en' : 'ko';
-  applyLang(currentLang);
-
-  langToggle.addEventListener('click', function(){
-    currentLang = currentLang === 'en' ? 'ko' : 'en';
-    applyLang(currentLang);
-    try{ localStorage.setItem(STORAGE_KEY, currentLang); }catch(e){}
-  });
-})();
-</script>
+<script src="i18n.js"></script>
 </body>
 </html>
