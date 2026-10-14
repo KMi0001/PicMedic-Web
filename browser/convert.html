@@ -103,7 +103,24 @@
 })();
 </script>
 <style>
-.batch-list{padding-left:24px;max-height:320px;overflow:auto}.batch-list li{padding:8px 0;overflow-wrap:anywhere}.batch-state{display:block;font-size:13px;color:var(--muted)}.batch-actions{display:flex;flex-wrap:wrap;gap:12px}.batch-actions .button{margin:0}.batch-actions a{text-decoration:none}button:disabled{opacity:.5;cursor:not-allowed}#batch p{line-height:1.7}
+.batch-list{padding-left:24px;max-height:320px;overflow:auto}.batch-list li{padding:8px 0;overflow-wrap:anywhere}.batch-state{display:block;font-size:13px;color:var(--muted)}.batch-actions{display:flex;flex-wrap:wrap;gap:12px}.batch-actions .button{margin:0}.batch-actions a{text-decoration:none}button:disabled{opacity:.5;cursor:not-allowed}
+/* Match the existing picker hint and conversion note in both themes. */
+.batch-note{
+  margin:12px 0 0;
+  color:var(--text-secondary);
+  font-size:12.5px;
+  font-weight:400;
+  line-height:1.7;
+  word-break:keep-all;
+  overflow-wrap:anywhere;
+}
+.picker .batch-note{max-width:46ch;margin:14px auto 0;}
+#batch-heading{margin:0 0 12px;font-size:18px;font-weight:600;line-height:1.5;}
+#batch .batch-note{margin:10px 0 18px;}
+#batch .convert__row>label{font-size:13px;color:var(--text-secondary);}
+#batch-status{margin:18px 0 10px;font-size:13px;line-height:1.65;color:var(--text-secondary);}
+#batch-progress{accent-color:var(--primary);height:6px;}
+
 </style>
 </head>
 <body>
@@ -136,7 +153,7 @@
     <section id="picker" class="picker">
       <button id="pick-btn" class="button button--primary" type="button">사진 선택</button>
       <p class="picker__hint">바꾸고 싶은 사진을 골라주세요. 여기로 끌어다 놓아도 돼요.</p>
-      <p data-en="Select multiple photos to convert them together and download a ZIP. Up to 20 photos, 20 MB each, 100 MB total; 24 megapixels per photo and 100 MB total output. On mobile, start with a few photos. Keep this tab open.">여러 장을 선택하면 한 번에 변환하고 ZIP으로 받을 수 있어요. 최대 20장, 파일당 20MB, 전체 100MB이며 사진당 2,400만 픽셀·결과 합계 100MB까지 지원해요. 휴대폰에서는 적은 장수부터 시작하고, 처리 중에는 이 탭을 열어두세요.</p>
+      <p class="batch-note" data-en="Select multiple photos to convert them together and download a ZIP. Up to 20 photos, 20 MB each, 100 MB total; 24 megapixels per photo and 100 MB total output. On mobile, start with a few photos. Keep this tab open.">여러 장을 선택하면 한 번에 변환하고 ZIP으로 받을 수 있어요. 최대 20장, 파일당 20MB, 전체 100MB이며 사진당 2,400만 픽셀·결과 합계 100MB까지 지원해요. 휴대폰에서는 적은 장수부터 시작하고, 처리 중에는 이 탭을 열어두세요.</p>
       <input type="file" id="file-input" multiple accept="image/*,.heic,.heif" hidden />
     </section>
 
@@ -170,13 +187,13 @@
 
     <section id="batch" class="result hidden" aria-labelledby="batch-heading">
       <h2 id="batch-heading" data-en="Convert multiple photos">여러 사진 일괄 변환</h2>
-      <p data-en="Up to 20 photos, 20 MB each, 100 MB total input and output; 24 megapixels per photo. Keep this tab open. On mobile, start with fewer photos.">최대 20장·파일당 20MB·입력 및 결과 각각 합계 100MB·사진당 2,400만 픽셀까지 지원해요. 처리 중에는 이 탭을 열어두세요. 휴대폰에서는 적은 장수부터 시작하세요.</p>
+      <p class="batch-note" data-en="Up to 20 photos, 20 MB each, 100 MB total input and output; 24 megapixels per photo. Keep this tab open. On mobile, start with fewer photos.">최대 20장·파일당 20MB·입력 및 결과 각각 합계 100MB·사진당 2,400만 픽셀까지 지원해요. 처리 중에는 이 탭을 열어두세요. 휴대폰에서는 적은 장수부터 시작하세요.</p>
       <div class="convert__row">
         <label for="batch-format" data-en="Output format">출력 형식</label>
         <select id="batch-format" class="convert__select"><option value="jpeg">JPG</option><option value="png">PNG</option><option value="webp">WEBP</option></select>
         <label id="batch-quality-wrap"><span data-en="Quality">품질</span> <select id="batch-quality" class="convert__select"><option value="90">90%</option><option value="80">80%</option><option value="100">100%</option></select></label>
       </div>
-      <p data-en="JPG does not preserve transparency. Choose PNG or WEBP to keep it. Conversion may change quality and metadata; keep your originals.">JPG는 투명 배경을 유지하지 않아요. 투명도를 유지하려면 PNG나 WEBP를 선택하세요. 변환하면 화질과 메타데이터가 달라질 수 있으니 원본을 보관하세요.</p>
+      <p class="batch-note" data-en="JPG does not preserve transparency. Choose PNG or WEBP to keep it. Conversion may change quality and metadata; keep your originals.">JPG는 투명 배경을 유지하지 않아요. 투명도를 유지하려면 PNG나 WEBP를 선택하세요. 변환하면 화질과 메타데이터가 달라질 수 있으니 원본을 보관하세요.</p>
       <p id="batch-status" role="status" aria-live="polite"></p>
       <progress id="batch-progress" value="0" max="20" aria-label="변환 진행률" style="width:100%"></progress>
       <ol id="batch-list" class="batch-list"></ol>
