@@ -2,6 +2,8 @@
  * diagnosis keys remain unchanged; only explicitly bound UI text is translated. */
 (function () {
   const translations = {
+    "HEIC·PNG·WEBP 사진을 JPG 등으로 무료 변환하세요. 한 장씩 저장하거나 최대 20장을 일괄 변환해 ZIP으로 받으세요. 사진은 서버에 업로드되지 않습니다.": "Convert HEIC, PNG and WEBP photos for free. Save one photo or batch convert up to 20 and download a ZIP. Photos are never uploaded.",
+    "변환 진행률": "Conversion progress",
     "픽메딕 PicMedic | 아이폰 사진 안 열릴 때 · HEIC JPG 변환": "PicMedic | iPhone photos not opening and HEIC to JPG",
     "아이폰 사진이 PC에서 안 열리나요? 픽메딕에서 사진 형식과 읽기 가능 여부를 확인하고 JPG로 변환하세요. 라이브포토 MP4 저장과 인화 해상도 확인도 무료로 제공합니다. 사진 업로드 없음.": "Check photo formats and readability, convert HEIC to JPG, save Live Photo videos, and check print resolution for free. No photo uploads.",
     "HEIC JPG 변환 무료 | PNG·WEBP 사진 변환 - 픽메딕": "Free HEIC to JPG | PNG and WEBP converter - PicMedic",

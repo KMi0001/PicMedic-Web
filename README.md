@@ -76,3 +76,22 @@ python -m http.server 8000
 [사진이_이상해요_기획_web.md](../PicMedic/사진이_이상해요_기획_web.md) 참고
 (주로 ① 기준으로 작성됨, ②는 위 차이점 참고). 기획 문서는 2026-09-03에
 `PicMedic` 저장소 쪽으로 옮겨 다른 PRD 문서들과 함께 모아뒀다.
+
+
+## 브라우저 일괄 변환 (2026-10-14)
+
+`convert.html`에서 여러 장을 선택하거나 드롭하면 일괄 변환 화면이 열린다.
+JPG/PNG/WEBP 출력, 진행률, 현재 사진 처리 후 취소, 파일별 실패 안내,
+성공 파일 ZIP 다운로드를 제공한다. 한 장 선택은 기존 미리보기와 개별 저장을 유지한다.
+사진은 네트워크로 전송하지 않는다. HEIC 디코더는 기존 고정 버전 CDN을 사용한다.
+
+- 보수적인 초기 한도: 20장, 파일당 20 MiB, 전체 입력/출력 각각 100 MiB, 사진당 24,000,000픽셀.
+- 순차 디코딩·인코딩 후 canvas/HEIC 핸들을 해제한다. 기기별 메모리 한도를 보장하는 수치는 아니다.
+- ZIP은 `batch-zip.js`의 비압축 STORE 방식으로 생성한다. UTF-8 파일명, CRC32, 중복 이름 순번 처리.
+- 변환은 메타데이터 보존/화질 무손실을 보장하지 않는다. 원본을 보관해야 한다.
+- 검증: `node tests/test_batch_convert.cjs` 및 `node tests/test_browser_i18n.cjs`.
+  Playwright/Edge와 Python(zipfile)이 필요하며 PLAYWRIGHT_MODULE/PYTHON_EXE로 경로를 지정할 수 있다.
+  HEIC_FIXTURE 및 HEIF_SCRIPT를 지정하면 공식 샘플의 5장씩 2회 연속 변환과 WASM heap 재사용도 확인한다.
+  공개 샘플: https://github.com/strukturag/libheif/blob/master/examples/example.heic
+
+실제 휴대폰 Safari/Android 기기 테스트는 별도로 필요하다. 데스크톱 Edge에서 모바일 폭 레이아웃을 확인했다.

@@ -30,7 +30,7 @@ let currentCanvas = null;
 let currentBaseName = "picmedic";
 
 function showSection(section) {
-  for (const el of [pickerSection, loadingSection, resultSection]) {
+  for (const el of [pickerSection, loadingSection, resultSection, document.getElementById("batch")]) {
     el.classList.toggle("hidden", el !== section);
   }
 }
@@ -64,7 +64,16 @@ async function handleFile(file) {
 }
 
 pickBtn.addEventListener("click", () => fileInput.click());
-fileInput.addEventListener("change", () => handleFile(fileInput.files[0]));
+function handleSelection(selection) {
+  const files = Array.from(selection || []);
+  fileInput.value = "";
+  if (files.length > 1) {
+    if (currentCanvas) { currentCanvas.width = 0; currentCanvas.height = 0; currentCanvas = null; }
+    previewEl.removeAttribute("src");
+    preparePhotoBatch(files);
+  } else if (files.length) handleFile(files[0]);
+}
+fileInput.addEventListener("change", () => handleSelection(fileInput.files));
 
 for (const eventName of ["dragenter", "dragover"]) {
   pickerSection.addEventListener(eventName, (e) => {
@@ -79,8 +88,7 @@ for (const eventName of ["dragleave", "drop"]) {
   });
 }
 pickerSection.addEventListener("drop", (e) => {
-  const file = e.dataTransfer.files && e.dataTransfer.files[0];
-  handleFile(file);
+  handleSelection(e.dataTransfer.files);
 });
 
 formatEl.addEventListener("change", updateQualityVisibility);

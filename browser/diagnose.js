@@ -116,22 +116,24 @@ async function readHeadBytes(file, n = 64) {
   return new Uint8Array(buf);
 }
 
-function decodeStandardToCanvas(file) {
+function decodeStandardToCanvas(file, maxPixels = Infinity) {
   return new Promise((resolve, reject) => {
     const url = URL.createObjectURL(file);
     const img = new Image();
     img.onload = () => {
-      const canvas = document.createElement("canvas");
-      canvas.width = img.naturalWidth;
-      canvas.height = img.naturalHeight;
-      canvas.getContext("2d").drawImage(img, 0, 0);
-      URL.revokeObjectURL(url);
-      resolve(canvas);
+      let canvas;
+      try {
+        if (img.naturalWidth * img.naturalHeight > maxPixels) throw new Error("pixel-limit");
+        canvas = document.createElement("canvas");
+        canvas.width = img.naturalWidth; canvas.height = img.naturalHeight;
+        canvas.getContext("2d").drawImage(img, 0, 0);
+        resolve(canvas);
+      } catch (error) {
+        if (canvas) { canvas.width = 0; canvas.height = 0; }
+        reject(error);
+      } finally { URL.revokeObjectURL(url); img.src = ""; }
     };
-    img.onerror = () => {
-      URL.revokeObjectURL(url);
-      reject(new Error("이미지를 디코딩할 수 없습니다."));
-    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("이미지를 디코딩할 수 없습니다.")); };
     img.src = url;
   });
 }
@@ -158,40 +160,39 @@ function getLibheifModule() {
   return _libheifModulePromise;
 }
 
-async function decodeHeicToCanvas(file) {
+async function decodeHeicToCanvas(file, maxPixels = Infinity) {
   const heif = await getLibheifModule();
   const buf = new Uint8Array(await file.arrayBuffer());
   const decoder = new heif.HeifDecoder();
-  const images = decoder.decode(buf);
-  if (!images || images.length === 0) {
-    throw new Error("HEIC 이미지를 찾을 수 없습니다.");
-  }
-  const image = images[0];
-  const width = image.get_width();
-  const height = image.get_height();
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext("2d");
-  const imageData = ctx.createImageData(width, height);
-  await new Promise((resolve, reject) => {
-    image.display(imageData, (displayData) => {
-      if (!displayData) {
-        reject(new Error("HEIC 디코딩에 실패했습니다."));
-        return;
-      }
-      resolve();
+  let images = [], canvas;
+  try {
+    images = decoder.decode(buf) || [];
+    if (!images.length) throw new Error("HEIC 이미지를 찾을 수 없습니다.");
+    const image = images[0];
+    const width = image.get_width(), height = image.get_height();
+    if (width * height > maxPixels) throw new Error("pixel-limit");
+    canvas = document.createElement("canvas");
+    canvas.width = width; canvas.height = height;
+    const ctx = canvas.getContext("2d");
+    const imageData = ctx.createImageData(width, height);
+    await new Promise((resolve, reject) => {
+      image.display(imageData, data => data ? resolve() : reject(new Error("HEIC 디코딩에 실패했습니다.")));
     });
-  });
-  ctx.putImageData(imageData, 0, 0);
-  return canvas;
+    ctx.putImageData(imageData, 0, 0);
+    return canvas;
+  } catch (error) {
+    if (canvas) { canvas.width = 0; canvas.height = 0; }
+    throw error;
+  } finally {
+    // libheif-js 1.19.8 exposes image.free(), but no decoder.dispose().
+    for (const image of images) image.free();
+    if (decoder.decoder) { heif.heif_context_free(decoder.decoder); decoder.decoder = null; }
+  }
 }
 
-async function decodeToCanvas(file, detectedFormat) {
-  if (detectedFormat === "HEIC" || detectedFormat === "HEIF") {
-    return decodeHeicToCanvas(file);
-  }
-  return decodeStandardToCanvas(file);
+async function decodeToCanvas(file, detectedFormat, maxPixels = Infinity) {
+  if (detectedFormat === "HEIC" || detectedFormat === "HEIF") return decodeHeicToCanvas(file, maxPixels);
+  return decodeStandardToCanvas(file, maxPixels);
 }
 
 // ---------------------------------------------------------------------------
