@@ -2,6 +2,17 @@
  * diagnosis keys remain unchanged; only explicitly bound UI text is translated. */
 (function () {
   const translations = {
+    "픽메딕 PicMedic | 아이폰 사진 안 열릴 때 · HEIC JPG 변환": "PicMedic | iPhone photos not opening and HEIC to JPG",
+    "아이폰 사진이 PC에서 안 열리나요? 픽메딕에서 사진 형식과 읽기 가능 여부를 확인하고 JPG로 변환하세요. 라이브포토 MP4 저장과 인화 해상도 확인도 무료로 제공합니다. 사진 업로드 없음.": "Check photo formats and readability, convert HEIC to JPG, save Live Photo videos, and check print resolution for free. No photo uploads.",
+    "HEIC JPG 변환 무료 | PNG·WEBP 사진 변환 - 픽메딕": "Free HEIC to JPG | PNG and WEBP converter - PicMedic",
+    "HEIC를 JPG로, PNG·WEBP를 JPEG로 무료 변환하세요. 설치 없이 사진 한 장을 브라우저에서 처리하고 다운로드합니다. 사진 파일은 서버에 업로드되지 않습니다.": "Convert one HEIC, PNG or WEBP photo to JPEG for free in your browser. No installation or photo uploads.",
+    "사진 안 열림 원인 확인 | 손상·해상도 검사 - 픽메딕": "Photos not opening | Damage and resolution check - PicMedic",
+    "아이폰 HEIC·JPG 사진이 안 열릴 때 실제 파일 형식과 읽기 가능 여부를 확인하세요. 해상도와 인화 적합도도 추정합니다. 파일 복구 기능은 제공하지 않습니다.": "Check the format and readability of HEIC and JPG photos, and estimate print quality. This tool does not repair files.",
+    "라이브포토 동영상 저장 | MOV 짝 찾기·MP4 변환 - 픽메딕": "Save Live Photo videos | MOV pairing and MP4 - PicMedic",
+    "아이폰 라이브포토의 사진과 MOV 영상이 원래 짝인지 확인하고 MP4로 저장하세요. 파일은 브라우저 안에서 처리됩니다. 원래 움직임을 저장하려면 MOV 원본이 필요합니다.": "Check whether your iPhone photo and MOV are a Live Photo pair and save as MP4 in your browser. The original MOV is required.",
+    "HEIC JPG 변환 · 사진 형식 변환": "HEIC to JPG and photo conversion",
+    "사진 안 열림 · 손상·해상도 확인": "Check photo format, damage and resolution",
+    "라이브포토 동영상 저장 · MP4 변환": "Save Live Photo videos as MP4",
     "홈": "Home",
     "사진 진단하기": "Diagnose Photos",
     "라이브포토 진단": "Live Photo Check",
