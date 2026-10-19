@@ -1,18 +1,46 @@
-/* gui/theme.py의 COLORS("민트 케어" 팔레트)와 동일한 값을 사용해
-   데스크톱 앱과 시각적 일관성을 맞춘다. */
+/* gui/theme.py의 COLORS(버터·아이보리 + 톤온톤 잉크, 골드 포인트 팔레트)와
+   동일한 값을 사용해 데스크톱 앱과 시각적 일관성을 맞춘다. 웹버전은 다크를
+   기본값으로 쓰기로 해서(2026-09-11) DARK_COLORS를 기본 :root에 두고,
+   [data-theme="light"]에서만 LIGHT_COLORS로 덮어쓴다. */
 :root {
-  --bg: #F1F8F5;
-  --surface: #FFFFFF;
-  --border: #DCEAE3;
-  --dashed: #B6DED4;
-  --text: #17332A;
-  --text-secondary: #5E8677;
-  --primary: #12B5A6;
-  --primary-hover: #0E9689;
-  --success: #2FAF66;
-  --warning: #D9A441;
-  --danger: #DA5A5A;
-  --muted: #8FAFA0;
+  --bg: #1E1A15;
+  --surface: #2A241C;
+  --border: #3D362A;
+  --dashed: #4A4230;
+  --text: #EDE6D6;
+  --text-secondary: #A79A82;
+  --primary: #D9B54A;
+  --primary-hover: #E8C765;
+  --success: #8FA06B;
+  --warning: #D4934F;
+  --danger: #C77A6C;
+  --muted: #7A7060;
+  --selection: #3A3222;
+  --cert-tier1-bg: #3A3222;
+  --cert-tier2-bg: #2A3022;
+  --cert-tier3-bg: #362B1E;
+  /* 골드(primary) 배경 위 글자색은 라이트/다크 공통 고정값 — gui/theme.py
+     COLORS['on_primary']와 동일한 이유(밝은 글자를 얹으면 대비가 떨어짐). */
+  --on-primary: #2A2420;
+}
+
+:root[data-theme="light"] {
+  --bg: #F7F1E4;
+  --surface: #FFFDF8;
+  --border: #E6DCC5;
+  --dashed: #D8C9A0;
+  --text: #2A2420;
+  --text-secondary: #7A7060;
+  --primary: #D9B54A;
+  --primary-hover: #C6A23A;
+  --success: #6E7F4E;
+  --warning: #B97A3A;
+  --danger: #A6453A;
+  --muted: #A79A82;
+  --selection: #F1E6C6;
+  --cert-tier1-bg: #F1E6C6;
+  --cert-tier2-bg: #EAEEDD;
+  --cert-tier3-bg: #F7E9D6;
 }
 
 * {
@@ -146,7 +174,7 @@ body {
 
 .privacy-note__icon-check {
   fill: none;
-  stroke: #FFFFFF;
+  stroke: var(--on-primary);
   stroke-width: 1.6;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -187,7 +215,7 @@ body {
 
 .button--primary {
   background-color: var(--primary);
-  color: #FFFFFF;
+  color: var(--on-primary);
 }
 
 .button--primary:hover {
@@ -315,17 +343,17 @@ body {
 
 .cert--우수 {
   border-color: var(--primary);
-  background-color: #E3F7F4;
+  background-color: var(--cert-tier1-bg);
 }
 
 .cert--양호 {
   border-color: var(--success);
-  background-color: #EAF7EE;
+  background-color: var(--cert-tier2-bg);
 }
 
 .cert--주의 {
   border-color: var(--warning);
-  background-color: #FBF2E1;
+  background-color: var(--cert-tier3-bg);
 }
 
 .result__details {
@@ -412,5 +440,65 @@ body {
   margin: 10px 0 0;
   font-size: 12px;
   color: var(--warning);
+}
+
+/* 형식 변환("다른 형식으로 저장") — 이미 디코딩해둔 원본 해상도 캔버스를
+   그대로 원하는 형식으로 다시 인코딩해서 다운로드시킨다. 데스크톱 앱
+   core/converter.py의 "형식 변환" 모드와 같은 개념이지만, 브라우저
+   Canvas가 실제로 인코딩 가능한 형식(JPEG/PNG/WEBP)만 지원한다 — GIF/TIFF/BMP는
+   Pillow 전용이라 웹판에는 없음. */
+.convert {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.convert__title {
+  margin: 0 0 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.convert__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.convert__select {
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background-color: var(--surface);
+  color: var(--text);
+  font-size: 13px;
+  font-family: inherit;
+}
+
+.convert__quality-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.convert__quality-wrap input[type="range"] {
+  width: 110px;
+}
+
+.convert__btn {
+  width: auto;
+  margin-top: 0;
+  padding: 8px 16px;
+  font-size: 13px;
+}
+
+.convert__note {
+  margin: 10px 0 0;
+  font-size: 11.5px;
+  color: var(--text-secondary);
 }
 

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>라이브포토 동영상 저장 | MOV 짝 찾기·MP4 변환 - 픽메딕</title>
+<meta name="description" content="아이폰 라이브포토의 사진과 MOV 영상이 원래 짝인지 확인하고 MP4로 저장하세요. 파일은 브라우저 안에서 처리됩니다. 원래 움직임을 저장하려면 MOV 원본이 필요합니다." />
+<link rel="canonical" href="https://picmedic.try-cat.com/live-photo.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="PicMedic" />
+<meta property="og:url" content="https://picmedic.try-cat.com/live-photo.html" />
+<meta property="og:title" content="라이브포토 동영상 저장 | MOV 짝 찾기·MP4 변환 - 픽메딕" />
+<meta property="og:description" content="아이폰 라이브포토의 사진과 MOV 영상이 원래 짝인지 확인하고 MP4로 저장하세요. 파일은 브라우저 안에서 처리됩니다. 원래 움직임을 저장하려면 MOV 원본이 필요합니다." />
+<script src="analytics.js" async></script>
+<link rel="icon" href="favicon.png" />
+<link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="search-guides.css" />
+<style>
+  /* 사이트 공통 내비/푸터 전용 색상 — style.css의 :root 토큰(진단 카드가 씀)과
+     이름이 겹치면 카드 색까지 덮어써버려서 --nav-* 로 이름공간을 분리했다.
+     index.html/faq.html과 같은 값(gui/theme.py 팔레트)을 써서 내비·푸터·카드가
+     똑같이 보인다. 웹버전은 다크가 기본값(2026-09-11)이라 기본 :root에 DARK_COLORS를
+     두고 [data-theme="light"]에서만 LIGHT_COLORS로 덮어쓴다. */
+  :root{
+    --nav-bg:#1E1A15; --nav-text:#EDE6D6; --nav-muted:#A79A82;
+    --nav-accent:#D9B54A; --nav-hairline:#3D362A;
+  }
+  :root[data-theme="light"]{
+    --nav-bg:#F7F1E4; --nav-text:#2A2420; --nav-muted:#7A7060;
+    --nav-accent:#D9B54A; --nav-hairline:#E6DCC5;
+  }
+  .site-nav{position:fixed;top:0;left:0;right:0;z-index:30;background:var(--nav-bg);border-bottom:1px solid var(--nav-hairline);}
+  body{padding-top:72px;}
+  .site-nav .row{max-width:720px;margin:0 auto;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;}
+  .site-nav .logo{display:flex;align-items:center;gap:8px;font-family:'IBM Plex Sans KR','Malgun Gothic',sans-serif;font-weight:700;font-size:20px;color:var(--nav-text);text-decoration:none;letter-spacing:-.01em;}
+  .site-nav .logo__icon{width:26px;height:26px;border-radius:7px;display:block;}
+  .site-nav .navlinks{display:flex;gap:28px;align-items:center;}
+  .site-nav a.navlink{font-family:'IBM Plex Sans KR','Malgun Gothic',sans-serif;font-size:13.5px;color:var(--nav-muted);text-decoration:none;}
+  .site-nav a.navlink:hover{color:var(--nav-text);}
+  /* 지금 보고 있는 페이지의 메뉴만 강조(aria-current="page") — 다른 페이지에서는 강조하지 않는다.
+   금색 글자는 라이트 모드 배경(아이보리)과 대비가 약해(1.75:1) 회색 메뉴보다 오히려 흐려 보였다 —
+   그래서 글자는 진한 본문색 + 굵게로 하고, 강조색(금색)은 밑줄로만 쓴다. */
+  .site-nav a.navlink[aria-current="page"]{
+    color:var(--nav-text);font-weight:600;
+    text-decoration:underline;text-decoration-color:var(--nav-accent);
+    text-decoration-thickness:2px;text-underline-offset:8px;
+  }
+  .theme-toggle-group{display:flex;align-items:center;gap:6px;}
+  .theme-toggle-group .mode-label{font-family:'IBM Plex Sans KR','Malgun Gothic',sans-serif;font-size:12.5px;color:var(--nav-muted);line-height:1;}
+  .theme-toggle{background:none;border:none;padding:0;margin:0;cursor:pointer;display:flex;align-items:center;line-height:0;}
+  .theme-toggle .track{width:36px;height:20px;border-radius:10px;background:var(--nav-hairline);position:relative;transition:background .2s;}
+  .theme-toggle .knob{position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#FFFFFF;box-shadow:0 1px 2px rgba(0,0,0,.3);transition:transform .2s;}
+  .theme-toggle[aria-pressed="true"] .track{background:var(--nav-accent);}
+  .theme-toggle[aria-pressed="true"] .knob{transform:translateX(16px);}
+  @media (prefers-reduced-motion: reduce){.theme-toggle .track, .theme-toggle .knob{transition:none;}}
+
+  .privacy-note{
+    position:static; left:auto; bottom:auto; transform:none;
+    width:auto; max-width:none; padding:0; margin-top:32px;
+  }
+  .site-footer{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--nav-bg);border-top:1px solid var(--nav-hairline);}
+  .app{padding-bottom:calc(64px + 104px);}
+  .site-footer .row{
+    max-width:720px;margin:0 auto;padding:14px 24px;display:flex;justify-content:space-between;
+    align-items:center;flex-wrap:wrap;gap:12px;font-family:'IBM Plex Sans KR','Malgun Gothic',sans-serif;
+    font-size:12.5px;color:var(--nav-muted);
+  }
+  .site-footer a{color:var(--nav-muted);text-decoration:none;}
+  .site-footer a:hover{color:var(--nav-text);}
+  .bizinfo{
+    max-width:720px;margin:0 auto;padding:0 24px 10px;font-family:'IBM Plex Sans KR','Malgun Gothic',sans-serif;
+    font-size:10.5px;line-height:1.6;color:var(--nav-muted);opacity:.75;
+  }
+  .lang-toggle{
+    background:none;border:none;padding:0;font:inherit;font-size:12.5px;color:var(--nav-muted);
+    text-decoration:underline;text-underline-offset:3px;cursor:pointer;
+  }
+  .lang-toggle:hover{color:var(--nav-text);}
+  .guide-fab{
+    position:fixed;right:20px;bottom:76px;z-index:25;
+    background:var(--nav-accent);color:#fff;font-family:'IBM Plex Sans KR','Malgun Gothic',sans-serif;
+    font-size:13px;font-weight:600;padding:10px 16px;border-radius:24px;
+    text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.18);
+  }
+  .guide-fab:hover{opacity:.9;}
+
+  /* 이 페이지 전용 — 사진/동영상 두 슬롯 선택 UI (diagnose.html은 파일 하나만
+     고르면 되지만, 사진만 먼저 분석해보고 그 다음에 동영상을 고르게 한다). */
+  .lp-slot{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;margin:16px 0;}
+  .lp-slot__label{margin:0 0 10px;font-size:12.5px;font-weight:600;color:var(--text-secondary);}
+  .lp-slot__filename{margin:8px 0 0;font-size:12px;color:var(--text-secondary);word-break:break-all;min-height:1.4em;}
+  .lp-slot__filename--filled{color:var(--text);font-weight:600;}
+  .lp-video{display:block;width:100%;max-height:420px;border-radius:10px;background:#000;margin:0 0 16px;}
+
+  /* 짝이 확인된 결과 — 왼쪽 MP4 변환 / 오른쪽 동영상 다운로드를 한 줄에 가운데 정렬로 두고
+     (좁은 화면에선 줄바꿈), 안내 문구는 그 아래 한 줄 전체를 쓴다. */
+  .lp-actions{display:flex;flex-wrap:wrap;justify-content:center;align-items:stretch;gap:10px;}
+  .lp-actions .button{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;}
+  .lp-actions .hidden{display:none;}
+  .lp-actions .button--secondary{width:auto;margin-top:0;}
+  .lp-actions .result__message{flex:0 0 100%;text-align:center;margin:4px 0 0;}
+  .lp-pick-another{margin:0 0 16px;}
+
+  /* 폴더째로 한꺼번에 확인하기 진입점 — 사진 하나 고르기가 주된 흐름이라
+     눈에 덜 띄는 텍스트 링크로 둔다. */
+  .picker__bulk{margin:14px 0 0;font-size:12px;color:var(--text-secondary);}
+  .link-btn{background:none;border:none;padding:0;font:inherit;font-size:inherit;color:var(--primary);text-decoration:underline;text-underline-offset:2px;cursor:pointer;}
+  .link-btn:hover{color:var(--primary-hover);}
+
+  /* 폴더 스캔 결과 목록 — 찾은 짝마다 한 줄(파일명 + 다운로드 버튼). */
+  .lp-bulk-list{max-height:360px;overflow-y:auto;border:1px solid var(--border);border-radius:10px;margin:16px 0;}
+  .lp-bulk-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:1px solid var(--border);}
+  .lp-bulk-row:last-child{border-bottom:none;}
+  .lp-bulk-row__name{font-size:12.5px;color:var(--text);word-break:break-all;}
+  .lp-bulk-row__btn{flex:0 0 auto;padding:6px 12px;font-size:12px;border-radius:6px;background-color:var(--primary);color:var(--on-primary);text-decoration:none;font-weight:600;}
+  .lp-bulk-row__btn:hover{background-color:var(--primary-hover);}
+  .lp-bulk-empty{padding:20px;text-align:center;font-size:13px;color:var(--text-secondary);}
+  .lp-bulk-note{margin:0 0 16px;padding:10px 14px;border-radius:8px;background-color:var(--selection);font-size:12px;color:var(--text-secondary);line-height:1.5;}
+  .lp-bulk-note strong{color:var(--text);}
+</style>
+
+<script>
+(function(){
+  try{
+    var stored = localStorage.getItem('picmedic-theme');
+    if (stored === 'light' || stored === 'dark') {
+      document.documentElement.setAttribute('data-theme', stored);
+    }
+  }catch(e){}
+})();
+</script>
+</head>
+<body>
+  <nav class="site-nav">
+    <div class="row">
+      <a class="logo" href="index.html"><img src="favicon.png" alt="" class="logo__icon" />PicMedic</a>
+      <div class="navlinks">
+        <a class="navlink" href="index.html">홈</a>
+        <a class="navlink" href="faq.html">FAQ</a>
+        <a class="navlink" href="diagnose.html">사진 진단하기</a>
+        <a class="navlink" href="live-photo.html" aria-current="page">라이브포토 진단</a>
+        <a class="navlink" href="convert.html">확장자 변환</a>
+        <span class="theme-toggle-group">
+          <button id="theme-toggle" class="theme-toggle" type="button" aria-label="다크 모드 전환" aria-pressed="true">
+            <span class="track"><span class="knob"></span></span>
+          </button>
+          <span class="mode-label" data-en="Mode" aria-hidden="true">모드</span>
+        </span>
+      </div>
+    </div>
+  </nav>
+
+  <main class="app">
+    <header class="app__header">
+      <h1>라이브포토 동영상 저장 · MP4 변환</h1>
+      <p class="app__tagline">사진을 정리하다 라이브 포토였던 것 같은데 확실치 않을 때.</p>
+      <p class="app__description">사진과 동영상(.MOV) 파일을 고르면, 원래 짝이 맞는 라이브 포토인지 확인하고 그 영상을 저장할 수 있어요. PC에서는 사진 파일이 아니라 함께 저장된 .MOV 영상을 재생해야 라이브 포토가 움직여요. 그 영상을 MP4로 변환해서 저장할 수도 있어요.</p>
+    </header>
+
+    <section id="picker" class="picker">
+      <button id="pick-image-btn" class="button button--primary" type="button">사진 선택</button>
+      <p class="picker__hint">
+        라이브 포토였는지 확인하고 싶은 사진(HEIC 또는 JPG)을 먼저 골라주세요 —
+        짝이었던 동영상이 있는지는 사진만 봐도 알 수 있어요. 짝이 있는 걸로
+        나오면, 그 동영상(.MOV) 파일을 추가로 골라서 진짜 짝이 맞는지까지
+        확인하고 다운로드할 수 있어요. 여기로 사진과 동영상을 한꺼번에
+        끌어다 놓아도 돼요.
+      </p>
+      <input type="file" id="image-input" accept="image/*,.heic,.heif" hidden />
+      <input type="file" id="video-input" accept="video/*,.mov" hidden />
+      <input type="file" id="folder-input" webkitdirectory multiple hidden />
+
+      <p class="picker__bulk">
+        사진이 여러 장이면
+        <button id="pick-folder-btn" class="link-btn" type="button">폴더째로 한꺼번에 확인하기</button>
+      </p>
+    </section>
+
+    <section id="loading" class="loading hidden">
+      <p id="loading-text">확인하는 중...</p>
+    </section>
+
+    <section id="result" class="result hidden">
+      <div class="result__badge" id="result-badge"></div>
+      <h2 id="result-filename" class="result__filename"></h2>
+      <p id="result-message" class="result__message"></p>
+
+      <button id="pick-another-btn" class="button button--secondary lp-pick-another hidden" type="button">다른 라이브포토 사진 선택</button>
+
+      <div id="video-step" class="lp-slot hidden">
+        <p class="lp-slot__label">동영상 (.MOV)</p>
+        <button id="pick-video-btn" class="button button--secondary" type="button">동영상 선택</button>
+        <p id="video-filename" class="lp-slot__filename"></p>
+      </div>
+
+      <video id="result-video" class="lp-video hidden" controls playsinline></video>
+
+      <div class="lp-actions">
+        <button id="mp4-btn" class="button button--secondary hidden" type="button">MP4로 변환해서 저장</button>
+        <a id="download-btn" class="button button--primary hidden" download>동영상 파일 다운로드</a>
+        <p id="mp4-status" class="result__message hidden"></p>
+      </div>
+      <button id="retry-btn" class="button button--secondary" type="button">다른 사진으로 다시 확인하기</button>
+    </section>
+
+    <section id="bulk-result" class="result hidden">
+      <h2 id="bulk-result-title" class="result__filename"></h2>
+      <p id="bulk-result-message" class="result__message"></p>
+      <div id="bulk-list" class="lp-bulk-list"></div>
+      <p id="bulk-desktop-note" class="lp-bulk-note hidden">
+        하나씩 받기 번거로우시면, <strong>PicMedic 데스크톱 버전</strong>에서는 찾은 동영상을 한 번에 정리하거나 내보낼 수 있어요.
+      </p>
+      <button id="bulk-retry-btn" class="button button--secondary" type="button">다른 폴더로 다시 확인하기</button>
+    </section>
+
+    <section class="search-guides" aria-label="사진 해결 가이드"><h2>사진 문제 해결 가이드</h2><ul><li><a href="heic-to-jpg.html">HEIC를 JPG로 변환하는 방법</a></li><li><a href="live-photo-to-mp4.html">라이브 포토를 PC에서 MP4 동영상으로 저장하기</a></li><li><a href="photo-print-resolution.html">사진 인화 해상도 확인 — 4×6에 필요한 픽셀</a></li></ul></section><footer class="app__footer" data-page-note="livePhoto">
+      <p data-en=""></p>
+    </footer>
+
+    <p class="privacy-note">
+      <svg class="privacy-note__icon" viewBox="0 0 16 16" aria-hidden="true">
+        <circle class="privacy-note__icon-bg" cx="8" cy="8" r="8" />
+        <path class="privacy-note__icon-check" d="M4.5 8.3l2.3 2.3L11.5 5.8" />
+      </svg>
+      <span>사진과 동영상은 서버로 전송되지 않고, 이 브라우저 탭 안에서만 대조됩니다.</span>
+    </p>
+  </main>
+
+  <a href="guide.html" class="guide-fab" data-en="How to use">사용방법</a>
+
+  <footer class="site-footer">
+    <div class="row">
+      <span>PicMedic</span>
+      <span class="footlinks" data-en='<a href="privacy-policy.html"><strong>Privacy Policy</strong></a> &middot; <a href="mailto:TODO@example.com">Contact</a>'><a href="privacy-policy.html"><strong>개인정보 처리방침</strong></a> · <a href="mailto:TODO@example.com">문의하기</a></span>
+      <span>© 2026 PicMedic</span>
+      <button id="lang-toggle" class="lang-toggle" type="button" aria-label="View in English">English</button>
+    </div>
+    <!-- 사업자정보/문의 이메일 값은 site-content.js에서 채운다(admin.html에서 편집). -->
+    <div class="bizinfo" data-en="Name: [Business name] &middot; CEO: [CEO name] &middot; Registration No.: [000-00-00000] &middot; Address: [Business address] &middot; Mail-order sales No.: [if applicable] &middot; Contact: [email or phone]">상호 [상호명] · 대표자 [대표자명] · 사업자등록번호 [000-00-00000] · 주소 [사업장 주소] · 통신판매업신고번호 [해당 시 기재] · 문의 [이메일 또는 전화번호]</div>
+  </footer>
+
+  <script src="site-content.js"></script>
+  <script src="live-photo-core.js"></script>
+  <script src="live-photo-mp4.js"></script>
+  <script src="live-photo-app.js"></script>
+  <script>
+  (function(){
+    var toggle = document.getElementById('theme-toggle');
+    function isDark(){
+      var explicit = document.documentElement.getAttribute('data-theme');
+      if (explicit) return explicit === 'dark';
+      return true; // 다크가 기본값(2026-09-11) — 시스템 설정과 무관하게 고정
+    }
+    function sync(){
+      toggle.setAttribute('aria-pressed', isDark() ? 'true' : 'false');
+    }
+    toggle.addEventListener('click', function(){
+      var next = isDark() ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try{ localStorage.setItem('picmedic-theme', next); }catch(e){}
+      sync();
+    });
+    sync();
+  })();
+  </script>
+  <script src="i18n.js"></script>
+</body>
+</html>

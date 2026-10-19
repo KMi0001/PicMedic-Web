@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PicMedic 개인정보 처리방침</title>
+<link rel="icon" href="favicon.png" />
+<meta name="description" content="Jenn PicMedic 개인정보 처리방침 — 사진은 업로드되지 않으며, 문의 메일과 방문 통계만 처리해요." />
+<link rel="canonical" href="https://picmedic.try-cat.com/privacy-policy.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="PicMedic" />
+<meta property="og:url" content="https://picmedic.try-cat.com/privacy-policy.html" />
+<meta property="og:title" content="PicMedic 개인정보 처리방침" />
+<meta property="og:description" content="Jenn PicMedic 개인정보 처리방침 — 사진은 업로드되지 않으며, 문의 메일과 방문 통계만 처리해요." />
+<script src="analytics.js" async></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* gui/theme.py COLORS(버터·아이보리 + 톤온톤 잉크, 골드 포인트)와 동일한 값.
+   웹버전은 다크가 기본값(2026-09-11)이라 기본 :root에 DARK_COLORS를 두고
+   [data-theme="light"]에서만 LIGHT_COLORS로 덮어쓴다. */
+:root{
+  --bg:#1E1A15;
+  --text:#EDE6D6;
+  --muted:#A79A82;
+  --accent:#D9B54A;
+  --accent-soft:#3A3222;
+  --hairline:#3D362A;
+}
+:root[data-theme="light"]{
+  --bg:#F7F1E4;
+  --text:#2A2420;
+  --muted:#7A7060;
+  --accent:#D9B54A;
+  --accent-soft:#F1E6C6;
+  --hairline:#E6DCC5;
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:'IBM Plex Sans KR','Malgun Gothic',sans-serif;
+  -webkit-font-smoothing:antialiased;
+  padding-top:72px;
+}
+a{color:var(--accent);}
+.mono{font-family:'IBM Plex Mono',monospace;}
+.shell{max-width:720px;margin:0 auto;padding:0 24px;}
+
+/* nav */
+nav.top{position:fixed;top:0;left:0;right:0;z-index:30;background:var(--bg);border-bottom:1px solid var(--hairline);}
+nav.top .row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 0;
+}
+.logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:20px;letter-spacing:-.01em;text-decoration:none;color:var(--text);}
+.logo__icon{width:26px;height:26px;border-radius:7px;display:block;}
+.navlinks{display:flex;gap:28px;align-items:center;}
+.navlinks a{font-size:13.5px;color:var(--muted);text-decoration:none;}
+.navlinks a:hover, .navlinks a:focus-visible{color:var(--text);}
+/* 지금 보고 있는 페이지의 메뉴만 강조(aria-current="page") — 다른 페이지에서는 강조하지 않는다.
+   금색 글자는 라이트 모드 배경(아이보리)과 대비가 약해(1.75:1) 회색 메뉴보다 오히려 흐려 보였다 —
+   그래서 글자는 진한 본문색 + 굵게로 하고, 강조색(금색)은 밑줄로만 쓴다. */
+.navlinks a[aria-current="page"]{
+  color:var(--text);font-weight:600;
+  text-decoration:underline;text-decoration-color:var(--accent);
+  text-decoration-thickness:2px;text-underline-offset:8px;
+}
+
+.theme-toggle-group{display:flex;align-items:center;gap:6px;}
+.theme-toggle-group .mode-label{font-size:12.5px;color:var(--muted);line-height:1;}
+.theme-toggle{
+  background:none;border:none;padding:0;margin:0;cursor:pointer;
+  display:flex;align-items:center;line-height:0;
+}
+.theme-toggle .track{
+  width:36px;height:20px;border-radius:10px;background:var(--hairline);
+  position:relative;transition:background .2s;
+}
+.theme-toggle .knob{
+  position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;
+  background:#FFFFFF;box-shadow:0 1px 2px rgba(0,0,0,.3);transition:transform .2s;
+}
+.theme-toggle[aria-pressed="true"] .track{background:var(--accent);}
+.theme-toggle[aria-pressed="true"] .knob{transform:translateX(16px);}
+@media (prefers-reduced-motion: reduce){
+  .theme-toggle .track, .theme-toggle .knob{transition:none;}
+}
+
+/* page header */
+.pagehead{padding:48px 0 8px;}
+.eyebrow{font-size:11.5px;letter-spacing:.1em;color:var(--muted);margin:0 0 16px;}
+.pagehead h1{
+  font-size:clamp(26px,4vw,34px);line-height:1.28;font-weight:700;margin:0;
+  text-wrap:balance;
+}
+.updated{font-size:12.5px;color:var(--muted);margin:10px 0 0;}
+
+/* content */
+.doc{padding:24px 0;padding-bottom:calc(24px + 104px);}
+.doc section{border-top:1px solid var(--hairline);padding:24px 0;}
+.doc section:first-of-type{border-top:none;}
+.doc h2{font-size:15.5px;font-weight:700;margin:0 0 10px;}
+.doc section{scroll-margin-top:80px;}
+.doc ol{margin:0 0 10px;padding-left:20px;}
+.doc .summary{background:var(--accent-soft);border-radius:8px;padding:12px 16px;color:var(--text);}
+.doc .note{font-size:12.5px;}
+.toc{border-top:1px solid var(--hairline);padding:24px 0;}
+.toc ol{margin:0;padding-left:22px;columns:2;column-gap:32px;}
+.toc li{font-size:13.5px;line-height:1.9;color:var(--muted);break-inside:avoid;}
+.toc a{color:var(--text);text-decoration:none;}
+.toc a:hover,.toc a:focus-visible{text-decoration:underline;}
+.tablewrap{overflow-x:auto;margin:0 0 12px;}
+.doc table{width:100%;border-collapse:collapse;font-size:13px;line-height:1.6;}
+.doc th,.doc td{border:1px solid var(--hairline);padding:8px 10px;text-align:left;vertical-align:top;color:var(--muted);}
+.doc th{color:var(--text);font-weight:600;background:var(--accent-soft);white-space:nowrap;}
+@media (max-width:600px){.toc ol{columns:1;}}
+.doc p{font-size:14px;line-height:1.75;color:var(--muted);margin:0 0 10px;}
+.doc p:last-child{margin-bottom:0;}
+.doc ul{margin:0 0 10px;padding-left:20px;}
+.doc li{font-size:14px;line-height:1.75;color:var(--muted);margin-bottom:4px;}
+.doc strong{color:var(--text);}
+
+/* site footer — 화면 하단에 항상 고정, 모든 페이지 동일 */
+.site-footer{
+  position:fixed;left:0;right:0;bottom:0;z-index:20;
+  background:var(--bg);border-top:1px solid var(--hairline);
+}
+.footmeta{
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
+  padding:14px 24px;font-size:12.5px;color:var(--muted);
+}
+.footmeta a{color:var(--muted);text-decoration:none;}
+.footmeta a:hover, .footmeta a:focus-visible{color:var(--text);}
+.lang-toggle{
+  background:none;border:none;padding:0;font:inherit;font-size:12.5px;color:var(--muted);
+  text-decoration:underline;text-underline-offset:3px;cursor:pointer;
+}
+.lang-toggle:hover, .lang-toggle:focus-visible{color:var(--text);}
+
+/* 사업자 정보 — 오픈 전 실제 값으로 교체할 자리(2026-09-11, 사용자 요청으로
+   폼만 미리 짜둠). 통신판매업신고번호는 이 사이트에서 직접 결제를 받을 때만
+   필요 — 지금은 무료 진단만 제공하고 실제 결제는 MS 스토어에서 이뤄지므로
+   해당 없을 수 있음(확정은 법률 검토 필요). */
+.bizinfo{padding:0 24px 10px;font-size:10.5px;line-height:1.6;color:var(--muted);opacity:.75;}
+</style>
+
+<script>
+(function(){
+  try{
+    var stored = localStorage.getItem('picmedic-theme');
+    if (stored === 'light' || stored === 'dark') {
+      document.documentElement.setAttribute('data-theme', stored);
+    }
+  }catch(e){}
+})();
+</script>
+
+<nav class="top">
+  <div class="shell row">
+    <a class="logo" href="index.html"><img src="favicon.png" alt="" class="logo__icon" /><span data-en="PicMedic">PicMedic</span></a>
+    <div class="navlinks">
+      <a href="index.html" data-en="Home">홈</a>
+      <a href="faq.html">FAQ</a>
+      <a href="diagnose.html" data-en="Diagnose Photos">사진 진단하기</a>
+      <a href="live-photo.html" data-en="Live Photo Check">라이브포토 진단</a>
+      <a href="convert.html" data-en="Convert Extension">확장자 변환</a>
+      <span class="theme-toggle-group">
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="다크 모드 전환" aria-pressed="true">
+          <span class="track"><span class="knob"></span></span>
+        </button>
+        <span class="mode-label" data-en="Mode" aria-hidden="true">모드</span>
+      </span>
+    </div>
+  </div>
+</nav>
+
+<header class="pagehead">
+  <div class="shell">
+    <span class="eyebrow mono" data-en="Jenn. — PICMEDIC">Jenn — PICMEDIC</span>
+    <h1 data-en="PicMedic Privacy Policy">PicMedic 개인정보 처리방침</h1>
+    <p class="updated" data-en="Effective date: September 29, 2026">시행일: 2026년 9월 29일</p>
+  </div>
+</header>
+
+<div class="doc">
+  <div class="shell">
+    <section class="intro">
+      <p data-en="Jenn (the ‘Company’) processes the personal information of people who use the PicMedic website (picmedic.try-cat.com) lawfully and keeps it safe in accordance with the Personal Information Protection Act (PIPA) and related laws. Under Article 30 of PIPA, we publish this privacy policy to explain how we process and protect personal information and to handle related concerns quickly.">Jenn(이하 ‘회사’)은 PicMedic 웹사이트(picmedic.try-cat.com)를 이용하는 분의 개인정보를 「개인정보 보호법」 등 관계 법령에 따라 적법하게 처리하고 안전하게 관리합니다. 운영자는 「개인정보 보호법」 제30조에 따라 개인정보의 처리와 보호에 관한 절차와 기준을 안내하고, 관련 고충을 신속하게 처리하기 위해 다음과 같이 개인정보 처리방침을 수립·공개합니다.</p>
+      <p class="summary" data-en="&lt;strong&gt;At a glance:&lt;/strong&gt; your photos are never uploaded. The only personal information we receive is inquiry emails you send us and visit statistics collected by Google Analytics."><strong>한눈에 보기:</strong> 사진은 업로드되지 않습니다. 회사가 받는 개인정보는 이용자가 보낸 문의 메일과, 구글 애널리틱스가 수집하는 방문 통계뿐입니다.</p>
+    </section>
+    <nav class="toc" aria-label="목차">
+      <h2 data-en="Contents">목차</h2>
+      <ol>
+        <li><a href="#s1" data-en="Purposes of processing">개인정보의 처리 목적</a></li>
+        <li><a href="#s2" data-en="Personal information we process">처리하는 개인정보의 항목</a></li>
+        <li><a href="#s3" data-en="Children under 14">14세 미만 아동의 개인정보 처리</a></li>
+        <li><a href="#s4" data-en="Retention period">개인정보의 처리 및 보유 기간</a></li>
+        <li><a href="#s5" data-en="Deletion">개인정보의 파기 절차 및 방법</a></li>
+        <li><a href="#s6" data-en="Sharing with third parties">개인정보의 제3자 제공</a></li>
+        <li><a href="#s7" data-en="Processors">개인정보 처리업무의 위탁</a></li>
+        <li><a href="#s8" data-en="Cookies and similar technologies">개인정보 자동 수집 장치의 설치·운영 및 거부</a></li>
+        <li><a href="#s9" data-en="Behavioral information collected by third parties">제3자가 수집해 가는 행태정보</a></li>
+        <li><a href="#s10" data-en="Security measures">개인정보의 안전성 확보조치</a></li>
+        <li><a href="#s11" data-en="Your rights">정보주체와 법정대리인의 권리·의무 및 행사방법</a></li>
+        <li><a href="#s12" data-en="Privacy contact">개인정보 보호책임자</a></li>
+        <li><a href="#s13" data-en="Remedies">권익침해 구제방법</a></li>
+        <li><a href="#s14" data-en="Not applicable">그 밖에 해당하지 않는 사항</a></li>
+        <li><a href="#s16" data-en="Changes to this policy">개인정보 처리방침의 변경</a></li>
+      </ol>
+    </nav>
+    <section id="s1">
+      <h2 data-en="1. Purposes of processing">1. 개인정보의 처리 목적</h2>
+      <p data-en="We process personal information only for the purposes below. If a purpose changes, we will first take the steps required by Article 18 of the Personal Information Protection Act (PIPA).">운영자는 다음 목적으로만 개인정보를 처리합니다. 목적이 바뀌는 경우에는 「개인정보 보호법」 제18조에 따라 필요한 조치를 먼저 이행합니다.</p>
+      <ul>
+        <li data-en="&lt;strong&gt;Answering inquiries&lt;/strong&gt; — to read and reply to inquiries you send us by email"><strong>문의 응대</strong> — 이용자가 이메일로 보낸 문의를 확인하고 답변하기 위해</li>
+        <li data-en="&lt;strong&gt;Website usage statistics&lt;/strong&gt; — to understand visitor numbers, popular pages and how visitors arrive, so we can improve the website (using Google Analytics)"><strong>웹사이트 이용 통계 분석</strong> — 방문자 수, 많이 본 페이지, 유입 경로를 파악해 웹사이트를 개선하기 위해 (구글 애널리틱스 이용)</li>
+      </ul>
+      <p data-en="PicMedic&#x27;s features, such as photo checks and conversion, run only inside your browser or on your computer. We receive no photos or personal information for them.">사진 검사·변환 등 PicMedic의 기능은 이용자의 브라우저나 컴퓨터 안에서만 동작합니다. 이 기능을 위해 회사가 사진이나 개인정보를 받지 않습니다.</p>
+    </section>
+    <section id="s2">
+      <h2 data-en="2. Personal information we process">2. 처리하는 개인정보의 항목</h2>
+      <div class="tablewrap"><table>
+        <thead><tr><th data-en="Purpose">구분</th><th data-en="Items">항목</th><th data-en="How collected">수집 방법</th></tr></thead>
+        <tbody>
+          <tr><td data-en="Answering inquiries">문의 응대</td><td data-en="Email address, name (if given), message and attachments">이메일 주소, 이름(보낸 경우), 문의 내용과 첨부 파일</td><td data-en="When you send us an email">이용자가 이메일을 보낼 때</td></tr>
+          <tr><td data-en="Usage statistics">이용 통계 분석</td><td data-en="Cookie identifier, pages visited, date and time of visit, referral source (e.g. search), approximate location (country/city), device, OS and browser type">쿠키 식별자, 방문한 페이지, 방문 일시, 유입 경로(검색 등), 대략적인 지역(국가·도시), 기기·운영체제·브라우저 종류</td><td data-en="Collected automatically by Google Analytics when you visit">웹사이트 방문 시 구글 애널리틱스가 자동 수집</td></tr>
+        </tbody>
+      </table></div>
+      <p data-en="&lt;strong&gt;Not collected:&lt;/strong&gt; photo files, the EXIF data inside them (capture location, date, camera model, etc.) and file names are never sent anywhere. There is no sign-up or login, so we receive no account information."><strong>수집하지 않는 정보:</strong> 사진 파일, 사진의 EXIF 정보(촬영 위치·날짜·카메라 기종 등), 파일명은 어디로도 전송되지 않습니다. 회원가입·로그인 절차가 없어 계정 정보도 받지 않습니다.</p>
+      <p data-en="We process only the minimum personal information needed for these purposes.">운영자는 처리 목적에 필요한 최소한의 개인정보만 처리합니다.</p>
+    </section>
+    <section id="s3">
+      <h2 data-en="3. Children under 14">3. 14세 미만 아동의 개인정보 처리</h2>
+      <p data-en="Our services are not directed at children under 14, and we do not knowingly collect their personal information. If we learn that an inquiry came from a child under 14, we delete it without delay.">운영자는 14세 미만 아동을 대상으로 서비스를 제공하지 않으며, 14세 미만 아동의 개인정보를 알면서 수집하지 않습니다. 14세 미만 아동이 보낸 문의 메일임을 알게 되면 해당 정보를 지체 없이 파기합니다.</p>
+    </section>
+    <section id="s4">
+      <h2 data-en="4. Retention period">4. 개인정보의 처리 및 보유 기간</h2>
+      <div class="tablewrap"><table>
+        <thead><tr><th data-en="Purpose">구분</th><th data-en="Retention">보유 기간</th></tr></thead>
+        <tbody>
+          <tr><td data-en="Answering inquiries">문의 응대</td><td data-en="1 year after the inquiry is resolved">문의 처리를 마친 날로부터 1년</td></tr>
+          <tr><td data-en="Usage statistics">이용 통계 분석</td><td data-en="2 months from collection (Google Analytics data-retention setting)">수집일로부터 2개월 (구글 애널리틱스 데이터 보존 기간 설정)</td></tr>
+        </tbody>
+      </table></div>
+      <p data-en="Where another law requires us to keep information longer, we keep it for that period. No information currently falls under this.">다른 법령에 따라 보존해야 하는 경우에는 그 기간 동안 보관합니다. 현재 이에 해당하는 개인정보는 없습니다.</p>
+    </section>
+    <section id="s5">
+      <h2 data-en="5. Deletion">5. 개인정보의 파기 절차 및 방법</h2>
+      <ol>
+        <li data-en="When the retention period ends or the purpose is achieved, we delete the information without delay.">보유 기간이 지나거나 처리 목적을 달성하면 지체 없이 파기합니다.</li>
+        <li data-en="Electronic files are deleted so they cannot be recovered. Inquiry emails are removed from both the inbox and the trash, and Google Analytics data is deleted automatically when the retention period ends.">전자 파일은 복구할 수 없는 방법으로 삭제합니다. 문의 메일은 메일함과 휴지통에서 모두 삭제하며, 구글 애널리틱스 데이터는 보존 기간이 지나면 자동으로 삭제됩니다.</li>
+      </ol>
+    </section>
+    <section id="s6">
+      <h2 data-en="6. Sharing with third parties">6. 개인정보의 제3자 제공</h2>
+      <p data-en="We do not provide personal information to third parties, except where a law specifically requires it or it is unavoidable to meet a legal obligation.">운영자는 개인정보를 제3자에게 제공하지 않습니다. 다만 법률에 특별한 규정이 있거나 법령상 의무를 지키기 위해 불가피한 경우에는 예외로 합니다.</p>
+      <p data-en="Information that Google Analytics collects directly when you visit is explained in ‘9. Behavioral information collected by third parties’.">웹사이트 방문 시 구글 애널리틱스가 직접 수집해 가는 정보는 ‘9. 제3자가 수집해 가는 행태정보’에서 안내합니다.</p>
+    </section>
+    <section id="s7">
+      <h2 data-en="7. Processors">7. 개인정보 처리업무의 위탁</h2>
+      <p data-en="We entrust the following processing work to an outside provider.">운영자는 원활한 업무 처리를 위해 다음과 같이 개인정보 처리업무를 위탁하고 있습니다.</p>
+      <div class="tablewrap"><table>
+        <thead><tr><th data-en="Processor">수탁자</th><th data-en="Work entrusted">위탁 업무</th></tr></thead>
+        <tbody>
+          <tr><td data-en="Kakao Corp. (Daum Smartwork)">주식회사 카카오 (Daum 스마트워크)</td><td data-en="Receiving and storing company email (try-cat.com)">회사 이메일(try-cat.com)의 수신·보관</td></tr>
+        </tbody>
+      </table></div>
+      <p data-en="If the work or the processor changes, we will update this policy.">위탁 내용이나 수탁자가 바뀌면 이 개인정보 처리방침을 통해 알려드립니다.</p>
+    </section>
+    <section id="s8">
+      <h2 data-en="8. Cookies and similar technologies">8. 개인정보 자동 수집 장치의 설치·운영 및 거부</h2>
+      <ol>
+        <li data-en="We use cookies to analyze website usage. A cookie is a small text file that a website stores in your browser; your browser sends it back automatically when you return to the same site.">운영자는 웹사이트 이용 통계를 분석하기 위해 쿠키(cookie)를 사용합니다. 쿠키는 웹사이트가 이용자의 브라우저에 보내 저장해 두는 작은 텍스트 파일로, 같은 웹사이트에 다시 접속하면 브라우저가 자동으로 다시 보내 줍니다.</li>
+        <li data-en="This website stores your display mode (light/dark) and language (Korean/English) in your browser&#x27;s localStorage. These values stay on your device, are never sent to us, and are removed when you clear the site data.">이 웹사이트는 화면 모드(라이트/다크)와 언어(한국어/영어) 선택을 브라우저의 로컬 저장소(localStorage)에 저장합니다. 이 값은 이용자의 기기에만 남고 회사로 전송되지 않으며, 브라우저의 사이트 데이터를 지우면 함께 삭제됩니다.</li>
+        <li data-en="Refusing cookies does not limit any feature of the website.">쿠키를 거부해도 웹사이트의 모든 기능을 그대로 이용할 수 있습니다.</li>
+      </ol>
+      <p data-en="&lt;strong&gt;How to block cookies&lt;/strong&gt; — you can refuse cookies in your browser settings."><strong>쿠키 차단 방법</strong> — 브라우저 설정에서 쿠키 저장을 거부할 수 있습니다.</p>
+      <ul>
+        <li data-en="Chrome (desktop): ‘⋮’ at top right → Settings → Privacy and security → Third-party cookies → ‘Block third-party cookies’. To store no cookies at all, use ‘⋮’ → New Incognito window (Ctrl+Shift+N).">크롬(Chrome, PC): 오른쪽 위 ‘⋮’ → 설정 → 개인정보 보호 및 보안 → 서드파티 쿠키 → ‘서드파티 쿠키 차단’ 선택. 모든 쿠키를 저장하지 않으려면 ‘⋮’ → 새 시크릿 창(Ctrl+Shift+N)을 이용합니다.</li>
+        <li data-en="Edge (desktop): ‘···’ at top right → Settings → Privacy, search, and services → set Tracking prevention to ‘Strict’, or Cookies → ‘Block third-party cookies’. To store no cookies at all, use ‘···’ → New InPrivate window (Ctrl+Shift+N).">엣지(Edge, PC): 오른쪽 위 ‘···’ → 설정 → 개인 정보, 검색 및 서비스 → 추적 방지 ‘엄격’ 선택, 또는 쿠키 → ‘타사 쿠키 차단’ 선택. 모든 쿠키를 저장하지 않으려면 ‘···’ → 새 InPrivate 창(Ctrl+Shift+N)을 이용합니다.</li>
+        <li data-en="Chrome (Android): ‘⋮’ at top right → Settings → Site settings → Third-party cookies → ‘Block third-party cookies’">크롬(Chrome, 안드로이드): 오른쪽 위 ‘⋮’ → 설정 → 사이트 설정 → 서드파티 쿠키 → ‘서드파티 쿠키 차단’ 선택</li>
+        <li data-en="Safari (iPhone/iPad): Settings → Apps → Safari → Advanced → turn on ‘Block All Cookies’">사파리(Safari, 아이폰·아이패드): 기기 설정 → 앱 → Safari → 고급 → ‘모든 쿠키 차단’ 켜기</li>
+        <li data-en="Samsung Internet: ‘≡’ at bottom → Privacy → Smart anti-tracking → ‘Strict’, or ‘Tabs’ → turn on Secret mode">삼성 인터넷: 아래쪽 ‘≡’ → 개인정보 → 스마트 추적 방지 → ‘엄격’ 선택, 또는 ‘탭’ → 비밀 모드 켜기</li>
+      </ul>
+      <p class="note" data-en="※ Menu names and locations may differ slightly by browser version.">※ 브라우저 버전에 따라 메뉴 이름과 위치가 조금 다를 수 있습니다.</p>
+    </section>
+    <section id="s9">
+      <h2 data-en="9. Behavioral information collected by third parties">9. 제3자가 수집해 가는 행태정보</h2>
+      <p data-en="To analyze website usage, we allow Google Analytics, operated by Google LLC, to collect records of your visits (behavioral information).">운영자는 웹사이트 이용 통계를 분석하기 위해, Google LLC가 운영하는 구글 애널리틱스가 이용자의 웹사이트 방문 기록(행태정보)을 수집해 가도록 허용하고 있습니다.</p>
+      <div class="tablewrap"><table>
+        <thead><tr><th data-en="Tool">수집 장치</th><th data-en="Type">장치 종류</th><th data-en="Collected by">수집해 가는 사업자</th><th data-en="Items">수집 항목</th><th data-en="Purpose">목적</th></tr></thead>
+        <tbody>
+          <tr><td data-en="Google Analytics">구글 애널리틱스 (Google Analytics)</td><td data-en="JavaScript tag (web page)">자바스크립트 태그 (웹페이지)</td><td data-en="Google LLC (USA)">Google LLC (미국)</td><td data-en="Pages visited, date and time, referral source, approximate location, device and browser information, cookie identifier">방문한 페이지, 방문 일시, 유입 경로, 대략적인 지역, 기기·브라우저 정보, 쿠키 식별자</td><td data-en="Website usage statistics">웹사이트 이용 통계 분석</td></tr>
+        </tbody>
+      </table></div>
+      <ul>
+        <li data-en="The information is sent to and processed on servers operated by Google, including in the United States, and is deleted after the retention period we set (2 months).">수집된 정보는 미국 등 Google이 운영하는 서버로 전송되어 처리되며, 회사가 설정한 보존 기간(2개월)이 지나면 삭제됩니다.</li>
+        <li data-en="We do not use this information to identify individuals, and we do not use it for personalized advertising.">운영자는 이 정보로 이용자 개인을 식별하지 않으며, 맞춤형 광고에 사용하지 않습니다.</li>
+        <li data-en="To refuse, use the ‘How to block cookies’ steps above or install Google&#x27;s &lt;a href=&quot;https://tools.google.com/dlpage/gaoptout&quot; rel=&quot;noopener&quot;&gt;Google Analytics opt-out browser add-on&lt;/a&gt;. Refusing does not limit your use of the service.">거부하려면 위 ‘쿠키 차단 방법’을 이용하거나, Google이 제공하는 <a href="https://tools.google.com/dlpage/gaoptout" rel="noopener">구글 애널리틱스 차단 브라우저 부가 기능</a>을 설치하면 됩니다. 거부해도 서비스 이용에 제한이 없습니다.</li>
+      </ul>
+    </section>
+    <section id="s10">
+      <h2 data-en="10. Security measures">10. 개인정보의 안전성 확보조치</h2>
+      <p data-en="We take the following measures to keep personal information safe.">운영자는 개인정보를 안전하게 관리하기 위해 다음 조치를 하고 있습니다.</p>
+      <ul>
+        <li data-en="&lt;strong&gt;Administrative:&lt;/strong&gt; keeping the number of staff who handle personal information to a minimum"><strong>관리적 조치:</strong> 개인정보를 다루는 담당자를 최소한으로 지정</li>
+        <li data-en="&lt;strong&gt;Technical:&lt;/strong&gt; HTTPS encryption across the whole website, access control for the business email account, and a design in which your photos and files are never sent to a server"><strong>기술적 조치:</strong> 웹사이트 전 구간 HTTPS 암호화 전송, 업무용 이메일 계정의 접근 권한 관리, 사진 등 이용자 파일이 서버로 전송되지 않는 구조로 설계</li>
+      </ul>
+    </section>
+    <section id="s11">
+      <h2 data-en="11. Your rights">11. 정보주체와 법정대리인의 권리·의무 및 행사방법</h2>
+      <ol>
+        <li data-en="You may at any time ask us to give you access to, correct, delete or stop processing your personal information.">이용자는 언제든지 회사에 개인정보 열람·정정·삭제·처리정지를 요구할 수 있습니다.</li>
+        <li data-en="Send your request by email (&lt;a href=&quot;mailto:jenn@try-cat.com&quot;&gt;jenn@try-cat.com&lt;/a&gt;). We will confirm your identity and act without delay.">요구는 이메일(<a href="mailto:jenn@try-cat.com">jenn@try-cat.com</a>)로 하실 수 있으며, 운영자는 본인 여부를 확인한 뒤 지체 없이 조치합니다.</li>
+        <li data-en="You may also make a request through a legal representative or an authorized agent, who must submit a power of attorney in the form prescribed by the PIPC notice.">법정대리인이나 위임을 받은 사람을 통해서도 요구할 수 있습니다. 이 경우 「개인정보 처리 방법에 관한 고시」 별지 제11호 서식에 따른 위임장을 제출해야 합니다.</li>
+        <li data-en="Access and suspension requests may be restricted under Articles 35(4) and 37(2) of PIPA, and information that another law requires us to collect cannot be deleted on request.">열람 및 처리정지 요구는 「개인정보 보호법」 제35조제4항, 제37조제2항에 따라 제한될 수 있으며, 다른 법령에서 수집 대상으로 정한 개인정보는 삭제를 요구할 수 없습니다.</li>
+        <li data-en="Because we cannot identify individuals in Google Analytics data, it may be difficult to find and access or delete one person&#x27;s records. You can stop the collection itself with the cookie-blocking steps above.">구글 애널리틱스 정보는 회사가 개인을 식별할 수 없어 특정 이용자의 기록만 찾아 열람·삭제하기 어려울 수 있습니다. 이 경우 ‘쿠키 차단 방법’으로 수집 자체를 멈출 수 있습니다.</li>
+      </ol>
+    </section>
+    <section id="s12">
+      <h2 data-en="12. Privacy contact">12. 개인정보 보호책임자</h2>
+      <p data-en="We have designated the privacy officer and department below to oversee personal information processing and to handle related questions, complaints and remedies. We will respond without delay.">운영자는 개인정보 처리에 관한 업무를 총괄하고, 개인정보와 관련한 문의·불만 처리·피해 구제를 위해 아래와 같이 개인정보 보호책임자와 담당부서를 두고 있습니다. 문의하시면 지체 없이 답변하고 처리합니다.</p>
+      <ul>
+        <li data-en="Privacy officer: Jenn (&lt;a href=&quot;mailto:jenn@try-cat.com&quot;&gt;jenn@try-cat.com&lt;/a&gt;)">개인정보 보호책임자: Jenn (<a href="mailto:jenn@try-cat.com">jenn@try-cat.com</a>)</li>
+        <li data-en="Privacy contact: Jenn (&lt;a href=&quot;mailto:jenn@try-cat.com&quot;&gt;jenn@try-cat.com&lt;/a&gt;)">개인정보 보호 문의 담당: Jenn (<a href="mailto:jenn@try-cat.com">jenn@try-cat.com</a>)</li>
+      </ul>
+    </section>
+    <section id="s13">
+      <h2 data-en="13. Remedies">13. 권익침해 구제방법</h2>
+      <p data-en="For dispute resolution or advice about an infringement of your personal information, you can contact the following organizations (Korea).">개인정보 침해로 인한 분쟁 해결이나 상담이 필요하면 아래 기관에 신청할 수 있습니다.</p>
+      <ul>
+        <li data-en="Personal Information Dispute Mediation Committee: 1833-6972 (&lt;a href=&quot;https://www.kopico.go.kr&quot; rel=&quot;noopener&quot;&gt;www.kopico.go.kr&lt;/a&gt;)">개인정보 분쟁조정위원회: (국번없이) 1833-6972 (<a href="https://www.kopico.go.kr" rel="noopener">www.kopico.go.kr</a>)</li>
+        <li data-en="Personal Information Infringement Report Center: 118 (&lt;a href=&quot;https://privacy.kisa.or.kr&quot; rel=&quot;noopener&quot;&gt;privacy.kisa.or.kr&lt;/a&gt;)">개인정보침해 신고센터: (국번없이) 118 (<a href="https://privacy.kisa.or.kr" rel="noopener">privacy.kisa.or.kr</a>)</li>
+        <li data-en="Korean National Police Agency: 182 (&lt;a href=&quot;https://ecrm.police.go.kr&quot; rel=&quot;noopener&quot;&gt;ecrm.police.go.kr&lt;/a&gt;)">경찰청: (국번없이) 182 (<a href="https://ecrm.police.go.kr" rel="noopener">ecrm.police.go.kr</a>)</li>
+      </ul>
+    </section>
+    <section id="s14">
+      <h2 data-en="14. Not applicable">14. 그 밖에 해당하지 않는 사항</h2>
+      <p data-en="We do not process sensitive, pseudonymized or unique identifying information, make no automated decisions, and do not collect personal information directly from abroad. We are not required to designate a domestic agent and operate no video surveillance devices (CCTV, etc.).">운영자는 민감정보, 가명정보, 고유식별정보를 처리하지 않고, 자동화된 결정을 하지 않으며, 개인정보를 국외에서 직접 수집하지 않습니다. 국내대리인 지정 대상이 아니며, 영상정보처리기기(CCTV 등)를 운영하지 않습니다.</p>
+    </section>
+    <section id="s16">
+      <h2 data-en="16. Changes to this policy">16. 개인정보 처리방침의 변경</h2>
+      <ol>
+        <li data-en="This policy takes effect on September 29, 2026.">이 개인정보 처리방침은 2026년 9월 29일부터 적용됩니다.</li>
+        <li data-en="If we add, remove or change anything, we will announce it on this page at least 7 days before it takes effect, with a comparison of the old and new text.">내용을 추가·삭제·수정하는 경우 시행 7일 전부터 이 페이지를 통해 알리며, 변경 전후 내용을 비교해 볼 수 있도록 안내합니다.</li>
+      </ol>
+    </section>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="shell footmeta">
+    <span>PicMedic</span>
+    <span class="footlinks" data-en='<a href="privacy-policy.html"><strong>Privacy Policy</strong></a> &middot; <a href="mailto:TODO@example.com">Contact</a>'><a href="privacy-policy.html"><strong>개인정보 처리방침</strong></a> · <a href="mailto:TODO@example.com">문의하기</a></span>
+    <span>© 2026 PicMedic</span>
+    <button id="lang-toggle" class="lang-toggle" type="button" aria-label="View in English">English</button>
+  </div>
+  <!-- 사업자정보/문의 이메일 값은 site-content.js에서 채운다(admin.html에서 편집). -->
+  <div class="shell bizinfo" data-en="Company: Jenn &middot; Business Registration No.: 425-81-01546">상호 Jenn · 사업자등록번호 425-81-01546</div>
+</footer>
+
+<script src="site-content.js"></script>
+<script>
+(function(){
+  var toggle = document.getElementById('theme-toggle');
+  function isDark(){
+    var explicit = document.documentElement.getAttribute('data-theme');
+    if (explicit) return explicit === 'dark';
+    return true; // 다크가 기본값(2026-09-11) — 시스템 설정과 무관하게 고정
+  }
+  function sync(){
+    toggle.setAttribute('aria-pressed', isDark() ? 'true' : 'false');
+  }
+  toggle.addEventListener('click', function(){
+    var next = isDark() ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try{ localStorage.setItem('picmedic-theme', next); }catch(e){}
+    sync();
+  });
+  sync();
+})();
+</script>
+
+<script src="i18n.js"></script>
+</body>
+</html>

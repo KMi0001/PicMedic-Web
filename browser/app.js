@@ -18,6 +18,20 @@ const previewEl = document.getElementById("result-preview");
 const certEl = document.getElementById("cert");
 const certIconEl = document.getElementById("cert-icon");
 const certLabelEl = document.getElementById("cert-label");
+const convertEl = document.getElementById("convert");
+const convertFormatEl = document.getElementById("convert-format");
+const convertQualityWrapEl = document.getElementById("convert-quality-wrap");
+const convertQualityEl = document.getElementById("convert-quality");
+const convertQualityValueEl = document.getElementById("convert-quality-value");
+const convertBtnEl = document.getElementById("convert-btn");
+
+// "다른 형식으로 저장" 버튼이 쓸, 지금 결과 화면에 떠 있는 파일의 원본
+// 해상도 캔버스/파일명. 새 파일을 진단할 때마다 renderResult()에서 갱신된다.
+let currentConvertCanvas = null;
+let currentConvertBaseName = "picmedic";
+
+const CONVERT_MIME = { jpeg: "image/jpeg", png: "image/png", webp: "image/webp" };
+const CONVERT_EXT = { jpeg: "jpg", png: "png", webp: "webp" };
 
 function showSection(section) {
   for (const el of [pickerSection, loadingSection, resultSection]) {
@@ -42,9 +56,9 @@ function formatBytes(bytes) {
 function addDetailRow(label, value) {
   const row = document.createElement("div");
   const dt = document.createElement("dt");
-  dt.textContent = label;
+  PicMedicI18n.setText(dt, label);
   const dd = document.createElement("dd");
-  dd.textContent = value;
+  PicMedicI18n.setText(dd, value);
   row.append(dt, dd);
   detailsEl.appendChild(row);
 }
@@ -66,7 +80,7 @@ function renderPrintSuitability(result) {
 
     const levelBadge = document.createElement("span");
     levelBadge.className = `print-size__level print-size__level--${level}`;
-    levelBadge.textContent = level;
+    PicMedicI18n.setText(levelBadge, level);
 
     cell.append(sizeLabel, levelBadge);
     printSuitabilityGridEl.appendChild(cell);
@@ -84,7 +98,22 @@ function renderCertification(result) {
   const { tier, label, icon } = result.certification;
   certEl.className = `cert cert--${tier}`;
   certIconEl.textContent = icon;
-  certLabelEl.textContent = label;
+  PicMedicI18n.setText(certLabelEl, label);
+}
+
+function renderConvert(result) {
+  if (!result.canvas) {
+    convertEl.classList.add("hidden");
+    currentConvertCanvas = null;
+    return;
+  }
+  currentConvertCanvas = result.canvas;
+  currentConvertBaseName = result.filename.replace(/\.[^./\\]+$/, "") || "picmedic";
+  convertEl.classList.remove("hidden");
+}
+
+function updateConvertQualityVisibility() {
+  convertQualityWrapEl.classList.toggle("hidden", convertFormatEl.value === "png");
 }
 
 function renderResult(result) {
@@ -96,14 +125,17 @@ function renderResult(result) {
     previewWrapEl.classList.add("hidden");
   }
 
-  badgeEl.textContent = result.severity;
+  PicMedicI18n.setText(badgeEl, result.severity);
   badgeEl.className = `result__badge result__badge--${result.severity}`;
 
   const screenshotTag = document.getElementById("result-screenshot-tag");
   screenshotTag.classList.toggle("hidden", !result.isProbableScreenshot);
 
+  const livePhotoTag = document.getElementById("result-live-photo-tag");
+  livePhotoTag.classList.toggle("hidden", !result.isProbableLivePhoto);
+
   filenameEl.textContent = result.filename;
-  messageEl.textContent = result.message;
+  PicMedicI18n.setText(messageEl, result.message);
 
   renderCertification(result);
 
@@ -126,6 +158,7 @@ function renderResult(result) {
   }
 
   renderPrintSuitability(result);
+  renderConvert(result);
 
   showSection(resultSection);
 }
@@ -143,6 +176,37 @@ async function diagnoseFile(file) {
     fileInput.value = "";
   }
 }
+
+convertFormatEl.addEventListener("change", updateConvertQualityVisibility);
+convertQualityEl.addEventListener("input", () => {
+  convertQualityValueEl.textContent = convertQualityEl.value;
+});
+convertBtnEl.addEventListener("click", () => {
+  if (!currentConvertCanvas) return;
+  const format = convertFormatEl.value;
+  const mime = CONVERT_MIME[format];
+  const ext = CONVERT_EXT[format];
+  const quality = format === "png" ? undefined : Number(convertQualityEl.value) / 100;
+
+  currentConvertCanvas.toBlob(
+    (blob) => {
+      if (!blob) {
+        console.error("변환 실패: 캔버스를 이미지로 인코딩하지 못했습니다.");
+        return;
+      }
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${currentConvertBaseName}.${ext}`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    },
+    mime,
+    quality
+  );
+});
 
 pickBtn.addEventListener("click", () => fileInput.click());
 retryBtn.addEventListener("click", () => fileInput.click());

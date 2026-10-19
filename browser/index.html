@@ -3,47 +3,46 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>PicMedic</title>
+<title>픽메딕 PicMedic | 아이폰 사진 안 열릴 때 · HEIC JPG 변환</title>
+<meta name="description" content="아이폰 사진이 PC에서 안 열리나요? 픽메딕에서 사진 형식과 읽기 가능 여부를 확인하고 JPG로 변환하세요. 라이브포토 MP4 저장과 인화 해상도 확인도 무료로 제공합니다. 사진 업로드 없음." />
+<link rel="canonical" href="https://picmedic.try-cat.com/" />
+<meta name="naver-site-verification" content="54d2fb27c5edace2dea6e6e2fb5a240d4c95f8ea" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="PicMedic" />
+<meta property="og:url" content="https://picmedic.try-cat.com/" />
+<meta property="og:title" content="픽메딕 PicMedic | 아이폰 사진 안 열릴 때 · HEIC JPG 변환" />
+<meta property="og:description" content="아이폰 사진이 PC에서 안 열리나요? 픽메딕에서 사진 형식과 읽기 가능 여부를 확인하고 JPG로 변환하세요. 라이브포토 MP4 저장과 인화 해상도 확인도 무료로 제공합니다. 사진 업로드 없음." />
+<script src="analytics.js" async></script>
 <link rel="icon" href="favicon.png" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="search-guides.css" />
 <style>
+/* gui/theme.py COLORS(버터·아이보리 + 톤온톤 잉크, 골드 포인트)와 동일한 값.
+   웹버전은 다크가 기본값(2026-09-11)이라 기본 :root에 DARK_COLORS를 두고
+   [data-theme="light"]에서만 LIGHT_COLORS로 덮어쓴다. */
 :root{
-  --bg:#FFFFFF;
-  --text:#14181C;
-  --muted:#6B7280;
-  --accent:#1F9E8C;
-  --accent-soft:#EAF6F3;
-  --hairline:#E7E9EC;
-  --success:#2FAF66;
-  --warning:#D9A441;
-  --danger:#DA5A5A;
-  --neutral-badge:#8FAFA0;
+  --bg:#1E1A15;
+  --text:#EDE6D6;
+  --muted:#A79A82;
+  --accent:#D9B54A;
+  --accent-soft:#3A3222;
+  --hairline:#3D362A;
+  --success:#8FA06B;
+  --warning:#D4934F;
+  --danger:#C77A6C;
+  --neutral-badge:#7A7060;
 }
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#0E1113;
-    --text:#F1F3F2;
-    --muted:#8B9490;
-    --accent:#39C9AE;
-    --accent-soft:#123029;
-    --hairline:#232826;
-    --success:#3FCB7B;
-    --warning:#E6B458;
-    --danger:#E37373;
-    --neutral-badge:#6B7A75;
-  }
-}
-:root[data-theme="dark"]{
-  --bg:#0E1113;
-  --text:#F1F3F2;
-  --muted:#8B9490;
-  --accent:#39C9AE;
-  --accent-soft:#123029;
-  --hairline:#232826;
-  --success:#3FCB7B;
-  --warning:#E6B458;
-  --danger:#E37373;
-  --neutral-badge:#6B7A75;
+:root[data-theme="light"]{
+  --bg:#F7F1E4;
+  --text:#2A2420;
+  --muted:#7A7060;
+  --accent:#D9B54A;
+  --accent-soft:#F1E6C6;
+  --hairline:#E6DCC5;
+  --success:#6E7F4E;
+  --warning:#B97A3A;
+  --danger:#A6453A;
+  --neutral-badge:#A79A82;
 }
 
 *{box-sizing:border-box;}
@@ -70,9 +69,17 @@ nav.top .row{
 .navlinks{display:flex;gap:28px;align-items:center;}
 .navlinks a{font-size:13.5px;color:var(--muted);text-decoration:none;}
 .navlinks a:hover, .navlinks a:focus-visible{color:var(--text);}
-.navcta{font-size:13.5px;font-weight:600;color:var(--accent);text-decoration:none;}
-.navcta:hover, .navcta:focus-visible{text-decoration:underline;}
+/* 지금 보고 있는 페이지의 메뉴만 강조(aria-current="page") — 다른 페이지에서는 강조하지 않는다.
+   금색 글자는 라이트 모드 배경(아이보리)과 대비가 약해(1.75:1) 회색 메뉴보다 오히려 흐려 보였다 —
+   그래서 글자는 진한 본문색 + 굵게로 하고, 강조색(금색)은 밑줄로만 쓴다. */
+.navlinks a[aria-current="page"]{
+  color:var(--text);font-weight:600;
+  text-decoration:underline;text-decoration-color:var(--accent);
+  text-decoration-thickness:2px;text-underline-offset:8px;
+}
 
+.theme-toggle-group{display:flex;align-items:center;gap:6px;}
+.theme-toggle-group .mode-label{font-size:12.5px;color:var(--muted);line-height:1;}
 .theme-toggle{
   background:none;border:none;padding:0;margin:0;cursor:pointer;
   display:flex;align-items:center;line-height:0;
@@ -102,12 +109,41 @@ h1{
   font-size:clamp(30px,5vw,44px);line-height:1.28;font-weight:700;margin:0 0 18px;
   text-wrap:balance;
 }
+/* 한국어 제목 첫 줄("PC에 백업한 아이폰 사진이 안 열리나요?")은 어떤 화면 폭에서도
+   줄바꿈하지 않는다. 그 줄은 글자 크기의 약 16.4배 폭을 차지하므로, 좌우 여백(24px×2)을
+   뺀 폭 안에 들어가도록 글자 크기를 (화면폭 - 48px) / 17.5 로 맞추고(약 6% 여유),
+   넓은 화면에서는 38px, 아주 좁은 화면에서는 15px로 제한한다. 영어 화면은 그대로다. */
+h1 .nw{white-space:nowrap;}
+html[lang="ko"] h1{font-size:clamp(15px, calc((100vw - 48px) / 17.5), 38px);}
 .lede{font-size:16px;line-height:1.75;color:var(--muted);max-width:46ch;margin:0 0 28px;}
 .cta{
   display:inline-block;font-size:15px;font-weight:600;color:var(--accent);
   text-decoration:underline;text-underline-offset:4px;
 }
 .cta:hover, .cta:focus-visible{text-decoration-thickness:2px;}
+
+
+/* tools — 웹 도구 3개 + 데스크톱 자리(탭이 생기기 전까지 "준비 중" 카드) */
+.tools{border-top:1px solid var(--hairline);padding:44px 0;}
+.tools h2{
+  font-size:clamp(22px,3.4vw,28px);font-weight:700;color:var(--text);margin:0 0 24px;
+  text-align:center;
+}
+.tools-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+@media (max-width:600px){.tools-grid{grid-template-columns:1fr;}}
+.tool{
+  display:block;text-decoration:none;color:var(--text);
+  border:1px solid var(--hairline);border-radius:12px;padding:18px 20px;
+}
+a.tool:hover, a.tool:focus-visible{border-color:var(--accent);}
+.tool h3{font-size:16px;font-weight:700;margin:0 0 6px;}
+.tool p{font-size:13.5px;line-height:1.65;color:var(--muted);margin:0;}
+.tool--soon{border-style:dashed;}
+.tool--soon h3{color:var(--muted);}
+.tool__tag{
+  display:inline-block;margin-left:8px;padding:2px 9px;border-radius:20px;
+  font-size:11px;font-weight:600;color:var(--muted);background:var(--accent-soft);vertical-align:2px;
+}
 
 /* steps */
 .steps{border-top:1px solid var(--hairline);padding:44px 0;}
@@ -116,23 +152,32 @@ h1{
 .step:first-child{padding-left:0;}
 .step:last-child{border-right:none;padding-right:0;}
 .step .no{font-size:12px;color:var(--accent);margin-bottom:10px;}
-.step .tag{
-  display:inline-block;font-size:10px;font-weight:600;letter-spacing:.04em;
-  color:var(--muted);border:1px solid var(--hairline);border-radius:20px;
-  padding:2px 8px;margin-bottom:8px;
-}
 .step h3{font-size:16px;font-weight:700;margin:0 0 8px;}
 .step p{font-size:13.5px;line-height:1.65;color:var(--muted);margin:0;}
 @media (max-width:600px){
   .steps-grid{grid-template-columns:1fr;gap:24px;}
   .step{border-right:none;padding:0;}
 }
+/* 지원 포맷을 "이렇게 진행돼요" 섹션 안으로 옮겨온 자리(2026-09-11) —
+   더 이상 별도 섹션이 아니라서 헤더만큼 크게 강조할 필요 없이 작은
+   라벨로 둠. */
+.steps-formats{
+  margin-top:32px;padding-top:24px;border-top:1px solid var(--hairline);
+  text-align:center;
+}
+.steps-formats__label{
+  display:block;font-size:12px;letter-spacing:.06em;color:var(--muted);margin-bottom:6px;
+}
+.steps-formats__list{font-size:14px;color:var(--text);}
 
 /* scenarios / badge legend (reuse the qa row pattern) */
+.qa .links{margin:12px 0 0;display:flex;gap:18px;flex-wrap:wrap;}
+.qa .links .cta{font-size:14px;}
 .scenarios{border-top:1px solid var(--hairline);padding:44px 0;}
 .badges{border-top:1px solid var(--hairline);padding:44px 0;}
-.scenarios h2, .badges h2, .faq h2{
-  font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--text);margin:0 0 24px;
+.scenarios h2, .badges h2, .faq h2, .steps h2{
+  font-size:clamp(22px,3.4vw,28px);font-weight:700;color:var(--text);margin:0 0 24px;
+  text-align:center;
 }
 .qa .q .tag{margin-right:8px;vertical-align:1px;}
 .status-badge{
@@ -145,6 +190,21 @@ h1{
 .status-badge--안내{background:var(--neutral-badge);}
 .badge-icon{margin-right:8px;font-size:15px;vertical-align:-1px;}
 .badges .q{font-weight:700;}
+/* 배지 영역/설명 영역을 세로 구분선으로 확실히 나눈 2단 레이아웃(2026-09-11).
+   배지 라벨 폭이 서로 달라서(정상/의심/손상 알약형 vs 인화 적합 등 아이콘형)
+   고정폭 칼럼으로 맞춰야 설명 텍스트 시작 위치가 가지런해진다. 좁은
+   화면에서는 구분선 없이 다시 위아래로. */
+.badges .qa{display:flex;align-items:stretch;gap:0;}
+.badges .qa .q{
+  margin:0;flex:0 0 128px;display:flex;align-items:center;
+  padding-right:16px;border-right:1px solid var(--hairline);
+}
+.badges .qa .a{margin:0;padding-left:16px;display:flex;align-items:center;}
+@media (max-width:480px){
+  .badges .qa{flex-direction:column;align-items:flex-start;gap:6px;}
+  .badges .qa .q{flex:none;border-right:none;padding-right:0;}
+  .badges .qa .a{padding-left:0;}
+}
 
 /* statement band */
 .statement{background:var(--accent-soft);}
@@ -157,7 +217,7 @@ h1{
 
 /* formats */
 .formats{border-top:1px solid var(--hairline);padding:36px 0;}
-.formats .label{font-size:11.5px;letter-spacing:.08em;color:var(--muted);display:block;margin-bottom:10px;}
+.formats .label{font-size:clamp(22px,3.4vw,28px);letter-spacing:.08em;color:var(--muted);display:block;margin-bottom:10px;}
 .formats .list{font-size:15px;color:var(--text);}
 
 /* faq */
@@ -168,7 +228,7 @@ h1{
 .qa .a{font-size:14px;line-height:1.7;color:var(--muted);margin:0;}
 
 /* closing CTA — 페이지 본문의 마지막 섹션(고정 푸터와는 별개) */
-.closing{border-top:1px solid var(--hairline);padding:48px 0;padding-bottom:calc(48px + 72px);}
+.closing{border-top:1px solid var(--hairline);padding:48px 0;padding-bottom:calc(48px + 104px);}
 .closing h2{font-size:clamp(22px,3.4vw,28px);font-weight:700;margin:0 0 18px;text-wrap:balance;}
 
 /* site footer — 화면 하단에 항상 고정, 모든 페이지 동일 */
@@ -187,6 +247,22 @@ h1{
   text-decoration:underline;text-underline-offset:3px;cursor:pointer;
 }
 .lang-toggle:hover, .lang-toggle:focus-visible{color:var(--text);}
+
+/* 사업자 정보 — 오픈 전 실제 값으로 교체할 자리(2026-09-11, 사용자 요청으로
+   폼만 미리 짜둠). 통신판매업신고번호는 이 사이트에서 직접 결제를 받을 때만
+   필요 — 지금은 무료 진단만 제공하고 실제 결제는 MS 스토어에서 이뤄지므로
+   해당 없을 수 있음(확정은 법률 검토 필요). */
+.bizinfo{padding:0 24px 10px;font-size:10.5px;line-height:1.6;color:var(--muted);opacity:.75;}
+
+/* 임시 사용방법 링크 — 정식 도움말 진입점(내비/온보딩 등)이 정해지기 전까지의
+   임시 배치. 고정 푸터 바로 위에 겹치지 않게 띄운다. */
+.guide-fab{
+  position:fixed;right:20px;bottom:76px;z-index:25;
+  background:var(--accent);color:#fff;font-size:13px;font-weight:600;
+  padding:10px 16px;border-radius:24px;text-decoration:none;
+  box-shadow:0 2px 8px rgba(0,0,0,.18);
+}
+.guide-fab:hover, .guide-fab:focus-visible{opacity:.9;}
 </style>
 
 <script>
@@ -204,30 +280,64 @@ h1{
   <div class="shell row">
     <a class="logo" href="index.html"><img src="favicon.png" alt="" class="logo__icon" />PicMedic</a>
     <div class="navlinks">
-      <a href="index.html" data-en="Home">홈</a>
+      <a href="index.html" data-en="Home" aria-current="page">홈</a>
       <a href="faq.html">FAQ</a>
-      <a href="diagnose.html" class="navcta" data-en="Diagnose for free">무료로 진단하기</a>
-      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="다크 모드 전환" aria-pressed="false">
-        <span class="track"><span class="knob"></span></span>
-      </button>
+      <a href="diagnose.html" data-en="Diagnose Photos">사진 진단하기</a>
+      <a href="live-photo.html" data-en="Live Photo Check">라이브포토 진단</a>
+      <a href="convert.html" data-en="Convert Extension">확장자 변환</a>
+      <span class="theme-toggle-group">
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="다크 모드 전환" aria-pressed="true">
+          <span class="track"><span class="knob"></span></span>
+        </button>
+        <span class="mode-label" data-en="Mode" aria-hidden="true">모드</span>
+      </span>
     </div>
   </div>
 </nav>
 
 <header class="hero">
   <div class="shell">
-    <span class="eyebrow mono" data-en="PICMEDIC — PHOTO FILE DIAGNOSIS">PICMEDIC — 사진 파일 진단</span>
+    <span class="eyebrow mono" data-en="PICMEDIC — PHOTO TOOLS">PICMEDIC — 사진 도구</span>
     <div class="stat mono">100%</div>
     <div class="stat-label" data-en="processed right in your browser — nothing is uploaded">브라우저 안에서만 처리돼요 · 서버 업로드 없음</div>
-    <h1 data-en="Photos that won't open,\nwe'll tell you why.">안 열리거나 흐릿한 사진,<br>이유를 알려드려요.</h1>
-    <p class="lede" data-en="Just pick a file — we diagnose it right in this browser tab. Your photo is never sent anywhere.">파일을 선택하기만 하면 이 브라우저 탭 안에서 바로 진단해요. 사진은 어디로도 전송되지 않아요.</p>
-    <a href="diagnose.html" class="cta" data-en="Diagnose it for free →">무료로 진단해보기 →</a>
+    <h1 data-en="Photos you backed up from your iPhone won't open on your PC?\nWe'll tell you why."><span class="nw">PC에 백업한 아이폰 사진이 안 열리나요?</span><br>이유를 알려드려요.</h1>
+    <p class="lede" data-en="Find out right in your browser whether it's damage or just the HEIC format, then convert it to JPG. Your photo is never sent anywhere.">손상인지 HEIC 형식 문제인지 브라우저에서 바로 확인하고, JPG로 바꿔 열어볼 수 있어요. 사진은 어디로도 전송되지 않아요.</p>
+    <a href="diagnose.html" class="cta" data-en="Diagnose Photos →">사진 진단해보기 →</a>
   </div>
 </header>
 
+<section class="tools" id="tools">
+  <div class="shell">
+    <h2 data-en="WHAT WOULD YOU LIKE TO DO">무엇을 도와드릴까요</h2>
+    <div class="tools-grid">
+      <a class="tool" href="diagnose.html">
+        <h3 data-en="Diagnose Photos">사진 진단</h3>
+        <p data-en="Check the format, damage, and quality of a photo that won&#x27;t open on your PC (iPhone HEIC included).">PC에서 안 열리는 사진(아이폰 HEIC 포함)의 형식·손상·화질을 확인해요.</p>
+      </a>
+      <a class="tool" href="live-photo.html">
+        <h3 data-en="Live Photo Check">라이브포토 진단</h3>
+        <p data-en="Confirm a photo and a .MOV were originally a Live Photo pair, then save the video or convert it to MP4.">사진과 동영상(.MOV)이 원래 짝이었던 라이브 포토인지 확인하고, 동영상을 저장하거나 MP4로 변환해요.</p>
+      </a>
+      <a class="tool" href="convert.html">
+        <h3 data-en="Convert Extension">확장자 변환</h3>
+        <p data-en="Skip the diagnosis and convert HEIC and other formats to JPEG, PNG or WEBP right away.">진단 없이, HEIC 등 사진 형식을 JPEG·PNG·WEBP로 바로 바꿔요.</p>
+      </a>
+      <div class="tool tool--soon" aria-disabled="true">
+        <h3><span data-en="PicMedic Desktop">PicMedic 데스크톱</span><span class="tool__tag" data-en="Coming soon">준비 중</span></h3>
+        <p data-en="Repair and organize many photos at once. A dedicated page is on the way.">여러 장을 한 번에 복구하고 정리해요. 소개 페이지를 준비하고 있어요.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="scenarios" id="scenarios">
   <div class="shell">
-    <h2 class="mono" data-en="WHEN TO USE IT">이럴 때 써보세요</h2>
+    <h2 data-en="WHEN TO USE IT">이럴 때 써보세요</h2>
+    <div class="qa">
+      <p class="q" data-en="I backed up my iPhone photos to my PC and they won&#x27;t open">아이폰 사진을 PC로 백업했는데 안 열려요</p>
+      <p class="a" data-en="iPhones save photos as HEIC. After copying them to a PC (especially Windows), the default photo app may not open them, or show only a gray screen or blank thumbnail. It may be a format issue rather than a damaged file — or the copy may have been cut off and the file really is damaged. Use &lt;strong&gt;Diagnose Photos&lt;/strong&gt; to tell which, and if it&#x27;s the format, &lt;strong&gt;Convert Extension&lt;/strong&gt; turns it into JPG so you can open it.">아이폰은 사진을 HEIC 형식으로 저장해요. 이 파일을 PC(특히 윈도우)로 옮기면 기본 사진 앱에서 안 열리거나, 회색 화면·빈 썸네일만 보일 수 있어요. 파일이 깨진 게 아니라 형식 문제일 수도 있고, 옮기는 도중에 끊겨서 실제로 손상된 경우도 있어요. <strong>사진 진단</strong>으로 어느 쪽인지 확인하고, 형식 문제라면 <strong>확장자 변환</strong>으로 JPG로 바꿔서 열어보세요.</p>
+      <p class="links" data-en="&lt;a href=&quot;diagnose.html&quot; class=&quot;cta&quot;&gt;Diagnose Photos →&lt;/a&gt;&lt;a href=&quot;convert.html&quot; class=&quot;cta&quot;&gt;Convert to JPG →&lt;/a&gt;"><a href="diagnose.html" class="cta">사진 진단하기 →</a><a href="convert.html" class="cta">JPG로 변환하기 →</a></p>
+    </div>
     <div class="qa">
       <p class="q" data-en="My photo won't open">사진이 안 열려요</p>
       <p class="a" data-en="It saved fine but won't open, or only shows a gray screen — part or all of the file may be damaged.">저장은 됐는데 열리지 않거나 회색 화면만 뜬다면, 파일 일부 또는 전체가 손상됐을 수 있어요.</p>
@@ -248,49 +358,54 @@ h1{
       <p class="q" data-en="I want to check quality before printing">인화 맡기기 전에 확인하고 싶어요</p>
       <p class="a" data-en="From 3x5 to 8x10, we tell you in advance whether the quality is good enough for each print size.">3x5부터 8x10까지, 인화 사이즈별로 화질이 충분한지 미리 알려드려요.</p>
     </div>
+    <div class="qa">
+      <p class="q" data-en="I want to turn HEIC into JPG">HEIC를 JPG로 바꾸고 싶어요</p>
+      <p class="a" data-en="You can convert straight to JPEG, PNG or WEBP without any diagnosis. Try Convert Extension.">진단 없이 바로 JPEG·PNG·WEBP로 바꿔서 받을 수 있어요. 확장자 변환을 써보세요.</p>
+    </div>
+    <div class="qa">
+      <p class="q" data-en="I&#x27;m not sure if it was a Live Photo">라이브 포토였는지 헷갈려요</p>
+      <p class="a" data-en="We check whether a photo and a .MOV were originally a pair, and let you download the video if they were.">사진과 동영상(.MOV)이 원래 짝이 맞는지 확인하고, 짝이 맞으면 동영상을 받을 수 있어요.</p>
+    </div>
   </div>
 </section>
 
 <section class="steps" id="steps">
-  <div class="shell steps-grid">
-    <div class="step">
-      <div class="no mono">01</div>
-      <span class="tag" data-en="FREE">무료</span>
-      <h3 data-en="Diagnose">진단</h3>
-      <p data-en="We automatically check format, corruption, and quality the moment you pick a file.">파일을 선택하면 형식·손상·화질까지 자동으로 확인해요.</p>
+  <div class="shell">
+    <h2 data-en="HOW IT WORKS">이렇게 진행돼요</h2>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="no mono">01</div>
+        <h3 data-en="Diagnose">진단</h3>
+        <p data-en="We automatically check format, corruption, and quality the moment you pick a file.">파일을 선택하면 형식·손상·화질까지 자동으로 확인해요.</p>
+      </div>
+      <div class="step">
+        <div class="no mono">02</div>
+        <h3 data-en="See why">원인 확인</h3>
+        <p data-en="We show you exactly why it won't open or where it's damaged, right in the result screen.">왜 안 열리는지, 어디가 손상됐는지 결과 화면에서 바로 알려드려요.</p>
+      </div>
+      <div class="step">
+        <div class="no mono">03</div>
+        <h3 data-en="Next step">다음 단계</h3>
+        <p data-en="Convert the format if you need to. Repairing and organizing photos is handled by the PicMedic desktop version.">필요하면 확장자 변환으로 형식을 바꿔요. 복구와 사진 정리는 PicMedic 데스크톱 버전에서 다뤄요.</p>
+      </div>
     </div>
-    <div class="step">
-      <div class="no mono">02</div>
-      <span class="tag" data-en="FREE">무료</span>
-      <h3 data-en="See why">원인 확인</h3>
-      <p data-en="We show you exactly why it won't open or where it's damaged, right in the result screen.">왜 안 열리는지, 어디가 손상됐는지 결과 화면에서 바로 알려드려요.</p>
-    </div>
-    <div class="step">
-      <div class="no mono">03</div>
-      <span class="tag" data-en="DESKTOP VERSION">데스크톱 버전</span>
-      <h3 data-en="Repair">복구</h3>
-      <p data-en="Actually repairing the file is handled by the PicMedic desktop app, currently in the works.">직접 복구하는 기능은 준비 중인 PicMedic 데스크톱 버전에서 제공돼요.</p>
+    <div class="steps-formats">
+      <span class="steps-formats__label" data-en="SUPPORTED FORMATS">지원 포맷</span>
+      <span class="steps-formats__list">HEIC · JPEG · PNG · GIF · BMP · WEBP</span>
     </div>
   </div>
 </section>
 
 <section class="statement full">
   <div class="shell">
-    <h2 data-en="Your photo never leaves this tab.\nDiagnosis happens entirely in your browser.">사진은 어디에도 올라가지 않아요.<br>진단은 이 브라우저 탭 안에서 끝나요.</h2>
-    <p data-en="Need an actual repair? The desktop version picks up from here — and it never touches your original either.">복구가 필요하면, 원본은 절대 건드리지 않는 데스크톱 버전이 이어서 도와드려요.</p>
-  </div>
-</section>
-
-<section class="formats">
-  <div class="shell">
-    <span class="label mono" data-en="SUPPORTED FORMATS">지원 포맷</span>
-    <div class="list">HEIC · JPEG · PNG · GIF · BMP · WEBP</div>
+    <h2 data-en="Your photo never leaves this tab.\nEverything happens entirely in your browser.">사진은 어디에도 올라가지 않아요.<br>모든 처리는 이 브라우저 탭 안에서 끝나요.</h2>
+    <p data-en="Need repair or organizing? The PicMedic desktop version picks up from here — and it never touches your originals either.">복구나 정리가 필요하면, 원본은 건드리지 않는 PicMedic 데스크톱 버전이 이어서 도와드려요.</p>
   </div>
 </section>
 
 <section class="badges" id="badges">
   <div class="shell">
-    <h2 class="mono" data-en="WHAT THE BADGES MEAN">배지가 뭘 뜻하나요</h2>
+    <h2 data-en="WHAT THE BADGES MEAN">배지가 뭘 뜻하나요</h2>
     <div class="qa">
       <p class="q"><span class="status-badge status-badge--정상" data-en="Normal">정상</span></p>
       <p class="a" data-en="Opens without any issues.">문제없이 열리는 사진이에요.</p>
@@ -321,26 +436,31 @@ h1{
 <section class="closing">
   <div class="shell">
     <h2 data-en="Find out what's wrong with your photo, right now.">지금 바로 사진을 진단해보세요.</h2>
-    <a href="diagnose.html" class="cta" data-en="Diagnose for free →">무료로 진단하기 →</a>
+    <a href="diagnose.html" class="cta" data-en="Diagnose Photos →">사진 진단하기 →</a>
   </div>
 </section>
 
-<footer class="site-footer">
+<a href="guide.html" class="guide-fab" data-en="How to use">사용방법</a>
+
+<section class="search-guides" aria-label="사진 해결 가이드"><h2>사진 문제 해결 가이드</h2><ul><li><a href="heic-to-jpg.html">HEIC를 JPG로 변환하는 방법</a></li><li><a href="live-photo-to-mp4.html">라이브 포토를 PC에서 MP4 동영상으로 저장하기</a></li><li><a href="photo-print-resolution.html">사진 인화 해상도 확인 — 4×6에 필요한 픽셀</a></li></ul></section><footer class="site-footer">
   <div class="shell footmeta">
     <span>PicMedic</span>
-    <span data-en='<a href="#">Privacy Policy</a> &middot; <a href="#">Contact</a>'><a href="#">개인정보처리방침</a> · <a href="#">문의하기</a></span>
+    <span class="footlinks" data-en='<a href="privacy-policy.html"><strong>Privacy Policy</strong></a> &middot; <a href="mailto:TODO@example.com">Contact</a>'><a href="privacy-policy.html"><strong>개인정보 처리방침</strong></a> · <a href="mailto:TODO@example.com">문의하기</a></span>
     <span>© 2026 PicMedic</span>
     <button id="lang-toggle" class="lang-toggle" type="button" aria-label="View in English">English</button>
   </div>
+  <!-- 사업자정보/문의 이메일 값은 site-content.js에서 채운다(admin.html에서 편집). -->
+  <div class="shell bizinfo" data-en="Company: TRYCAT Inc. &middot; Business Registration No.: 425-81-01546">상호 주식회사 트라이캣 · 사업자등록번호 425-81-01546</div>
 </footer>
 
+<script src="site-content.js"></script>
 <script>
 (function(){
   var toggle = document.getElementById('theme-toggle');
   function isDark(){
     var explicit = document.documentElement.getAttribute('data-theme');
     if (explicit) return explicit === 'dark';
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return true; // 다크가 기본값(2026-09-11) — 시스템 설정과 무관하게 고정
   }
   function sync(){
     toggle.setAttribute('aria-pressed', isDark() ? 'true' : 'false');
@@ -355,34 +475,6 @@ h1{
 })();
 </script>
 
-<script>
-(function(){
-  var STORAGE_KEY = 'picmedic-lang';
-  var langToggle = document.getElementById('lang-toggle');
-  var nodes = document.querySelectorAll('[data-en]');
-  nodes.forEach(function(el){ el.setAttribute('data-ko', el.innerHTML); });
-
-  function applyLang(lang){
-    nodes.forEach(function(el){
-      var raw = lang === 'en' ? el.getAttribute('data-en') : el.getAttribute('data-ko');
-      el.innerHTML = raw.split('\\n').join('<br>');
-    });
-    document.documentElement.setAttribute('lang', lang);
-    langToggle.textContent = lang === 'en' ? '한국어' : 'English';
-    langToggle.setAttribute('aria-label', lang === 'en' ? '한국어로 보기' : 'View in English');
-  }
-
-  var stored;
-  try{ stored = localStorage.getItem(STORAGE_KEY); }catch(e){}
-  var currentLang = stored === 'en' ? 'en' : 'ko';
-  applyLang(currentLang);
-
-  langToggle.addEventListener('click', function(){
-    currentLang = currentLang === 'en' ? 'ko' : 'en';
-    applyLang(currentLang);
-    try{ localStorage.setItem(STORAGE_KEY, currentLang); }catch(e){}
-  });
-})();
-</script>
+<script src="i18n.js"></script>
 </body>
 </html>

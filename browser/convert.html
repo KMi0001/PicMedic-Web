@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>HEIC JPG 변환 무료 | PNG·WEBP 사진 변환 - 픽메딕</title>
+<meta name="description" content="HEIC·PNG·WEBP 사진을 JPG 등으로 무료 변환하세요. 한 장씩 저장하거나 최대 20장을 일괄 변환해 ZIP으로 받으세요. 사진은 서버에 업로드되지 않습니다." />
+<link rel="canonical" href="https://picmedic.try-cat.com/convert.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="PicMedic" />
+<meta property="og:url" content="https://picmedic.try-cat.com/convert.html" />
+<meta property="og:title" content="HEIC JPG 변환 무료 | PNG·WEBP 사진 변환 - 픽메딕" />
+<meta property="og:description" content="HEIC·PNG·WEBP 사진을 JPG 등으로 무료 변환하세요. 한 장씩 저장하거나 최대 20장을 일괄 변환해 ZIP으로 받으세요. 사진은 서버에 업로드되지 않습니다." />
+<script src="analytics.js" async></script>
+<link rel="icon" href="favicon.png" />
+<link rel="stylesheet" href="style.css" />
+<script src="https://cdn.jsdelivr.net/npm/libheif-js@1.19.8/libheif-wasm/libheif-bundle.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="search-guides.css" />
+<style>
+  /* 사이트 공통 내비/푸터 전용 색상 — style.css의 :root 토큰(진단 카드가 씀)과
+     이름이 겹치면 카드 색까지 덮어써버려서 --nav-* 로 이름공간을 분리했다.
+     다른 페이지와 같은 값(gui/theme.py 팔레트)을 써서 내비·푸터·카드가
+     똑같이 보인다. 웹버전은 다크가 기본값(2026-09-11)이라 기본 :root에 DARK_COLORS를
+     두고 [data-theme="light"]에서만 LIGHT_COLORS로 덮어쓴다. */
+  :root{
+    --nav-bg:#1E1A15; --nav-text:#EDE6D6; --nav-muted:#A79A82;
+    --nav-accent:#D9B54A; --nav-hairline:#3D362A;
+  }
+  :root[data-theme="light"]{
+    --nav-bg:#F7F1E4; --nav-text:#2A2420; --nav-muted:#7A7060;
+    --nav-accent:#D9B54A; --nav-hairline:#E6DCC5;
+  }
+  .site-nav{position:fixed;top:0;left:0;right:0;z-index:30;background:var(--nav-bg);border-bottom:1px solid var(--nav-hairline);}
+  body{padding-top:72px;}
+  .site-nav .row{max-width:720px;margin:0 auto;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;}
+  .site-nav .logo{display:flex;align-items:center;gap:8px;font-family:'IBM Plex Sans KR','Malgun Gothic',sans-serif;font-weight:700;font-size:20px;color:var(--nav-text);text-decoration:none;letter-spacing:-.01em;}
+  .site-nav .logo__icon{width:26px;height:26px;border-radius:7px;display:block;}
+  .site-nav .navlinks{display:flex;gap:28px;align-items:center;}
+  .site-nav a.navlink{font-family:'IBM Plex Sans KR','Malgun Gothic',sans-serif;font-size:13.5px;color:var(--nav-muted);text-decoration:none;}
+  .site-nav a.navlink:hover{color:var(--nav-text);}
+  /* 지금 보고 있는 페이지의 메뉴만 강조(aria-current="page") — 다른 페이지에서는 강조하지 않는다.
+   금색 글자는 라이트 모드 배경(아이보리)과 대비가 약해(1.75:1) 회색 메뉴보다 오히려 흐려 보였다 —
+   그래서 글자는 진한 본문색 + 굵게로 하고, 강조색(금색)은 밑줄로만 쓴다. */
+  .site-nav a.navlink[aria-current="page"]{
+    color:var(--nav-text);font-weight:600;
+    text-decoration:underline;text-decoration-color:var(--nav-accent);
+    text-decoration-thickness:2px;text-underline-offset:8px;
+  }
+  .theme-toggle-group{display:flex;align-items:center;gap:6px;}
+  .theme-toggle-group .mode-label{font-family:'IBM Plex Sans KR','Malgun Gothic',sans-serif;font-size:12.5px;color:var(--nav-muted);line-height:1;}
+  .theme-toggle{background:none;border:none;padding:0;margin:0;cursor:pointer;display:flex;align-items:center;line-height:0;}
+  .theme-toggle .track{width:36px;height:20px;border-radius:10px;background:var(--nav-hairline);position:relative;transition:background .2s;}
+  .theme-toggle .knob{position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#FFFFFF;box-shadow:0 1px 2px rgba(0,0,0,.3);transition:transform .2s;}
+  .theme-toggle[aria-pressed="true"] .track{background:var(--nav-accent);}
+  .theme-toggle[aria-pressed="true"] .knob{transform:translateX(16px);}
+  @media (prefers-reduced-motion: reduce){.theme-toggle .track, .theme-toggle .knob{transition:none;}}
+
+  .privacy-note{
+    position:static; left:auto; bottom:auto; transform:none;
+    width:auto; max-width:none; padding:0; margin-top:32px;
+  }
+  .site-footer{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--nav-bg);border-top:1px solid var(--nav-hairline);}
+  .app{padding-bottom:calc(64px + 104px);}
+  .site-footer .row{
+    max-width:720px;margin:0 auto;padding:14px 24px;display:flex;justify-content:space-between;
+    align-items:center;flex-wrap:wrap;gap:12px;font-family:'IBM Plex Sans KR','Malgun Gothic',sans-serif;
+    font-size:12.5px;color:var(--nav-muted);
+  }
+  .site-footer a{color:var(--nav-muted);text-decoration:none;}
+  .site-footer a:hover{color:var(--nav-text);}
+  .bizinfo{
+    max-width:720px;margin:0 auto;padding:0 24px 10px;font-family:'IBM Plex Sans KR','Malgun Gothic',sans-serif;
+    font-size:10.5px;line-height:1.6;color:var(--nav-muted);opacity:.75;
+  }
+  .lang-toggle{
+    background:none;border:none;padding:0;font:inherit;font-size:12.5px;color:var(--nav-muted);
+    text-decoration:underline;text-underline-offset:3px;cursor:pointer;
+  }
+  .lang-toggle:hover{color:var(--nav-text);}
+  .guide-fab{
+    position:fixed;right:20px;bottom:76px;z-index:25;
+    background:var(--nav-accent);color:#fff;font-family:'IBM Plex Sans KR','Malgun Gothic',sans-serif;
+    font-size:13px;font-weight:600;padding:10px 16px;border-radius:24px;
+    text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.18);
+  }
+  .guide-fab:hover{opacity:.9;}
+
+  /* 이 페이지 전용 — 진단 없이 바로 변환만 하므로 convert__row를 큰 버튼과
+     세로로 쌓는다(diagnose.html 결과 화면 안의 작은 보조 기능일 때와 다르게
+     여기서는 이게 페이지의 주된 동작이라 더 눈에 띄어야 함). */
+  .convert__row{margin:16px 0 0;}
+  #convert-btn{width:100%;margin-top:14px;}
+</style>
+
+<script>
+(function(){
+  try{
+    var stored = localStorage.getItem('picmedic-theme');
+    if (stored === 'light' || stored === 'dark') {
+      document.documentElement.setAttribute('data-theme', stored);
+    }
+  }catch(e){}
+})();
+</script>
+<style>
+.batch-list{padding-left:24px;max-height:320px;overflow:auto}.batch-list li{padding:8px 0;overflow-wrap:anywhere}.batch-state{display:block;font-size:13px;color:var(--muted)}.batch-actions{display:flex;flex-wrap:wrap;gap:12px}.batch-actions .button{margin:0}.batch-actions a{text-decoration:none}button:disabled{opacity:.5;cursor:not-allowed}
+/* Match the existing picker hint and conversion note in both themes. */
+.batch-note{
+  margin:12px 0 0;
+  color:var(--text-secondary);
+  font-size:12.5px;
+  font-weight:400;
+  line-height:1.7;
+  word-break:keep-all;
+  overflow-wrap:anywhere;
+}
+.picker .batch-note{max-width:46ch;margin:14px auto 0;}
+#batch-heading{margin:0 0 12px;font-size:18px;font-weight:600;line-height:1.5;}
+#batch .batch-note{margin:10px 0 18px;}
+#batch .convert__row>label{font-size:13px;color:var(--text-secondary);}
+#batch-status{margin:18px 0 10px;font-size:13px;line-height:1.65;color:var(--text-secondary);}
+#batch-progress{accent-color:var(--primary);height:6px;}
+
+</style>
+</head>
+<body>
+  <nav class="site-nav">
+    <div class="row">
+      <a class="logo" href="index.html"><img src="favicon.png" alt="" class="logo__icon" />PicMedic</a>
+      <div class="navlinks">
+        <a class="navlink" href="index.html">홈</a>
+        <a class="navlink" href="faq.html">FAQ</a>
+        <a class="navlink" href="diagnose.html">사진 진단하기</a>
+        <a class="navlink" href="live-photo.html">라이브포토 진단</a>
+        <a class="navlink" href="convert.html" aria-current="page">확장자 변환</a>
+        <span class="theme-toggle-group">
+          <button id="theme-toggle" class="theme-toggle" type="button" aria-label="다크 모드 전환" aria-pressed="true">
+            <span class="track"><span class="knob"></span></span>
+          </button>
+          <span class="mode-label" data-en="Mode" aria-hidden="true">모드</span>
+        </span>
+      </div>
+    </div>
+  </nav>
+
+  <main class="app">
+    <header class="app__header">
+      <h1>HEIC JPG 변환 · 사진 형식 변환</h1>
+      <p class="app__tagline">진단 없이, 사진 형식만 바로 바꾸고 싶을 때.</p>
+      <p class="app__description">HEIC를 포함해 JPEG·PNG·GIF·BMP·WEBP 사진의 확장자를 JPEG/PNG/WEBP로 바꿔서 받을 수 있어요. 아이폰 사진이 PC에서 안 열릴 때 JPG로 바꿔보세요.</p>
+    </header>
+
+    <section id="picker" class="picker">
+      <button id="pick-btn" class="button button--primary" type="button">사진 선택</button>
+      <p class="picker__hint">바꾸고 싶은 사진을 골라주세요. 여기로 끌어다 놓아도 돼요.</p>
+      <p class="batch-note" data-en="Select multiple photos to convert them together and download a ZIP. Up to 20 photos, 20 MB each, 100 MB total; 24 megapixels per photo and 100 MB total output. On mobile, start with a few photos. Keep this tab open.">여러 장을 선택하면 한 번에 변환하고 ZIP으로 받을 수 있어요. 최대 20장, 파일당 20MB, 전체 100MB이며 사진당 2,400만 픽셀·결과 합계 100MB까지 지원해요. 휴대폰에서는 적은 장수부터 시작하고, 처리 중에는 이 탭을 열어두세요.</p>
+      <input type="file" id="file-input" multiple accept="image/*,.heic,.heif" hidden />
+    </section>
+
+    <section id="loading" class="loading hidden">
+      <p>불러오는 중...</p>
+    </section>
+
+    <section id="result" class="result hidden">
+      <div class="result__preview-wrap" id="result-preview-wrap">
+        <img class="result__preview" id="result-preview" alt="선택한 사진 미리보기" />
+      </div>
+
+      <h2 id="result-filename" class="result__filename"></h2>
+
+      <div class="convert__row">
+        <select id="convert-format" class="convert__select">
+          <option value="jpeg">JPEG</option>
+          <option value="png">PNG</option>
+          <option value="webp">WEBP</option>
+        </select>
+        <div class="convert__quality-wrap" id="convert-quality-wrap">
+          <label for="convert-quality" class="convert__quality-label">품질 <span id="convert-quality-value">90</span></label>
+          <input type="range" id="convert-quality" min="10" max="100" value="90" />
+        </div>
+      </div>
+      <button id="convert-btn" class="button button--primary" type="button">변환해서 다운로드</button>
+      <p class="convert__note">이 브라우저 탭 안에서 바로 변환돼요 — 어디로도 업로드되지 않아요.</p>
+
+      <button id="retry-btn" class="button button--secondary" type="button">다른 사진 변환하기</button>
+    </section>
+
+    <section id="batch" class="result hidden" aria-labelledby="batch-heading">
+      <h2 id="batch-heading" data-en="Convert multiple photos">여러 사진 일괄 변환</h2>
+      <p class="batch-note" data-en="Up to 20 photos, 20 MB each, 100 MB total input and output; 24 megapixels per photo. Keep this tab open. On mobile, start with fewer photos.">최대 20장·파일당 20MB·입력 및 결과 각각 합계 100MB·사진당 2,400만 픽셀까지 지원해요. 처리 중에는 이 탭을 열어두세요. 휴대폰에서는 적은 장수부터 시작하세요.</p>
+      <div class="convert__row">
+        <label for="batch-format" data-en="Output format">출력 형식</label>
+        <select id="batch-format" class="convert__select"><option value="jpeg">JPG</option><option value="png">PNG</option><option value="webp">WEBP</option></select>
+        <label id="batch-quality-wrap"><span data-en="Quality">품질</span> <select id="batch-quality" class="convert__select"><option value="90">90%</option><option value="80">80%</option><option value="100">100%</option></select></label>
+      </div>
+      <p class="batch-note" data-en="JPG does not preserve transparency. Choose PNG or WEBP to keep it. Conversion may change quality and metadata; keep your originals.">JPG는 투명 배경을 유지하지 않아요. 투명도를 유지하려면 PNG나 WEBP를 선택하세요. 변환하면 화질과 메타데이터가 달라질 수 있으니 원본을 보관하세요.</p>
+      <p id="batch-status" role="status" aria-live="polite"></p>
+      <progress id="batch-progress" value="0" max="20" aria-label="변환 진행률" style="width:100%"></progress>
+      <ol id="batch-list" class="batch-list"></ol>
+      <div class="batch-actions">
+        <button id="batch-start" class="button button--primary" type="button" data-en="Convert photos">일괄 변환 시작</button>
+        <button id="batch-cancel" class="button button--secondary hidden" type="button" data-en="Cancel">취소</button>
+        <a id="batch-download" class="button button--primary hidden" download="picmedic-photos.zip" data-en="Download ZIP">ZIP 다운로드</a>
+        <button id="batch-retry" class="button button--secondary" type="button" data-en="Choose other photos">다른 사진 선택</button>
+      </div>
+    </section>
+
+    <section class="search-guides" aria-label="사진 해결 가이드"><h2>사진 문제 해결 가이드</h2><ul><li><a href="heic-to-jpg.html">HEIC를 JPG로 변환하는 방법</a></li><li><a href="live-photo-to-mp4.html">라이브 포토를 PC에서 MP4 동영상으로 저장하기</a></li><li><a href="photo-print-resolution.html">사진 인화 해상도 확인 — 4×6에 필요한 픽셀</a></li></ul></section><footer class="app__footer" data-page-note="convert">
+      <p data-en=""></p>
+    </footer>
+
+    <p class="privacy-note">
+      <svg class="privacy-note__icon" viewBox="0 0 16 16" aria-hidden="true">
+        <circle class="privacy-note__icon-bg" cx="8" cy="8" r="8" />
+        <path class="privacy-note__icon-check" d="M4.5 8.3l2.3 2.3L11.5 5.8" />
+      </svg>
+      <span>사진은 서버로 전송되지 않고, 이 브라우저 탭 안에서만 처리됩니다.</span>
+    </p>
+  </main>
+
+  <a href="guide.html" class="guide-fab" data-en="How to use">사용방법</a>
+
+  <footer class="site-footer">
+    <div class="row">
+      <span>PicMedic</span>
+      <span class="footlinks" data-en='<a href="privacy-policy.html"><strong>Privacy Policy</strong></a> &middot; <a href="mailto:TODO@example.com">Contact</a>'><a href="privacy-policy.html"><strong>개인정보 처리방침</strong></a> · <a href="mailto:TODO@example.com">문의하기</a></span>
+      <span>© 2026 PicMedic</span>
+      <button id="lang-toggle" class="lang-toggle" type="button" aria-label="View in English">English</button>
+    </div>
+    <!-- 사업자정보/문의 이메일 값은 site-content.js에서 채운다(admin.html에서 편집). -->
+    <div class="bizinfo" data-en="Name: [Business name] &middot; CEO: [CEO name] &middot; Registration No.: [000-00-00000] &middot; Address: [Business address] &middot; Mail-order sales No.: [if applicable] &middot; Contact: [email or phone]">상호 [상호명] · 대표자 [대표자명] · 사업자등록번호 [000-00-00000] · 주소 [사업장 주소] · 통신판매업신고번호 [해당 시 기재] · 문의 [이메일 또는 전화번호]</div>
+  </footer>
+
+  <script src="site-content.js"></script>
+  <script src="diagnose.js"></script>
+  <script src="convert-app.js"></script>
+  <script src="batch-zip.js"></script>
+  <script src="batch-convert.js"></script>
+  <script>
+  (function(){
+    var toggle = document.getElementById('theme-toggle');
+    function isDark(){
+      var explicit = document.documentElement.getAttribute('data-theme');
+      if (explicit) return explicit === 'dark';
+      return true; // 다크가 기본값(2026-09-11) — 시스템 설정과 무관하게 고정
+    }
+    function sync(){
+      toggle.setAttribute('aria-pressed', isDark() ? 'true' : 'false');
+    }
+    toggle.addEventListener('click', function(){
+      var next = isDark() ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try{ localStorage.setItem('picmedic-theme', next); }catch(e){}
+      sync();
+    });
+    sync();
+  })();
+  </script>
+  <script src="i18n.js"></script>
+</body>
+</html>

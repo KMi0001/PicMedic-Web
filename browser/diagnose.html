@@ -3,29 +3,33 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>PicMedic</title>
+<title>사진 안 열림 원인 확인 | 손상·해상도 검사 - 픽메딕</title>
+<meta name="description" content="아이폰 HEIC·JPG 사진이 안 열릴 때 실제 파일 형식과 읽기 가능 여부를 확인하세요. 해상도와 인화 적합도도 추정합니다. 파일 복구 기능은 제공하지 않습니다." />
+<link rel="canonical" href="https://picmedic.try-cat.com/diagnose.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="PicMedic" />
+<meta property="og:url" content="https://picmedic.try-cat.com/diagnose.html" />
+<meta property="og:title" content="사진 안 열림 원인 확인 | 손상·해상도 검사 - 픽메딕" />
+<meta property="og:description" content="아이폰 HEIC·JPG 사진이 안 열릴 때 실제 파일 형식과 읽기 가능 여부를 확인하세요. 해상도와 인화 적합도도 추정합니다. 파일 복구 기능은 제공하지 않습니다." />
+<script src="analytics.js" async></script>
 <link rel="icon" href="favicon.png" />
 <link rel="stylesheet" href="style.css" />
 <script src="https://cdn.jsdelivr.net/npm/libheif-js@1.19.8/libheif-wasm/libheif-bundle.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="search-guides.css" />
 <style>
-  /* 사이트 공통 내비/푸터 전용 색상 — style.css의 :root 토큰(민트 톤, 진단 카드가 씀)과
-     이름이 겹치면 카드 색까지 덮어써버려서 --nav-* 로 이름공간을 분리했다. index.html/faq.html과
-     같은 값(라이트/다크)을 써서 내비·푸터는 똑같이 보이지만, 진단 카드 자체는 아직
-     다크모드를 지원하지 않아 토글해도 카드는 라이트 톤 그대로 남는다. */
+  /* 사이트 공통 내비/푸터 전용 색상 — style.css의 :root 토큰(진단 카드가 씀)과
+     이름이 겹치면 카드 색까지 덮어써버려서 --nav-* 로 이름공간을 분리했다.
+     index.html/faq.html과 같은 값(gui/theme.py 팔레트)을 써서 내비·푸터·카드가
+     똑같이 보인다. 웹버전은 다크가 기본값(2026-09-11)이라 기본 :root에 DARK_COLORS를
+     두고 [data-theme="light"]에서만 LIGHT_COLORS로 덮어쓴다. */
   :root{
-    --nav-bg:#FFFFFF; --nav-text:#14181C; --nav-muted:#6B7280;
-    --nav-accent:#1F9E8C; --nav-hairline:#E7E9EC;
+    --nav-bg:#1E1A15; --nav-text:#EDE6D6; --nav-muted:#A79A82;
+    --nav-accent:#D9B54A; --nav-hairline:#3D362A;
   }
-  @media (prefers-color-scheme: dark){
-    :root:not([data-theme="light"]){
-      --nav-bg:#0E1113; --nav-text:#F1F3F2; --nav-muted:#8B9490;
-      --nav-accent:#39C9AE; --nav-hairline:#232826;
-    }
-  }
-  :root[data-theme="dark"]{
-    --nav-bg:#0E1113; --nav-text:#F1F3F2; --nav-muted:#8B9490;
-    --nav-accent:#39C9AE; --nav-hairline:#232826;
+  :root[data-theme="light"]{
+    --nav-bg:#F7F1E4; --nav-text:#2A2420; --nav-muted:#7A7060;
+    --nav-accent:#D9B54A; --nav-hairline:#E6DCC5;
   }
   /* nav — 화면 상단에 항상 고정, 모든 페이지 동일 */
   .site-nav{position:fixed;top:0;left:0;right:0;z-index:30;background:var(--nav-bg);border-bottom:1px solid var(--nav-hairline);}
@@ -36,8 +40,16 @@
   .site-nav .navlinks{display:flex;gap:28px;align-items:center;}
   .site-nav a.navlink{font-family:'IBM Plex Sans KR','Malgun Gothic',sans-serif;font-size:13.5px;color:var(--nav-muted);text-decoration:none;}
   .site-nav a.navlink:hover{color:var(--nav-text);}
-  .site-nav a.navcta{font-family:'IBM Plex Sans KR','Malgun Gothic',sans-serif;font-size:13.5px;font-weight:600;color:var(--nav-accent);text-decoration:none;}
-  .site-nav a.navcta:hover{text-decoration:underline;}
+  /* 지금 보고 있는 페이지의 메뉴만 강조(aria-current="page") — 다른 페이지에서는 강조하지 않는다.
+   금색 글자는 라이트 모드 배경(아이보리)과 대비가 약해(1.75:1) 회색 메뉴보다 오히려 흐려 보였다 —
+   그래서 글자는 진한 본문색 + 굵게로 하고, 강조색(금색)은 밑줄로만 쓴다. */
+  .site-nav a.navlink[aria-current="page"]{
+    color:var(--nav-text);font-weight:600;
+    text-decoration:underline;text-decoration-color:var(--nav-accent);
+    text-decoration-thickness:2px;text-underline-offset:8px;
+  }
+  .theme-toggle-group{display:flex;align-items:center;gap:6px;}
+  .theme-toggle-group .mode-label{font-family:'IBM Plex Sans KR','Malgun Gothic',sans-serif;font-size:12.5px;color:var(--nav-muted);line-height:1;}
   .theme-toggle{background:none;border:none;padding:0;margin:0;cursor:pointer;display:flex;align-items:center;line-height:0;}
   .theme-toggle .track{width:36px;height:20px;border-radius:10px;background:var(--nav-hairline);position:relative;transition:background .2s;}
   .theme-toggle .knob{position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#FFFFFF;box-shadow:0 1px 2px rgba(0,0,0,.3);transition:transform .2s;}
@@ -54,7 +66,7 @@
   }
   /* site footer — 화면 하단에 항상 고정, 모든 페이지 동일 */
   .site-footer{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--nav-bg);border-top:1px solid var(--nav-hairline);}
-  .app{padding-bottom:calc(64px + 72px);}
+  .app{padding-bottom:calc(64px + 104px);}
   .site-footer .row{
     max-width:720px;margin:0 auto;padding:14px 24px;display:flex;justify-content:space-between;
     align-items:center;flex-wrap:wrap;gap:12px;font-family:'IBM Plex Sans KR','Malgun Gothic',sans-serif;
@@ -62,11 +74,34 @@
   }
   .site-footer a{color:var(--nav-muted);text-decoration:none;}
   .site-footer a:hover{color:var(--nav-text);}
+  /* 사업자 정보 — 오픈 전 실제 값으로 교체할 자리(2026-09-11, 사용자 요청으로
+     폼만 미리 짜둠). 통신판매업신고번호는 이 사이트에서 직접 결제를 받을 때만
+     필요 — 지금은 무료 진단만 제공하고 실제 결제는 MS 스토어에서 이뤄지므로
+     해당 없을 수 있음(확정은 법률 검토 필요). */
+  .bizinfo{
+    max-width:720px;margin:0 auto;padding:0 24px 10px;font-family:'IBM Plex Sans KR','Malgun Gothic',sans-serif;
+    font-size:10.5px;line-height:1.6;color:var(--nav-muted);opacity:.75;
+  }
   .lang-toggle{
     background:none;border:none;padding:0;font:inherit;font-size:12.5px;color:var(--nav-muted);
     text-decoration:underline;text-underline-offset:3px;cursor:pointer;
   }
   .lang-toggle:hover{color:var(--nav-text);}
+
+  /* 임시 사용방법 링크 — index.html/faq.html과 동일 (정식 도움말 진입점이
+     정해지기 전까지의 임시 배치) */
+  .guide-fab{
+    position:fixed;right:20px;bottom:76px;z-index:25;
+    background:var(--nav-accent);color:#fff;font-family:'IBM Plex Sans KR','Malgun Gothic',sans-serif;
+    font-size:13px;font-weight:600;padding:10px 16px;border-radius:24px;
+    text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.18);
+  }
+  .guide-fab:hover{opacity:.9;}
+
+  /* "라이브 포토였을 수도" 태그 — 다른 result__tag는 그냥 정보용 표시지만
+     이건 live-photo.html로 이어지는 링크라 누를 수 있다는 걸 색으로 구분한다. */
+  .result__tag--link{color:var(--primary);border-color:var(--primary);text-decoration:none;cursor:pointer;}
+  .result__tag--link:hover{background-color:var(--selection);}
 </style>
 
 <script>
@@ -87,19 +122,24 @@
       <div class="navlinks">
         <a class="navlink" href="index.html">홈</a>
         <a class="navlink" href="faq.html">FAQ</a>
-        <a class="navcta" href="diagnose.html">무료로 진단하기</a>
-        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="다크 모드 전환" aria-pressed="false">
-          <span class="track"><span class="knob"></span></span>
-        </button>
+        <a class="navlink" href="diagnose.html" aria-current="page">사진 진단하기</a>
+        <a class="navlink" href="live-photo.html">라이브포토 진단</a>
+        <a class="navlink" href="convert.html">확장자 변환</a>
+        <span class="theme-toggle-group">
+          <button id="theme-toggle" class="theme-toggle" type="button" aria-label="다크 모드 전환" aria-pressed="true">
+            <span class="track"><span class="knob"></span></span>
+          </button>
+          <span class="mode-label" data-en="Mode" aria-hidden="true">모드</span>
+        </span>
       </div>
     </div>
   </nav>
 
   <main class="app">
     <header class="app__header">
-      <h1>PicMedic</h1>
+      <h1>사진 안 열림 · 손상·해상도 확인</h1>
       <p class="app__tagline">안 열리거나, 흐릿하거나, 이상하게 찍힌 사진 이유를 알려드려요.</p>
-      <p class="app__description">형식·손상·해상도까지 한 번에 진단해드려요.</p>
+      <p class="app__description">HEIC가 PC에서 안 열릴 때부터 사진 인화 전 화질 확인까지 — 형식·손상·해상도를 한 번에 검사해드려요.</p>
     </header>
 
     <section id="scenarios" class="scenarios">
@@ -134,6 +174,7 @@
 
       <div class="result__badge" id="result-badge"></div>
       <span id="result-screenshot-tag" class="result__tag hidden">스크린샷</span>
+      <a id="result-live-photo-tag" class="result__tag result__tag--link hidden" href="live-photo.html">라이브포토</a>
       <h2 id="result-filename" class="result__filename"></h2>
       <p id="result-message" class="result__message"></p>
 
@@ -155,11 +196,28 @@
         </p>
       </div>
 
+      <div class="convert hidden" id="convert">
+        <h3 class="convert__title">다른 형식으로 저장</h3>
+        <div class="convert__row">
+          <select id="convert-format" class="convert__select">
+            <option value="jpeg">JPEG</option>
+            <option value="png">PNG</option>
+            <option value="webp">WEBP</option>
+          </select>
+          <div class="convert__quality-wrap" id="convert-quality-wrap">
+            <label for="convert-quality" class="convert__quality-label">품질 <span id="convert-quality-value">90</span></label>
+            <input type="range" id="convert-quality" min="10" max="100" value="90" />
+          </div>
+          <button id="convert-btn" class="button button--secondary convert__btn" type="button">다운로드</button>
+        </div>
+        <p class="convert__note">이 브라우저 탭 안에서 바로 변환돼요 — 어디로도 업로드되지 않아요.</p>
+      </div>
+
       <button id="retry-btn" class="button button--secondary">다른 사진 진단하기</button>
     </section>
 
-    <footer class="app__footer">
-      <p>진단은 여기까지 무료예요. 손상된 사진을 직접 복구하는 <strong>PicMedic 데스크톱 버전</strong>도 준비하고 있어요.</p>
+    <section class="search-guides" aria-label="사진 해결 가이드"><h2>사진 문제 해결 가이드</h2><ul><li><a href="heic-to-jpg.html">HEIC를 JPG로 변환하는 방법</a></li><li><a href="live-photo-to-mp4.html">라이브 포토를 PC에서 MP4 동영상으로 저장하기</a></li><li><a href="photo-print-resolution.html">사진 인화 해상도 확인 — 4×6에 필요한 픽셀</a></li></ul></section><footer class="app__footer hidden" data-page-note="diagnose">
+      <p data-en=""></p>
     </footer>
 
     <p class="privacy-note">
@@ -171,15 +229,21 @@
     </p>
   </main>
 
+  <a href="guide.html" class="guide-fab" data-en="How to use">사용방법</a>
+
   <footer class="site-footer">
     <div class="row">
       <span>PicMedic</span>
-      <span data-en='<a href="#">Privacy Policy</a> &middot; <a href="#">Contact</a>'><a href="#">개인정보처리방침</a> · <a href="#">문의하기</a></span>
+      <span class="footlinks" data-en='<a href="privacy-policy.html"><strong>Privacy Policy</strong></a> &middot; <a href="mailto:TODO@example.com">Contact</a>'><a href="privacy-policy.html"><strong>개인정보 처리방침</strong></a> · <a href="mailto:TODO@example.com">문의하기</a></span>
       <span>© 2026 PicMedic</span>
       <button id="lang-toggle" class="lang-toggle" type="button" aria-label="View in English">English</button>
     </div>
+    <!-- 사업자정보/문의 이메일 값은 site-content.js에서 채운다(admin.html에서 편집). -->
+    <div class="bizinfo" data-en="Name: [Business name] &middot; CEO: [CEO name] &middot; Registration No.: [000-00-00000] &middot; Address: [Business address] &middot; Mail-order sales No.: [if applicable] &middot; Contact: [email or phone]">상호 [상호명] · 대표자 [대표자명] · 사업자등록번호 [000-00-00000] · 주소 [사업장 주소] · 통신판매업신고번호 [해당 시 기재] · 문의 [이메일 또는 전화번호]</div>
   </footer>
 
+  <script src="site-content.js"></script>
+  <script src="live-photo-core.js"></script>
   <script src="diagnose.js"></script>
   <script src="app.js"></script>
   <script>
@@ -188,7 +252,7 @@
     function isDark(){
       var explicit = document.documentElement.getAttribute('data-theme');
       if (explicit) return explicit === 'dark';
-      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+      return true; // 다크가 기본값(2026-09-11) — 시스템 설정과 무관하게 고정
     }
     function sync(){
       toggle.setAttribute('aria-pressed', isDark() ? 'true' : 'false');
@@ -202,33 +266,6 @@
     sync();
   })();
   </script>
-  <script>
-  (function(){
-    var STORAGE_KEY = 'picmedic-lang';
-    var langToggle = document.getElementById('lang-toggle');
-    var nodes = document.querySelectorAll('[data-en]');
-    nodes.forEach(function(el){ el.setAttribute('data-ko', el.innerHTML); });
-
-    function applyLang(lang){
-      nodes.forEach(function(el){
-        var raw = lang === 'en' ? el.getAttribute('data-en') : el.getAttribute('data-ko');
-        el.innerHTML = raw.split('\\n').join('<br>');
-      });
-      langToggle.textContent = lang === 'en' ? '한국어' : 'English';
-      langToggle.setAttribute('aria-label', lang === 'en' ? '한국어로 보기' : 'View in English');
-    }
-
-    var stored;
-    try{ stored = localStorage.getItem(STORAGE_KEY); }catch(e){}
-    var currentLang = stored === 'en' ? 'en' : 'ko';
-    applyLang(currentLang);
-
-    langToggle.addEventListener('click', function(){
-      currentLang = currentLang === 'en' ? 'ko' : 'en';
-      applyLang(currentLang);
-      try{ localStorage.setItem(STORAGE_KEY, currentLang); }catch(e){}
-    });
-  })();
-  </script>
+  <script src="i18n.js"></script>
 </body>
 </html>

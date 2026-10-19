@@ -1,0 +1,56 @@
+/* Quiet supporting links, using the same palette as the site navigation. */
+.search-guides {
+  box-sizing: border-box;
+  max-width: 720px;
+  margin: 16px auto 112px;
+  padding: 14px 24px 0;
+  border-top: 1px solid var(--nav-hairline, var(--hairline, var(--border)));
+  background: transparent;
+  color: var(--nav-muted, var(--text-secondary, var(--muted)));
+  font-family: 'IBM Plex Sans KR', 'Malgun Gothic', sans-serif;
+  text-align: left;
+}
+.search-guides h2 {
+  margin: 0 0 10px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--nav-text, var(--text));
+  letter-spacing: 0;
+}
+.search-guides ul {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.search-guides li {
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+  line-height: 1.7;
+}
+.search-guides a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+}
+.search-guides a:hover,
+.search-guides a:focus-visible {
+  color: var(--nav-text, var(--text));
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.search-guides.search-guides--inline {
+  max-width: none;
+  margin: 20px 0 0;
+  padding: 14px 0 0;
+}
+@media (max-width: 540px) {
+  .search-guides { margin-top: 12px; padding: 12px 20px 0; }
+  .search-guides ul { flex-direction: column; gap: 4px; }
+}
