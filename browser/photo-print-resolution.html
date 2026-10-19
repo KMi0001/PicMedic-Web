@@ -61,7 +61,7 @@ nav.top .row{
 /* 지금 보고 있는 페이지의 메뉴만 강조() — 다른 페이지에서는 강조하지 않는다.
    금색 글자는 라이트 모드 배경(아이보리)과 대비가 약해(1.75:1) 회색 메뉴보다 오히려 흐려 보였다 —
    그래서 글자는 진한 본문색 + 굵게로 하고, 강조색(금색)은 밑줄로만 쓴다. */
-.navlinks a[]{
+.navlinks a[aria-current="page"]{
   color:var(--text);font-weight:600;
   text-decoration:underline;text-decoration-color:var(--accent);
   text-decoration-thickness:2px;text-underline-offset:8px;
@@ -164,7 +164,8 @@ nav.top .row{
 })();
 </script>
 
-<link rel="alternate" hreflang="ko" href="https://picmedic.try-cat.com/photo-print-resolution.html" /><link rel="alternate" hreflang="en" href="https://picmedic.try-cat.com/photo-print-resolution-en.html" /><style>.article{padding:32px 24px 80px;line-height:1.85}.article h1{font-size:clamp(26px,4vw,36px);line-height:1.4}.article h2{font-size:22px;margin-top:36px}.article p,.article li{overflow-wrap:anywhere}.article li{margin:12px 0}.article .cta{color:var(--text);border:1px solid var(--hairline);padding:12px 18px;border-radius:8px}@media(max-width:650px){.navlinks{gap:10px;flex-wrap:wrap;justify-content:flex-end}.navlinks a{font-size:11px}.logo{font-size:16px;flex-shrink:0}nav.top .row{gap:12px;padding:14px 0}body{padding-top:112px}}</style></head><body><nav class="top">
+<link rel="alternate" hreflang="ko" href="https://picmedic.try-cat.com/photo-print-resolution.html" /><link rel="alternate" hreflang="en" href="https://picmedic.try-cat.com/photo-print-resolution-en.html" /><style>.article{padding:32px 24px 80px;line-height:1.85}.article h1{font-size:clamp(26px,4vw,36px);line-height:1.4}.article h2{font-size:22px;margin-top:36px}.article p,.article li{overflow-wrap:anywhere}.article li{margin:12px 0}.article .cta{color:var(--text);border:1px solid var(--hairline);padding:12px 18px;border-radius:8px}@media(max-width:650px){.navlinks{gap:10px;flex-wrap:wrap;justify-content:flex-end}.navlinks a{font-size:11px}.logo{font-size:16px;flex-shrink:0}nav.top .row{gap:12px;padding:14px 0}body{padding-top:112px}}</style><link rel="stylesheet" href="responsive.css" />
+</head><body><nav class="top">
   <div class="shell row">
     <a class="logo" href="index.html"><img src="favicon.png" alt="" class="logo__icon" /><span>PicMedic</span></a>
     <div class="navlinks">
@@ -183,7 +184,7 @@ nav.top .row{
   </div>
 </nav>
 
-<main class="shell article"><h1>사진 인화 해상도 확인 — 4×6에 필요한 픽셀</h1><p><a href="photo-print-resolution-en.html">English</a></p><section><h2>인화 크기별 필요한 픽셀</h2><p>300 DPI를 기준으로 계산하면 3×5인치는 900×1500, 4×6인치는 1200×1800, 5×7인치는 1500×2100, 8×10인치는 2400×3000 픽셀입니다. 해상도 참고값이며 실제 품질은 초점·압축·인화 방식에도 영향을 받아요.</p></section><section><h2>인화 전 내 사진 확인하기</h2><p>아래 사진 진단에 원본 파일을 선택하고 크기별 인화 적합도 추정과 블러·노출·노이즈 결과를 살펴보세요. 사진은 업로드되지 않습니다. 추정 결과는 실제 인화 품질을 보장하지 않아요. 사진 비율이 인화 비율과 다르면 잘릴 수 있으니 주문 미리보기도 확인하세요.</p></section><section><h2>스크린샷·메신저 사진도 괜찮나요?</h2><p>스크린샷이나 메신저로 받은 사진은 픽셀이 줄거나 압축되어 있을 수 있어요. 가능하면 원본 파일을 사용하세요. DPI 숫자만 바꾸는 것으로 실제 픽셀이나 선명도가 늘지는 않습니다.</p></section><p><a class="cta" href="diagnose.html">무료 도구로 확인하기 →</a></p><h2>관련 가이드</h2><ul><li><a href="heic-to-jpg.html">HEIC를 JPG로 변환하는 방법</a></li><li><a href="live-photo-to-mp4.html">라이브 포토를 PC에서 MP4 동영상으로 저장하기</a></li><li><a href="photo-print-resolution.html">사진 인화 해상도 확인 — 4×6에 필요한 픽셀</a></li></ul></main><footer class="site-footer">
+<main class="shell article"><h1>사진 인화 해상도 확인 — 4×6에 필요한 픽셀</h1><p><a href="photo-print-resolution-en.html">English</a></p><section><h2>인화 크기별 필요한 픽셀</h2><p>300 DPI를 기준으로 계산하면 3×5인치는 900×1500, 4×6인치는 1200×1800, 5×7인치는 1500×2100, 8×10인치는 2400×3000 픽셀입니다. 해상도 참고값이며 실제 품질은 초점·압축·인화 방식에도 영향을 받아요.</p></section><section><h2>인화 전 내 사진 확인하기</h2><p>연결된 사진 진단 도구에 원본 파일을 선택하고 크기별 인화 적합도 추정과 블러·노출·노이즈 결과를 살펴보세요. 사진은 업로드되지 않습니다. 추정 결과는 실제 인화 품질을 보장하지 않아요. 사진 비율이 인화 비율과 다르면 잘릴 수 있으니 주문 미리보기도 확인하세요.</p></section><section><h2>스크린샷·메신저 사진도 괜찮나요?</h2><p>스크린샷이나 메신저로 받은 사진은 픽셀이 줄거나 압축되어 있을 수 있어요. 가능하면 원본 파일을 사용하세요. DPI 숫자만 바꾸는 것으로 실제 픽셀이나 선명도가 늘지는 않습니다.</p></section><p><a class="cta" href="diagnose.html">무료 도구로 확인하기 →</a></p><h2>관련 가이드</h2><ul><li><a href="heic-to-jpg.html">HEIC를 JPG로 변환하는 방법</a></li><li><a href="live-photo-to-mp4.html">라이브 포토를 PC에서 MP4 동영상으로 저장하기</a></li><li><a href="photo-print-resolution.html">사진 인화 해상도 확인 — 4×6에 필요한 픽셀</a></li></ul></main><footer class="site-footer">
   <div class="shell footmeta">
     <span>PicMedic</span>
     <span class="footlinks" data-en='<a href="privacy-policy.html"><strong>Privacy Policy</strong></a> &middot; <a href="mailto:jenn@try-cat.com">Contact</a>'><a href="privacy-policy.html"><strong>개인정보 처리방침</strong></a> · <a href="mailto:jenn@try-cat.com">문의하기</a></span>

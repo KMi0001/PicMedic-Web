@@ -276,6 +276,9 @@ a.tool:hover, a.tool:focus-visible{border-color:var(--accent);}
 })();
 </script>
 
+<link rel="stylesheet" href="responsive.css" />
+</head>
+<body>
 <nav class="top">
   <div class="shell row">
     <a class="logo" href="index.html"><img src="favicon.png" alt="" class="logo__icon" />PicMedic</a>
@@ -284,7 +287,7 @@ a.tool:hover, a.tool:focus-visible{border-color:var(--accent);}
       <a href="faq.html">FAQ</a>
       <a href="diagnose.html" data-en="Diagnose Photos">사진 진단하기</a>
       <a href="live-photo.html" data-en="Live Photo Check">라이브포토 진단</a>
-      <a href="convert.html" data-en="Convert Extension">확장자 변환</a>
+      <a href="convert.html" data-en="Convert Photos">확장자 변환</a>
       <span class="theme-toggle-group">
         <button id="theme-toggle" class="theme-toggle" type="button" aria-label="다크 모드 전환" aria-pressed="true">
           <span class="track"><span class="knob"></span></span>
@@ -319,7 +322,7 @@ a.tool:hover, a.tool:focus-visible{border-color:var(--accent);}
         <p data-en="Confirm a photo and a .MOV were originally a Live Photo pair, then save the video or convert it to MP4.">사진과 동영상(.MOV)이 원래 짝이었던 라이브 포토인지 확인하고, 동영상을 저장하거나 MP4로 변환해요.</p>
       </a>
       <a class="tool" href="convert.html">
-        <h3 data-en="Convert Extension">확장자 변환</h3>
+        <h3 data-en="Convert Photos">확장자 변환</h3>
         <p data-en="Skip the diagnosis and convert HEIC and other formats to JPEG, PNG or WEBP right away.">진단 없이, HEIC 등 사진 형식을 JPEG·PNG·WEBP로 바로 바꿔요.</p>
       </a>
       <div class="tool tool--soon" aria-disabled="true">
@@ -335,7 +338,7 @@ a.tool:hover, a.tool:focus-visible{border-color:var(--accent);}
     <h2 data-en="WHEN TO USE IT">이럴 때 써보세요</h2>
     <div class="qa">
       <p class="q" data-en="I backed up my iPhone photos to my PC and they won&#x27;t open">아이폰 사진을 PC로 백업했는데 안 열려요</p>
-      <p class="a" data-en="iPhones save photos as HEIC. After copying them to a PC (especially Windows), the default photo app may not open them, or show only a gray screen or blank thumbnail. It may be a format issue rather than a damaged file — or the copy may have been cut off and the file really is damaged. Use &lt;strong&gt;Diagnose Photos&lt;/strong&gt; to tell which, and if it&#x27;s the format, &lt;strong&gt;Convert Extension&lt;/strong&gt; turns it into JPG so you can open it.">아이폰은 사진을 HEIC 형식으로 저장해요. 이 파일을 PC(특히 윈도우)로 옮기면 기본 사진 앱에서 안 열리거나, 회색 화면·빈 썸네일만 보일 수 있어요. 파일이 깨진 게 아니라 형식 문제일 수도 있고, 옮기는 도중에 끊겨서 실제로 손상된 경우도 있어요. <strong>사진 진단</strong>으로 어느 쪽인지 확인하고, 형식 문제라면 <strong>확장자 변환</strong>으로 JPG로 바꿔서 열어보세요.</p>
+      <p class="a" data-en="iPhones save photos as HEIC. After copying them to a PC (especially Windows), the default photo app may not open them, or show only a gray screen or blank thumbnail. It may be a format issue rather than a damaged file — or the copy may have been cut off and the file really is damaged. Use &lt;strong&gt;Diagnose Photos&lt;/strong&gt; to tell which, and if it&#x27;s the format, &lt;strong&gt;Convert Photos&lt;/strong&gt; turns it into JPG so you can open it.">아이폰은 사진을 HEIC 형식으로 저장해요. 이 파일을 PC(특히 윈도우)로 옮기면 기본 사진 앱에서 안 열리거나, 회색 화면·빈 썸네일만 보일 수 있어요. 파일이 깨진 게 아니라 형식 문제일 수도 있고, 옮기는 도중에 끊겨서 실제로 손상된 경우도 있어요. <strong>사진 진단</strong>으로 어느 쪽인지 확인하고, 형식 문제라면 <strong>확장자 변환</strong>으로 JPG로 바꿔서 열어보세요.</p>
       <p class="links" data-en="&lt;a href=&quot;diagnose.html&quot; class=&quot;cta&quot;&gt;Diagnose Photos →&lt;/a&gt;&lt;a href=&quot;convert.html&quot; class=&quot;cta&quot;&gt;Convert to JPG →&lt;/a&gt;"><a href="diagnose.html" class="cta">사진 진단하기 →</a><a href="convert.html" class="cta">JPG로 변환하기 →</a></p>
     </div>
     <div class="qa">
@@ -360,7 +363,7 @@ a.tool:hover, a.tool:focus-visible{border-color:var(--accent);}
     </div>
     <div class="qa">
       <p class="q" data-en="I want to turn HEIC into JPG">HEIC를 JPG로 바꾸고 싶어요</p>
-      <p class="a" data-en="You can convert straight to JPEG, PNG or WEBP without any diagnosis. Try Convert Extension.">진단 없이 바로 JPEG·PNG·WEBP로 바꿔서 받을 수 있어요. 확장자 변환을 써보세요.</p>
+      <p class="a" data-en="You can convert straight to JPEG, PNG or WEBP without any diagnosis. Try Convert Photos.">진단 없이 바로 JPEG·PNG·WEBP로 바꿔서 받을 수 있어요. 확장자 변환을 써보세요.</p>
     </div>
     <div class="qa">
       <p class="q" data-en="I&#x27;m not sure if it was a Live Photo">라이브 포토였는지 헷갈려요</p>
@@ -442,7 +445,7 @@ a.tool:hover, a.tool:focus-visible{border-color:var(--accent);}
 
 <a href="guide.html" class="guide-fab" data-en="How to use">사용방법</a>
 
-<section class="search-guides" aria-label="사진 해결 가이드"><h2>사진 문제 해결 가이드</h2><ul><li><a href="heic-to-jpg.html">HEIC를 JPG로 변환하는 방법</a></li><li><a href="live-photo-to-mp4.html">라이브 포토를 PC에서 MP4 동영상으로 저장하기</a></li><li><a href="photo-print-resolution.html">사진 인화 해상도 확인 — 4×6에 필요한 픽셀</a></li></ul></section><footer class="site-footer">
+<section class="search-guides" aria-label="사진 해결 가이드"><h2>사진 문제 해결 가이드</h2><ul><li><a href="png-webp-to-jpg.html">PNG JPG 변환 · WebP JPG 변환</a></li><li><a href="heic-to-jpg.html">HEIC를 JPG로 변환하는 방법</a></li><li><a href="live-photo-to-mp4.html">라이브 포토를 PC에서 MP4 동영상으로 저장하기</a></li><li><a href="photo-print-resolution.html">사진 인화 해상도 확인 — 4×6에 필요한 픽셀</a></li></ul></section><footer class="site-footer">
   <div class="shell footmeta">
     <span>PicMedic</span>
     <span class="footlinks" data-en='<a href="privacy-policy.html"><strong>Privacy Policy</strong></a> &middot; <a href="mailto:TODO@example.com">Contact</a>'><a href="privacy-policy.html"><strong>개인정보 처리방침</strong></a> · <a href="mailto:TODO@example.com">문의하기</a></span>

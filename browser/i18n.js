@@ -2,6 +2,12 @@
  * diagnosis keys remain unchanged; only explicitly bound UI text is translated. */
 (function () {
   const translations = {
+    "PicMedic FAQ — HEIC 안 열림·라이브 포토·인화 전 확인": "PicMedic FAQ — HEIC, Live Photos and print quality",
+    "HEIC 사진이 PC에서 안 열릴 때, 확장자 변환, 사진 검사, 라이브 포토 MP4 변환 등 자주 묻는 질문을 모았어요.": "Answers about HEIC photos not opening on a PC, photo conversion, image checks and saving Live Photos as MP4.",
+    "PicMedic 사용방법": "How to use PicMedic",
+    "PicMedic 무료 사진 진단 사용방법 — 파일 선택부터 결과 배지 읽는 법까지 3단계로 안내합니다.": "Learn how to use free PicMedic photo diagnosis in three steps, from selecting a file to understanding result badges.",
+    "PicMedic 개인정보 처리방침": "PicMedic Privacy Policy",
+    "Jenn PicMedic 개인정보 처리방침 — 사진은 업로드되지 않으며, 문의 메일과 방문 통계만 처리해요.": "Jenn PicMedic Privacy Policy. Photos are not uploaded. This policy covers contact emails and website analytics.",
     "HEIC·PNG·WEBP 사진을 JPG 등으로 무료 변환하세요. 한 장씩 저장하거나 최대 20장을 일괄 변환해 ZIP으로 받으세요. 사진은 서버에 업로드되지 않습니다.": "Convert HEIC, PNG and WEBP photos for free. Save one photo or batch convert up to 20 and download a ZIP. Photos are never uploaded.",
     "변환 진행률": "Conversion progress",
     "픽메딕 PicMedic | 아이폰 사진 안 열릴 때 · HEIC JPG 변환": "PicMedic | iPhone photos not opening and HEIC to JPG",
@@ -21,6 +27,7 @@
     "확장자 변환": "Convert Photos",
     "사진 선택": "Choose a photo",
     "사진 문제 해결 가이드": "Photo troubleshooting guides",
+    "PNG JPG 변환 · WebP JPG 변환": "Convert PNG and WebP to JPG",
     "HEIC를 JPG로 변환하는 방법": "How to convert HEIC to JPG",
     "라이브 포토를 PC에서 MP4 동영상으로 저장하기": "Save a Live Photo as an MP4 video on your PC",
     "사진 인화 해상도 확인 — 4×6에 필요한 픽셀": "Photo print resolution — pixels needed for a 4×6 print",
@@ -170,6 +177,7 @@
         ? binding.source.match(/^\s*/)[0] + value + binding.source.match(/\s*$/)[0]
         : value;
       else if (binding.type === "aria") element.setAttribute("aria-label", value);
+      else if (binding.type === "content") element.setAttribute("content", value);
       else element.textContent = value;
     }
     const toggle = document.getElementById("lang-toggle");
@@ -179,7 +187,7 @@
     }
     document.querySelectorAll('a[href]').forEach(link => {
       const href = link.getAttribute("href");
-      if (/^(heic-to-jpg|live-photo-to-mp4|photo-print-resolution)(-en)?\.html$/.test(href)) {
+      if (/^(heic-to-jpg|live-photo-to-mp4|photo-print-resolution|png-webp-to-jpg)(-en)?\.html$/.test(href)) {
         link.setAttribute("href", href.replace(/(-en)?\.html$/, language === "en" ? "-en.html" : ".html"));
       }
     });
@@ -197,6 +205,10 @@
   document.querySelectorAll("[aria-label]").forEach(element => {
     const source = element.getAttribute("aria-label");
     if (translations[normalize(source)]) bindings.set(element, { source, type: "aria" });
+  });
+  document.querySelectorAll('meta[name="description"], meta[property="og:title"], meta[property="og:description"]').forEach(element => {
+    const source = element.getAttribute("content");
+    if (translations[normalize(source)]) bindings.set(element, { source, type: "content" });
   });
   window.PicMedicI18n = { setText, setUserText, applyLanguage, english, getLanguage: () => language };
   const toggle = document.getElementById("lang-toggle");
