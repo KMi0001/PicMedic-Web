@@ -1,0 +1,20 @@
+/* Shared layout: translated navigation must fit without hiding links. */
+body { padding-top: 0; }
+nav.top, .site-nav { position: relative; top: auto; }
+nav.top .row, .site-nav .row { gap: 20px; }
+.logo, .site-nav .logo { flex-shrink: 0; white-space: nowrap; }
+.logo__icon { object-fit: contain; flex-shrink: 0; }
+.navlinks { min-width: 0; }
+.site-footer { position: relative; bottom: auto; }
+.guide-fab { position: static; display: block; width: fit-content; margin: 24px auto; }
+.app { padding-bottom: 32px; }
+.search-guides { margin-bottom: 32px; }
+.article { padding-bottom: 40px; }
+.article .cta { display: inline-block; max-width: 100%; overflow-wrap: anywhere; }
+@media (max-width: 900px) {
+  nav.top .row, .site-nav .row { flex-direction: column; align-items: flex-start; padding: 16px 24px; gap: 14px; }
+  nav.top .navlinks, .site-nav .navlinks { width: 100%; display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 12px 18px; }
+  nav.top .navlinks a, .site-nav a.navlink { font-size: 13px; white-space: nowrap; line-height: 1.6; }
+  .theme-toggle-group { flex-shrink: 0; }
+  .site-footer .row, .site-footer .footmeta { flex-wrap: wrap; gap: 12px; }
+}

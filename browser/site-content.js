@@ -12,11 +12,11 @@
     "faq": [
       {
         "q": {"ko": "아이폰에서 옮긴 HEIC 사진이 PC에서 안 열려요 (안 보여요)", "en": "HEIC photos moved from my iPhone won't open (or show) on my PC"},
-        "a": {"ko": "아이폰은 사진을 HEIC 형식으로 저장하는데, 윈도우 PC는 환경에 따라 이 형식을 못 열거나 미리보기가 안 보일 수 있어요(별도 확장 프로그램이 필요할 때가 있어요). 파일이 손상된 게 아닐 수도 있으니, 먼저 사진 진단으로 형식 문제인지 손상인지 확인해보세요. 형식 문제라면 확장자 변환으로 JPG로 바꾸면 어디서든 열려요.", "en": "iPhones save photos as HEIC, and depending on your setup a Windows PC may not open them or show previews (an extra extension is sometimes needed). The file may not be damaged, so first use Diagnose Photos to tell whether it's a format issue or damage. If it's the format, Convert Extension turns it into a JPG that opens anywhere."}
+        "a": {"ko": "아이폰은 사진을 HEIC 형식으로 저장하는데, 윈도우 PC는 환경에 따라 이 형식을 못 열거나 미리보기가 안 보일 수 있어요(별도 확장 프로그램이 필요할 때가 있어요). 파일이 손상된 게 아닐 수도 있으니, 먼저 사진 진단으로 형식 문제인지 손상인지 확인해보세요. 형식 문제라면 확장자 변환으로 JPG로 바꾸면 어디서든 열려요.", "en": "iPhones save photos as HEIC, and depending on your setup a Windows PC may not open them or show previews (an extra extension is sometimes needed). The file may not be damaged, so first use Diagnose Photos to tell whether it's a format issue or damage. If it's the format, Convert Photos turns it into a JPG that opens anywhere."}
       },
       {
         "q": {"ko": "확장자만 바꾸면 사진이 열리나요?", "en": "Will renaming the extension make my photo open?"},
-        "a": {"ko": "이름의 확장자만 바꿔서 열리는 경우는, 애초에 실제 형식과 확장자가 다르게 저장된 파일일 때뿐이에요. 사진 진단이 이런 '형식 불일치'를 알려줘요. 아이폰 HEIC처럼 형식 자체가 PC와 안 맞는 경우에는 이름만 바꾸면 안 되고, 확장자 변환으로 실제 형식을 JPG·PNG·WEBP로 바꿔야 해요.", "en": "Renaming only works when the file was saved with an extension that doesn't match its real format — Diagnose Photos flags this as a 'format mismatch'. When the format itself doesn't suit your PC (like iPhone HEIC), renaming won't help; use Convert Extension to actually change it to JPG, PNG or WEBP."}
+        "a": {"ko": "이름의 확장자만 바꿔서 열리는 경우는, 애초에 실제 형식과 확장자가 다르게 저장된 파일일 때뿐이에요. 사진 진단이 이런 '형식 불일치'를 알려줘요. 아이폰 HEIC처럼 형식 자체가 PC와 안 맞는 경우에는 이름만 바꾸면 안 되고, 확장자 변환으로 실제 형식을 JPG·PNG·WEBP로 바꿔야 해요.", "en": "Renaming only works when the file was saved with an extension that doesn't match its real format — Diagnose Photos flags this as a 'format mismatch'. When the format itself doesn't suit your PC (like iPhone HEIC), renaming won't help; use Convert Photos to actually change it to JPG, PNG or WEBP."}
       },
       {
         "q": {"ko": "사진 검사는 뭘 확인해 주나요?", "en": "What does the photo check look at?"},
@@ -44,7 +44,7 @@
       },
       {
         "q": { "ko": "라이브포토 진단은 뭘 해주나요?", "en": "What does the Live Photo Check do?" },
-        "a": { "ko": "사진(HEIC/JPG)과 동영상(.MOV)이 애플이 촬영 당시 심어둔 같은 식별자를 공유하는지 대조해서, 원래 짝이었던 라이브 포토가 맞는지 확인하고 동영상을 받을 수 있게 해줘요. 폴더째로 올리면 여러 장을 한꺼번에 찾아주지만, 다운로드는 한 번에 하나씩이에요 — 한꺼번에 정리·내보내기는 PicMedic 데스크톱 버전에서 할 수 있어요.", "en": "It checks whether a photo (HEIC/JPG) and a video (.MOV) share the same identifier Apple embeds at capture time, confirming they were originally a Live Photo pair and letting you download the video. Uploading a whole folder finds many at once, but downloads are still one at a time — batch organizing/exporting is available in the PicMedic desktop version." }
+        "a": { "ko": "사진(HEIC/JPG)과 동영상(.MOV)이 애플이 촬영 당시 심어둔 같은 식별자를 공유하는지 대조해서, 원래 짝이었던 라이브 포토가 맞는지 확인하고 동영상을 받을 수 있게 해줘요. 폴더째로 올리면 여러 장을 한꺼번에 찾아주지만, 다운로드는 한 번에 하나씩이에요 — 한꺼번에 정리·내보내기는 PicMedic 데스크톱 버전에서 할 수 있어요.", "en": "It checks whether a photo (HEIC/JPG) and a video (.MOV) share the same identifier Apple embeds at capture time, confirming they were originally a Live Photo pair and letting you download the video. Selecting a whole folder finds many at once, but downloads are still one at a time — batch organizing/exporting is available in the PicMedic desktop version." }
       },
       {
         "q": {"ko": "라이브 포토를 PC에서 어떻게 실행하고 영상으로 저장하나요?", "en": "How do I play and save a Live Photo as a video on my PC?"},
@@ -56,7 +56,7 @@
       },
       {
         "q": {"ko": "사진 여러 장을 한 번에 바꾸거나 정리할 수 있나요?", "en": "Can I convert or organize many photos at once?"},
-        "a": {"ko": "웹 버전은 사진을 한 장씩 바로 처리하는 데 맞춰져 있어요. 여러 장 일괄 변환·이름 일괄 변경, 중복 사진과 날짜·도시별 사진 정리는 PicMedic 데스크톱 버전에서 다뤄요.", "en": "The web version is built for handling one photo at a time. Batch conversion and renaming, plus cleaning up duplicates and organizing by date or city, are handled by the PicMedic desktop version."}
+        "a": {"ko": "웹에서도 HEIC·PNG·WebP 사진을 최대 20장까지 일괄 변환하고 ZIP으로 받을 수 있어요. 파일당 20MB, 전체 입력 100MB, 사진당 2,400만 픽셀까지 지원합니다. 이름 일괄 변경이나 중복·날짜·도시별 정리는 웹에서 제공하지 않아요.", "en": "You can batch convert up to 20 HEIC, PNG or WebP photos in your browser and download a ZIP. Limits are 20 MB per file, 100 MB total input and 24 megapixels per photo. Batch renaming and organizing by duplicates, date or city are not available on the web."}
       }
     ],
     // 각 페이지 하단(app__footer)에 뜨는 짧은 안내문구 — admin.html에서 페이지별로
@@ -70,8 +70,8 @@
         "en": "The <strong>PicMedic desktop version</strong> can find and organize many Live Photos at once, and repair damaged ones too."
       },
       "convert": {
-        "ko": "여러 장을 한 번에 바꾸거나 손상된 사진을 복구하는 기능은 <strong>PicMedic 데스크톱 버전</strong>에 있어요.",
-        "en": "Converting many photos at once, or repairing damaged ones, is available in the <strong>PicMedic desktop version</strong>."
+        "ko": "웹에서도 사진을 최대 20장까지 일괄 변환해 ZIP으로 받을 수 있어요. 손상 파일 복구는 제공하지 않습니다.",
+        "en": "Batch convert up to 20 photos here and download a ZIP. This web tool does not repair damaged files."
       }
     }
   };
