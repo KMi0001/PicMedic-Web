@@ -1,10 +1,12 @@
 /* Shared layout: translated navigation must fit without hiding links. */
 body { padding-top: 0; }
 nav.top, .site-nav { position: relative; top: auto; }
-nav.top .row, .site-nav .row { gap: 20px; max-width: 1040px; margin: 0 auto; padding: 20px 24px; }
+nav.top .row, .site-nav .row { display: flex; align-items: center; justify-content: space-between; gap: 20px; max-width: 1040px; margin: 0 auto; padding: 20px 24px; }
 .logo, .site-nav .logo { flex-shrink: 0; white-space: nowrap; }
 .logo__icon { object-fit: contain; flex-shrink: 0; }
-.navlinks { min-width: 0; flex-wrap: wrap; gap: 16px 20px; }
+/* Match the tool pages' more specific inline rules so every header uses the same spacing. */
+nav.top .navlinks, .site-nav .navlinks { display: flex; align-items: center; min-width: 0; flex-wrap: wrap; gap: 16px 20px; }
+nav.top .navlinks a, .site-nav a.navlink { flex: 0 0 auto; white-space: nowrap; line-height: 1.6; }
 .site-footer { position: relative; bottom: auto; }
 .guide-fab { position: static; display: block; width: fit-content; margin: 24px auto; }
 .app { padding-bottom: 32px; }
