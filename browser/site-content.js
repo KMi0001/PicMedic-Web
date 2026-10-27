@@ -32,7 +32,7 @@
       },
       {
         "q": { "ko": "복구도 여기서 할 수 있나요?", "en": "Can I repair my photo here too?" },
-        "a": { "ko": "아니요, 지금은 진단까지만 무료로 제공돼요. 사진을 직접 복구하는 기능은 PicMedic 데스크톱 버전에서 준비 중이에요.", "en": "Not yet — this page only offers free diagnosis for now. Repairing the file is being prepared for the PicMedic desktop version." }
+        "a": { "ko": "웹에서는 사진 진단과 형식 변환을 제공해요. <a href=\"desktop.html\">픽메딕 데스크톱</a>에서는 폴더 단위 검사·변환·정리를 할 수 있어요. 손상된 파일은 상태에 따라 읽거나 변환하지 못할 수 있어요.", "en": "The web tools provide photo checks and format conversion. <a href=\"desktop.html\">PicMedic Desktop</a> adds folder-based inspection, conversion and organization. Some damaged files cannot be read or converted." }
       },
       {
         "q": { "ko": "어떤 파일까지 지원하나요?", "en": "Which file types are supported?" },
@@ -66,8 +66,8 @@
     "pageNotes": {
       "diagnose": { "ko": "", "en": "" },
       "livePhoto": {
-        "ko": "손상된 사진을 직접 복구하는 <strong>PicMedic 데스크톱 버전</strong>에는 여러 장을 한 번에 찾아 정리하는 기능도 있어요.",
-        "en": "The <strong>PicMedic desktop version</strong> can find and organize many Live Photos at once, and repair damaged ones too."
+        "ko": "<a href=\"desktop.html\"><strong>픽메딕 데스크톱</strong></a>에서 사진 폴더 검사·일괄 변환·정리 기능을 만나보세요.",
+        "en": "Explore folder-based inspection, batch conversion and organization with <a href=\"desktop.html\"><strong>PicMedic Desktop</strong></a>."
       },
       "convert": {
         "ko": "웹에서도 사진을 최대 20장까지 일괄 변환해 ZIP으로 받을 수 있어요. 손상 파일 복구는 제공하지 않습니다.",

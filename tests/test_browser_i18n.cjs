@@ -23,7 +23,7 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
     const base = `http://127.0.0.1:${server.address().port}`;
     await page.goto(`${base}/index.html`);
     await page.evaluate(() => localStorage.setItem('picmedic-lang', 'en'));
-    for (const name of ['index', 'diagnose', 'convert', 'live-photo', 'faq', 'guide', 'privacy-policy']) {
+    for (const name of ['index', 'diagnose', 'convert', 'live-photo', 'faq', 'guide', 'privacy-policy', 'desktop']) {
       await page.goto(`${base}/${name}.html`);
       assert.equal(await page.getAttribute('html', 'lang'), 'en');
       const korean = await page.evaluate(() => {
@@ -39,6 +39,28 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
       assert.equal(await page.getAttribute('html', 'lang'), 'en');
       console.log(`${name}: English, Korean, and English again passed`);
     }
+    // The released desktop page must link to the published Store product in both markets.
+    await page.goto(`${base}/desktop.html`);
+    assert.equal(await page.locator('meta[name="robots"][content*="noindex"]').count(), 0);
+    assert.equal(await page.locator('link[rel="canonical"]').getAttribute('href'), 'https://picmedic.try-cat.com/desktop.html');
+    assert.equal(await page.locator('nav a[href="desktop.html"]').getAttribute('aria-current'), 'page');
+    for (const [language, market] of [['en', 'US'], ['ko', 'KR']]) {
+      await page.evaluate(value => PicMedicI18n.applyLanguage(value), language);
+      await page.waitForFunction(value => new URL(document.querySelector('[data-store-link]').href).searchParams.get('gl') === value, market);
+      const store = new URL(await page.locator('[data-store-link]').getAttribute('href'));
+      assert.equal(store.hostname, 'apps.microsoft.com');
+      assert.equal(store.pathname, '/store/detail/9NZLC53SV4R4');
+      assert.equal(store.searchParams.get('cid'), 'DevShareMCLPCS');
+      assert.equal(await page.locator('.store-button[disabled]').count(), 0);
+      assert.ok(!/출시 예정|출시를 준비|Coming to Microsoft Store|approx\./i.test(await page.locator('main').innerText()));
+      assert.ok(!/US\$|USD/.test(await page.locator('main').innerText()));
+      if (language === 'en') assert.equal(await page.locator('.price').innerText(), 'KRW 3,900');
+    }
+    await page.goto(`${base}/index.html`);
+    assert.equal(await page.locator('.tools a.tool[href="desktop.html"]').count(), 1);
+    assert.equal(await page.locator('nav a[href="desktop.html"]').count(), 1);
+    console.log('Desktop launch navigation, indexing, market-specific Store links and release copy passed');
+    await page.evaluate(() => PicMedicI18n.applyLanguage('en'));
     await page.goto(`${base}/diagnose.html`);
     await page.evaluate(() => renderResult({ filename: '정상 사진.jpg', extension: '.jpg', detectedFormat: 'JPEG', severity: '정상', message: '정상적으로 열리는 사진입니다. 스크린샷, 저해상도 특징도 함께 보여요.', width: 320, height: 240, fileSize: 2000, isLowResolution: true, qualityIssues: ['블러 추정'], printSizes: [{size: '4x6', level: '권장안함'}], certification: {tier: '주의', label: '주의 필요', icon: '⚠️'} }));
     assert.equal(await page.textContent('#result-filename'), '정상 사진.jpg');

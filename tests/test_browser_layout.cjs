@@ -20,10 +20,15 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
       const context = await browser.newContext({ viewport: { width, height: 844 }, isMobile: width < 500 });
       await context.addInitScript(value => localStorage.setItem('picmedic-lang', value), lang);
       const page = await context.newPage();
-      const names = ['index', 'diagnose', 'convert', 'live-photo', 'faq', 'guide', 'privacy-policy', ...['heic-to-jpg', 'live-photo-to-mp4', 'photo-print-resolution', 'png-webp-to-jpg'].map(n => n + (lang === 'en' ? '-en' : ''))];
+      const names = ['index', 'diagnose', 'convert', 'live-photo', 'faq', 'guide', 'privacy-policy', 'desktop', ...['heic-to-jpg', 'live-photo-to-mp4', 'photo-print-resolution', 'png-webp-to-jpg'].map(n => n + (lang === 'en' ? '-en' : ''))];
       for (const name of names) {
         await page.goto(`http://127.0.0.1:${server.address().port}/${name}.html`);
         await page.evaluate(() => document.fonts.ready);
+        // Long product pages defer screenshots below the fold until scrolling.
+        await page.locator('img[loading="lazy"]').evaluateAll(images => Promise.all(images.map(image => {
+          image.loading = 'eager';
+          return image.decode();
+        })));
         const state = await page.evaluate(() => ({
           width: innerWidth,
           scroll: document.documentElement.scrollWidth,

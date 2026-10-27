@@ -1,0 +1,205 @@
+
+/* gui/theme.py COLORS(버터·아이보리 + 톤온톤 잉크, 골드 포인트)와 동일한 값.
+   웹버전은 다크가 기본값(2026-09-11)이라 기본 :root에 DARK_COLORS를 두고
+   [data-theme="light"]에서만 LIGHT_COLORS로 덮어쓴다. */
+:root{
+  --bg:#1E1A15;
+  --text:#EDE6D6;
+  --muted:#A79A82;
+  --accent:#D9B54A;
+  --accent-soft:#3A3222;
+  --hairline:#3D362A;
+}
+:root[data-theme="light"]{
+  --bg:#F7F1E4;
+  --text:#2A2420;
+  --muted:#7A7060;
+  --accent:#D9B54A;
+  --accent-soft:#F1E6C6;
+  --hairline:#E6DCC5;
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:'IBM Plex Sans KR','Malgun Gothic',sans-serif;
+  -webkit-font-smoothing:antialiased;
+  padding-top:72px;
+}
+a{color:inherit;}
+.mono{font-family:'IBM Plex Mono',monospace;}
+.shell{max-width:720px;margin:0 auto;padding:0 24px;}
+
+/* nav */
+nav.top{position:fixed;top:0;left:0;right:0;z-index:30;background:var(--bg);border-bottom:1px solid var(--hairline);}
+nav.top .row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 0;
+}
+.logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:20px;letter-spacing:-.01em;text-decoration:none;color:var(--text);}
+.logo__icon{width:26px;height:26px;border-radius:7px;display:block;}
+.navlinks{display:flex;gap:28px;align-items:center;}
+.navlinks a{font-size:13.5px;color:var(--muted);text-decoration:none;}
+.navlinks a:hover, .navlinks a:focus-visible{color:var(--text);}
+/* 지금 보고 있는 페이지의 메뉴만 강조(aria-current="page") — 다른 페이지에서는 강조하지 않는다.
+   금색 글자는 라이트 모드 배경(아이보리)과 대비가 약해(1.75:1) 회색 메뉴보다 오히려 흐려 보였다 —
+   그래서 글자는 진한 본문색 + 굵게로 하고, 강조색(금색)은 밑줄로만 쓴다. */
+.navlinks a[aria-current="page"]{
+  color:var(--text);font-weight:600;
+  text-decoration:underline;text-decoration-color:var(--accent);
+  text-decoration-thickness:2px;text-underline-offset:8px;
+}
+
+.theme-toggle-group{display:flex;align-items:center;gap:6px;}
+.theme-toggle-group .mode-label{font-size:12.5px;color:var(--muted);line-height:1;}
+.theme-toggle{
+  background:none;border:none;padding:0;margin:0;cursor:pointer;
+  display:flex;align-items:center;line-height:0;
+}
+.theme-toggle .track{
+  width:36px;height:20px;border-radius:10px;background:var(--hairline);
+  position:relative;transition:background .2s;
+}
+.theme-toggle .knob{
+  position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;
+  background:#FFFFFF;box-shadow:0 1px 2px rgba(0,0,0,.3);transition:transform .2s;
+}
+.theme-toggle[aria-pressed="true"] .track{background:var(--accent);}
+.theme-toggle[aria-pressed="true"] .knob{transform:translateX(16px);}
+@media (prefers-reduced-motion: reduce){
+  .theme-toggle .track, .theme-toggle .knob{transition:none;}
+}
+
+/* site footer — 화면 하단에 항상 고정, 모든 페이지 동일 */
+.site-footer{
+  position:fixed;left:0;right:0;bottom:0;z-index:20;
+  background:var(--bg);border-top:1px solid var(--hairline);
+}
+.footmeta{
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
+  padding:14px 24px;font-size:12.5px;color:var(--muted);
+}
+.footmeta a{color:var(--muted);text-decoration:none;}
+.footmeta a:hover, .footmeta a:focus-visible{color:var(--text);}
+.lang-toggle{
+  background:none;border:none;padding:0;font:inherit;font-size:12.5px;color:var(--muted);
+  text-decoration:underline;text-underline-offset:3px;cursor:pointer;
+}
+.lang-toggle:hover, .lang-toggle:focus-visible{color:var(--text);}
+
+/* 사업자 정보 — 오픈 전 실제 값으로 교체할 자리(2026-09-11, 사용자 요청으로
+   폼만 미리 짜둠). 통신판매업신고번호는 이 사이트에서 직접 결제를 받을 때만
+   필요 — 지금은 무료 진단만 제공하고 실제 결제는 MS 스토어에서 이뤄지므로
+   해당 없을 수 있음(확정은 법률 검토 필요). */
+.bizinfo{padding:0 24px 10px;font-size:10.5px;line-height:1.6;color:var(--muted);opacity:.75;}
+
+/* Desktop introduction: one continuous story, with full-size app screens. */
+html { scroll-behavior:smooth;scroll-padding-top:32px; }
+button { font:inherit; }
+button, a { -webkit-tap-highlight-color:transparent; }
+:focus-visible { outline:2px solid var(--accent);outline-offset:5px; }
+.skip-link { position:absolute;left:24px;top:-80px;z-index:50;padding:12px;background:var(--bg); }
+.skip-link:focus { top:12px; }
+.wide { max-width:1008px;margin:0 auto;padding:0 24px; }
+.pc-hero { padding-top:88px;padding-bottom:40px;text-align:center; }
+.eyebrow { margin:0 0 28px;font-size:11px;letter-spacing:.15em;color:var(--muted); }
+.pc-hero .eyebrow { color:var(--text);font-weight:500;display:flex;justify-content:center;align-items:center;gap:10px;letter-spacing:.1em; }
+.pc-hero .eyebrow img { width:28px;height:28px;border-radius:7px; }
+h1 { font-size:clamp(42px,7vw,78px);line-height:1.2;letter-spacing:-.045em;margin:0 0 36px;text-wrap:balance; }
+.lede { font-size:17px;line-height:1.95;color:var(--muted);margin:0 auto 32px;max-width:640px; }
+.hero-actions { display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:18px 24px; }
+.button { display:inline-block;background:var(--accent);color:#2A2420;font-size:14px;font-weight:600;text-decoration:none;padding:16px 22px;border-radius:8px; }
+.button:hover { filter:brightness(1.08); }
+.launch-tag { font-size:12px;line-height:1.7;color:var(--muted); }
+.text-link { font-size:14px;font-weight:500;text-underline-offset:5px; }
+.small { color:var(--muted);font-size:12px;line-height:1.8; }
+.pc-hero > .small { margin:20px 0 0; }
+h1 span { color:var(--accent); }
+:root[data-theme="light"] h1 span { color:#896716; }
+.hero-art { position:relative;max-width:800px;margin:40px auto 0; }
+.folder-art { display:block;width:100%;height:auto;color:var(--text); }
+.art-caption { position:absolute;font-size:9px;letter-spacing:.12em;color:var(--muted);line-height:1.8; }
+.art-caption-left { left:0;top:43%; }
+.art-caption-right { right:0;top:66%;max-width:110px;text-align:left; }
+.intro-note { padding-top:88px;padding-bottom:88px;text-align:center;border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline); }
+.intro-note h2 { font-size:clamp(26px,4vw,36px);line-height:1.5;letter-spacing:-.025em;margin:0 0 24px; }
+.intro-note > p:not(.eyebrow) { font-size:15px;line-height:1.95;color:var(--muted);margin:0; }
+.intro-flow { margin-top:36px;font-size:10px;line-height:2.2;letter-spacing:.06em;color:var(--muted); }
+.screen-topline { padding:14px 20px;display:flex;align-items:center;gap:18px;border-bottom:1px solid var(--hairline);background:var(--accent-soft); }
+.screen-topline > span.mono { font-size:9px;letter-spacing:.08em;color:var(--muted);line-height:1.8; }
+.screen-dots { display:flex;gap:5px; }
+.screen-dots i { width:6px;height:6px;border:1px solid var(--muted);border-radius:50%;opacity:.55; }
+.purchase-icon { width:48px;height:48px;border-radius:12px;margin-bottom:28px; }
+.story-chapter { position:relative;padding-top:112px;padding-bottom:104px;border-bottom:1px solid var(--hairline); }
+.story-chapter::before { content:attr(data-step);position:absolute;right:40px;top:92px;font:96px/1 'IBM Plex Mono',monospace;letter-spacing:-.08em;color:var(--muted);opacity:.12;pointer-events:none; }
+.story-chapter:last-child { border-bottom:0; }
+.chapter-copy { padding:0;max-width:672px;margin-bottom:48px; }
+.chapter-copy .eyebrow { color:var(--muted);display:flex;align-items:center;gap:12px; }
+.chapter-copy .eyebrow::before { content:'';width:24px;height:2px;background:var(--accent); }
+.story-chapter h2, .care-section h2 { font-size:clamp(30px,4.6vw,44px);line-height:1.4;letter-spacing:-.035em;margin:0 0 26px;text-wrap:balance; }
+.chapter-lede { font-size:17px;line-height:1.95;color:var(--muted);margin:0; }
+.chapter-points { list-style:none;padding:0;margin:26px 0 0;display:grid;gap:10px; }
+.chapter-points li { display:flex;align-items:baseline;gap:12px;font-size:13px;line-height:1.8; }
+.chapter-points li::before { content:'+';color:var(--muted);font-family:'IBM Plex Mono',monospace; }
+.app-screen { margin:0;border:1px solid var(--hairline);border-radius:12px;overflow:hidden;background:var(--bg); }
+.app-screen a { display:block; }
+.app-screen img { display:block;width:100%;height:auto;object-fit:contain; }
+.app-screen figcaption { padding:20px 28px;font-size:13px;line-height:1.85;color:var(--muted);background:var(--bg);border-top:1px solid var(--hairline); }
+.chapter-extra { display:flex;align-items:baseline;gap:24px;max-width:672px;margin-top:40px;padding:0; }
+.extra-label { font-size:11px;letter-spacing:.04em;white-space:nowrap;color:var(--muted); }
+.chapter-extra h3 { font-size:17px;margin:0 0 12px;line-height:1.6; }
+.chapter-extra p { font-size:14px;line-height:1.9;color:var(--muted);margin:0; }
+.care-section { padding:96px 0;background:var(--accent-soft);border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline); }
+.care-note { margin:36px 0 0;padding-top:28px;border-top:1px solid var(--hairline);font-size:14px;color:var(--muted);line-height:1.9; }
+.pc-section { padding-top:96px;padding-bottom:96px; }
+.pc-section h2 { font-size:clamp(26px,4.4vw,38px);line-height:1.45;letter-spacing:-.03em;margin:0 0 36px;text-wrap:balance; }
+.purchase-card { border:1px solid var(--hairline);border-radius:12px;padding:56px 48px;background:var(--accent-soft);text-align:center; }
+.purchase-card .store-button { margin-left:auto;margin-right:auto; }
+.purchase-card .specs { text-align:left; }
+.purchase-card h2 { margin-bottom:32px; }
+.price { font-size:48px;font-weight:600;letter-spacing:-.035em;margin:0;line-height:1.25;font-variant-numeric:tabular-nums; }
+.price span { font-size:20px;margin-left:5px; }
+.purchase-description { color:var(--muted);font-size:13px;line-height:1.85;margin:16px 0 28px; }
+.store-button { display:block;width:fit-content;background:var(--accent);border:1px solid var(--accent);border-radius:8px;color:#2A2420;padding:16px 22px;font-size:14px;font-weight:600;text-decoration:none;max-width:100%; }
+.purchase-card .small { margin:14px 0 36px; }
+.specs { border-top:1px solid var(--hairline);padding-top:28px;margin:0;display:grid;gap:16px; }
+.specs div { display:grid;grid-template-columns:90px minmax(0,1fr);gap:12px;font-size:12px;line-height:1.8; }
+.specs dt { color:var(--muted); }
+.specs dd { margin:0; }
+.pc-faq { padding-top:0;padding-bottom:96px; }
+.pc-faq h2 { font-size:26px; }
+.pc-faq .faq-item { padding:28px 0;border-top:1px solid var(--hairline); }
+.pc-faq h3 { font-size:16px;font-weight:600;line-height:1.7;margin:0; }
+.pc-faq .faq-item p { font-size:14px;line-height:1.95;color:var(--muted);margin:16px 0 0; }
+.pc-faq .text-link { display:inline-block;margin-top:18px; }
+@media (max-width:600px) {
+  .pc-hero { padding-top:56px;padding-bottom:24px; }
+  .hero-art { margin-top:36px; }
+  .art-caption { display:none; }
+  .intro-note { margin:0 24px;padding:56px 0; }
+  .intro-note br { display:none; }
+  .intro-note h2 br { display:initial; }
+  .intro-flow { font-size:9px; }
+  .story-chapter::before { font-size:66px;right:24px;top:52px; }
+  .screen-topline { padding:12px;gap:12px; }
+  .screen-topline > span.mono { font-size:8px; }
+  h1 { font-size:clamp(36px,9vw,48px);margin-bottom:28px; }
+  .lede { font-size:16px;margin-bottom:32px; }
+  .lede br, .chapter-lede br { display:none; }
+  .story-chapter { padding-top:72px;padding-bottom:64px; }
+  .chapter-copy { margin-bottom:32px;position:relative; }
+  .chapter-lede { font-size:16px; }
+  .chapter-points li { font-size:12px; }
+  .app-screen { border-radius:8px; }
+  .app-screen figcaption { padding:18px;font-size:12px; }
+  .chapter-extra { margin-top:28px;gap:14px; }
+  .chapter-extra h3 { font-size:16px; }
+  .care-section { padding:64px 0; }
+  .pc-section { padding-top:64px;padding-bottom:64px; }
+  .purchase-card { padding:32px 24px; }
+  .price { font-size:40px; }
+  .specs div { grid-template-columns:1fr;gap:3px; }
+  .pc-faq { padding-top:0; }
+}
+@media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }

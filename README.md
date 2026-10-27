@@ -95,3 +95,24 @@ JPG/PNG/WEBP 출력, 진행률, 현재 사진 처리 후 취소, 파일별 실�
   공개 샘플: https://github.com/strukturag/libheif/blob/master/examples/example.heic
 
 실제 휴대폰 Safari/Android 기기 테스트는 별도로 필요하다. 데스크톱 Edge에서 모바일 폭 레이아웃을 확인했다.
+
+## 픽메딕 데스크톱 소개 페이지
+
+`browser/desktop.html`은 한·영 소개와 Microsoft Store 구매·설치 링크를 제공한다.
+2026-10-27 공개 전환: 전체 상단 메뉴의 ‘데스크톱 앱’, 메인 카드, 사이트맵에 연결하고
+검색 제외 설정을 제거했다. canonical·공유 메타데이터와 기존 사이트의 방문 통계도 적용한다.
+
+Microsoft Store 공식 공유 링크: https://apps.microsoft.com/store/detail/9NZLC53SV4R4?cid=DevShareMCLPCS
+기존 PC 패키징 문서의 `9NW9Q23MBCZG`는 현재 공개 제품 ID가 아니므로 사용하지 않는다.
+언어 선택에 따라 링크의 `hl`·`gl`도 ko-KR/KR 또는 en-US/US로 전환한다.
+
+한글은 한국 판매가 3,900원, 영문도 원화 KRW 3,900만 표시한다.
+2026-10-27 사용자 요청에 따라 달러 환산액 및 미국 판매가는 표시하지 않는다.
+일회성 구매·구독 없음으로 안내하며 최종 지역별 가격은 스토어를 따른다.
+
+앱 화면도 선택한 언어로 전환하며 검사 화면에는 다크·라이트 스크린샷을 제공한다.
+스크린샷은 PC 저장소의 `dist/store-materials-1.2.1.0`에서 복사한 앱의 샘플 화면이다.
+iOS 및 다른 플랫폼의 판매 안내는 포함하지 않았다.
+
+검증: `node tests/test_browser_i18n.cjs`, `node tests/test_browser_layout.cjs`.
+`main`에 게시하면 `.github/workflows/deploy-pages.yml`이 `browser/`를 GitHub Pages에 배포한다.
