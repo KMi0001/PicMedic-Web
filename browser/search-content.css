@@ -1,0 +1,18 @@
+.article .intro { color: var(--muted); }
+.article .guide-note, .print-calculator { border: 1px solid var(--hairline); border-radius: 14px; padding: 20px; margin: 24px 0; }
+.article .guide-note { background: var(--accent-soft); }
+.print-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.print-calculator label { display: block; font-size: 14px; }
+.print-calculator input, .print-calculator select { display: block; width: 100%; min-width: 0; padding: 12px; margin: 6px 0 0; font: inherit; border: 1px solid var(--muted); border-radius: 8px; background: var(--bg); color: var(--text); }
+.print-calculator :is(input, select):focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.print-calculator fieldset { border: 0; padding: 0; margin: 24px 0 0; min-width: 0; }
+.print-calculator legend { padding: 0; font-weight: 600; margin-bottom: 12px; }
+.print-result { display: block; padding: 16px; background: var(--accent-soft); border-radius: 8px; margin-top: 20px; }
+.print-result p { margin: 0 0 10px; }
+.print-result p:last-child { margin-bottom: 0; }
+.article table { border-collapse: collapse; width: 100%; font-size: 14px; }
+.article th, .article td { text-align: left; padding: 10px 6px; border-bottom: 1px solid var(--hairline); overflow-wrap: anywhere; }
+.article figure { margin: 24px 0; }
+.article figure img { display: block; width: 100%; height: auto; border: 1px solid var(--hairline); border-radius: 10px; }
+.article figcaption { color: var(--muted); font-size: 13px; margin-top: 8px; }
+@media (max-width: 420px) { .print-grid { grid-template-columns: 1fr; } .print-calculator { padding: 16px; } }

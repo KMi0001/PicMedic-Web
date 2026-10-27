@@ -187,7 +187,7 @@
     }
     document.querySelectorAll('a[href]').forEach(link => {
       const href = link.getAttribute("href");
-      if (/^(heic-to-jpg|live-photo-to-mp4|photo-print-resolution|png-webp-to-jpg)(-en)?\.html$/.test(href)) {
+      if (/^(heic-to-jpg|live-photo-to-mp4|photo-print-resolution|png-webp-to-jpg|photo-damage-check)(-en)?\.html$/.test(href)) {
         link.setAttribute("href", href.replace(/(-en)?\.html$/, language === "en" ? "-en.html" : ".html"));
       }
     });

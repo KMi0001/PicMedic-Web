@@ -1,0 +1,15 @@
+const assert = require('node:assert/strict');
+const { calculate } = require('../browser/print-calculator.js');
+assert.deepEqual(calculate(10.16, 15.24, 300), { width: 1200, height: 1800 });
+assert.deepEqual(calculate(21, 29.7, 300), { width: 2481, height: 3508 });
+const rotated = calculate(10.16, 15.24, 300, 1800, 1200);
+assert.equal(rotated.ppi, 300);
+assert.equal(rotated.crop, 0);
+assert.equal(rotated.rotated, true);
+assert.equal(rotated.meetsTarget, true);
+const cropped = calculate(10.16, 15.24, 300, 4000, 3000);
+assert.ok(Math.abs(cropped.crop - 100 / 9) < 1e-8);
+assert.equal(calculate(10.16, 15.24, 300, 600, 900).meetsTarget, false);
+assert.equal(calculate(0, 15.24, 300), null);
+assert.equal(calculate(10, Infinity, 300), null);
+console.log('Print requirements, orientation, cropping and invalid values passed');
