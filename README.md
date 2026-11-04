@@ -1,4 +1,24 @@
-# PicMedic Web
+# 픽메딕 웹 · PicMedic Web
+
+## 무료 사진 도구를 찾으셨나요?
+
+**설치 없이 사용하는 픽메딕 웹은 아래 공식 웹사이트에서 이용하세요.**
+
+### [→ 픽메딕 웹 무료로 사용하기](https://picmedic.try-cat.com/)
+
+- [HEIC · PNG · WEBP를 JPG로 변환](https://picmedic.try-cat.com/convert.html)
+- [사진이 안 열릴 때 진단하기](https://picmedic.try-cat.com/diagnose.html)
+- [사진 인화 크기·해상도 확인하기](https://picmedic.try-cat.com/photo-print-resolution.html)
+
+사진은 서버로 업로드되지 않고 사용자의 브라우저에서 처리됩니다.
+**웹 도구는 무료이며, Windows PC 설치형 앱은 별도의 유료 제품입니다.**
+
+This repository contains the source code. **[Use PicMedic Web for free →](https://picmedic.try-cat.com/)**
+The Windows desktop app is a separate paid product.
+
+---
+
+## 개발 문서
 
 PicMedic 데스크톱 앱(PySide6)의 웹버전. 방향/의사결정 배경은 원본 저장소의
 [PLATFORM_EXPANSION.md](../PicMedic/PLATFORM_EXPANSION.md) 참고. 이 저장소
