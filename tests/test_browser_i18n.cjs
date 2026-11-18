@@ -50,7 +50,7 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
       const store = new URL(await page.locator('[data-store-link]').getAttribute('href'));
       assert.equal(store.hostname, 'apps.microsoft.com');
       assert.equal(store.pathname, '/store/detail/9NZLC53SV4R4');
-      assert.equal(store.searchParams.get('cid'), 'DevShareMCLPCS');
+      assert.equal(store.searchParams.get('cid'), 'website_desktop');
       assert.equal(await page.locator('.store-button[disabled]').count(), 0);
       assert.ok(!/출시 예정|출시를 준비|Coming to Microsoft Store|approx\./i.test(await page.locator('main').innerText()));
       assert.ok(!/US\$|USD/.test(await page.locator('main').innerText()));
